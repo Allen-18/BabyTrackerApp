@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:tracker/helpers/styles_manager.dart';
 import 'colors_manager.dart';
 
-Widget loginBox({required String text,required Widget child, required BuildContext context}) {
+Widget loginBox(
+    {required String text,
+    required Widget child,
+    required BuildContext context}) {
   return Container(
     height: 60,
     margin: const EdgeInsets.symmetric(horizontal: 16),
@@ -17,12 +20,13 @@ Widget loginBox({required String text,required Widget child, required BuildConte
       ],
     ),
     alignment: Alignment.centerLeft,
-    child: Theme(data: Theme.of(context).copyWith(
-      inputDecorationTheme: const InputDecorationTheme(
+    child: Theme(
+      data: Theme.of(context).copyWith(
+          inputDecorationTheme: const InputDecorationTheme(
         border: InputBorder.none,
-      )
-    ), child: child,),
-
+      )),
+      child: child,
+    ),
   );
 }
 

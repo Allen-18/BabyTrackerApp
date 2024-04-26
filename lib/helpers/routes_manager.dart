@@ -10,8 +10,6 @@ import 'package:tracker/features/userData/add_baby_data.dart';
 import 'package:tracker/features/userData/add_mother_data.dart';
 import 'package:tracker/features/userData/add_new_baby.dart';
 
-
-
 class Routes {
   static const String login = "login";
   static const String signUp = "sign up";
@@ -45,9 +43,9 @@ class RouteGenerator {
       case Routes.addAnotherChild:
         return MaterialPageRoute(builder: (_) => const AddAnotherChild());
       case Routes.motorSkillTracker:
-        return MaterialPageRoute(builder: (_) =>  const MotorSkillTracker());
+        return MaterialPageRoute(builder: (_) => const MotorSkillTracker());
       case Routes.cognitiveSkillTracker:
-        return MaterialPageRoute(builder: (_) =>  const CognitiveSkillTracker());
+        return MaterialPageRoute(builder: (_) => const CognitiveSkillTracker());
       default:
         return unDefinedRoute();
     }

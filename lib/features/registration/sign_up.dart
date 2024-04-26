@@ -14,10 +14,10 @@ class SignUp extends StatefulWidget {
 }
 
 class SignUpState extends State<SignUp> {
-
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,8 @@ class SignUpState extends State<SignUp> {
               child: Container(
                   margin: const EdgeInsets.only(top: AppMargin.m70),
                   child: Text('Sign Up',
-                      style: getBoldStyle(color: AppColors.white, fontSize: 40))),
+                      style:
+                          getBoldStyle(color: AppColors.white, fontSize: 40))),
             ),
             Expanded(
               flex: 4,
@@ -46,7 +47,8 @@ class SignUpState extends State<SignUp> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
                   color: AppColors.white,
-                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(100)),
+                  borderRadius:
+                      const BorderRadius.only(topLeft: Radius.circular(100)),
                 ),
                 child: ListView(
                   children: [
@@ -96,15 +98,18 @@ class SignUpState extends State<SignUp> {
                       height: AppMargin.m14,
                     ),
                     TextButton(
-                      onPressed: () => Navigator.pushNamed(context, Routes.login),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, Routes.login),
                       child: Text(
                         "Already have an account",
-                        style: getRegularStyle(color: AppColors.primary, fontSize: 14),
+                        style: getRegularStyle(
+                            color: AppColors.primary, fontSize: 14),
                       ),
                     ),
                     const SizedBox(height: 40),
                     GestureDetector(
-                      onTap: () => Navigator.pushNamed(context, Routes.aboutMother),
+                      onTap: () =>
+                          Navigator.pushNamed(context, Routes.aboutMother),
                       child: appButton(text: "Create Account"),
                     ),
                     const SizedBox(height: 20),

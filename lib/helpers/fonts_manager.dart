@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 // Family
 class FontConstants {
   static const String fontFamily = "FireSans";
