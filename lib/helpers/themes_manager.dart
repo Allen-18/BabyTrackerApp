@@ -36,25 +36,24 @@ ThemeData getApplicationTheme() {
     // elevated button them
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-            textStyle:
-                getRegularStyle(color: AppColors.darkGrey, fontSize: FontSize.s18),
+            textStyle: getRegularStyle(
+                color: AppColors.darkGrey, fontSize: FontSize.s18),
             backgroundColor: AppColors.primary,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppSize.s12)))),
 
     textTheme: TextTheme(
-        displayLarge:
-            getLightStyle(color: AppColors.darkGrey, fontSize: FontSize.s22),
-        headlineLarge:
-            getSemiBoldStyle(color: AppColors.darkGrey, fontSize: FontSize.s16),
-        titleMedium:
-            getMediumStyle(color: AppColors.lightGrey, fontSize: FontSize.s14),
-        bodyLarge: getRegularStyle(color: AppColors.grey),
-        bodySmall: getRegularStyle(color: AppColors.grey),
-        labelLarge: getRegularStyle(color: AppColors.grey),
-        labelMedium:  getRegularStyle(color: AppColors.grey),
-        labelSmall:  getRegularStyle(color: AppColors.grey),
-
+      displayLarge:
+          getLightStyle(color: AppColors.darkGrey, fontSize: FontSize.s22),
+      headlineLarge:
+          getSemiBoldStyle(color: AppColors.darkGrey, fontSize: FontSize.s16),
+      titleMedium:
+          getMediumStyle(color: AppColors.lightGrey, fontSize: FontSize.s14),
+      bodyLarge: getRegularStyle(color: AppColors.grey),
+      bodySmall: getRegularStyle(color: AppColors.grey),
+      labelLarge: getRegularStyle(color: AppColors.grey),
+      labelMedium: getRegularStyle(color: AppColors.grey),
+      labelSmall: getRegularStyle(color: AppColors.grey),
     ),
     // input decoration theme (text form field)
     inputDecorationTheme: InputDecorationTheme(
@@ -66,7 +65,6 @@ ThemeData getApplicationTheme() {
         labelStyle:
             getMediumStyle(color: AppColors.darkGrey, fontSize: FontSize.s14),
         errorStyle: getRegularStyle(color: AppColors.error),
-
 
         // enabled border style
         enabledBorder: OutlineInputBorder(

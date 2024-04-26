@@ -14,7 +14,6 @@ class Login extends StatefulWidget {
 }
 
 class LoginState extends State<Login> {
-
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -47,7 +46,7 @@ class LoginState extends State<Login> {
                 decoration: BoxDecoration(
                     color: AppColors.white,
                     borderRadius:
-                    const BorderRadius.only(topLeft: Radius.circular(100))),
+                        const BorderRadius.only(topLeft: Radius.circular(100))),
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
@@ -57,7 +56,8 @@ class LoginState extends State<Login> {
                       Container(
                           margin: const EdgeInsets.only(
                               top: AppMargin.m20, bottom: 40),
-                          child: Text( 'Login',
+                          child: Text(
+                            'Login',
                             style: getBoldStyle(
                                 color: AppColors.black, fontSize: 40),
                           )),

@@ -13,21 +13,11 @@ class AddAnotherChild extends StatefulWidget {
 class AddAnotherChildState extends State<AddAnotherChild> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _dobController = TextEditingController();
-  String _gender = 'Male';
-
-  void _pickDateOfBirth(BuildContext context) async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-    );
-    if (pickedDate != null) {
-      setState(() {
-        _dobController.text = "${pickedDate.toLocal()}".split(' ')[0];
-      });
-    }
-  }
+  final TextEditingController _weightController = TextEditingController();
+  final TextEditingController _heightController = TextEditingController();
+  final TextEditingController _headCircumferenceController =
+      TextEditingController();
+  String gender = 'Boy';
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +40,7 @@ class AddAnotherChildState extends State<AddAnotherChild> {
             ),
             const SizedBox(height: 25),
             GestureDetector(
-              onTap: () => _pickDateOfBirth(context),
+              onTap: () => pickDateOfBirth(context),
               child: AbsorbPointer(
                 child: TextFormField(
                   controller: _dobController,
@@ -63,28 +53,58 @@ class AddAnotherChildState extends State<AddAnotherChild> {
             ),
             const SizedBox(height: 25),
             DropdownButtonFormField<String>(
-              value: _gender,
-              items: <String>['Male', 'Female', 'Other'].map((String value) {
+              value: gender,
+              items: <String>['Boy', 'Girl'].map((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value, style: TextStyle(color: AppColors.darkGrey),),
+                  child: Text(
+                    value,
+                    style: TextStyle(color: AppColors.darkGrey),
+                  ),
                 );
               }).toList(),
               onChanged: (String? newValue) {
                 if (newValue != null) {
                   setState(() {
-                    _gender = newValue;
+                    gender = newValue;
                   });
                 }
               },
               decoration: const InputDecoration(labelText: "Child's Gender"),
             ),
+            const SizedBox(height: 25),
+            TextFormField(
+              controller: _weightController,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              decoration: const InputDecoration(
+                labelText: "Child's Weight at Birth (kg)",
+              ),
+            ),
+            const SizedBox(height: 25),
+            // Add Height input
+            TextFormField(
+              controller: _heightController,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              decoration: const InputDecoration(
+                labelText: "Child's Height at Birth (cm)",
+              ),
+            ),
+            const SizedBox(height: 25),
+            // Add Head Circumference input
+            TextFormField(
+              controller: _headCircumferenceController,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              decoration: const InputDecoration(
+                labelText: "Child's Height at Birth (cm)",
+              ),
+            ),
             const SizedBox(height: 50),
             ElevatedButton(
               onPressed: () {
-                // Logic to save child's information
-                Navigator.pop(
-                    context); // Return to previous screen after adding
+                Navigator.pop(context);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
@@ -101,6 +121,23 @@ class AddAnotherChildState extends State<AddAnotherChild> {
   void dispose() {
     _nameController.dispose();
     _dobController.dispose();
+    _weightController.dispose();
+    _heightController.dispose();
+    _headCircumferenceController.dispose();
     super.dispose();
+  }
+
+  void pickDateOfBirth(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if (pickedDate != null) {
+      setState(() {
+        _dobController.text = "${pickedDate.toLocal()}".split(' ')[0];
+      });
+    }
   }
 }

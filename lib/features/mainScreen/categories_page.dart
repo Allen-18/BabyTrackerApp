@@ -42,23 +42,24 @@ class Categories extends StatelessWidget {
                           )),
                       child: categoryCard(
                           widget: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Flexible(
-                                  child: Image.asset(
-                                    AppAssets.physical,
-                                    scale: 1,
-                                  )),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "Motor Milestone",
-                                style: getMediumStyle(
-                                    color: AppColors.grey, fontSize: 25 ),textAlign: TextAlign.center,
-                              )
-                            ],
-                          ))),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                              child: Image.asset(
+                            AppAssets.physical,
+                            scale: 1,
+                          )),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            "Motor Milestone",
+                            style: getMediumStyle(
+                                color: AppColors.grey, fontSize: 25),
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      ))),
                   GestureDetector(
                       onTap: () => Navigator.push(
                           context,
@@ -67,23 +68,24 @@ class Categories extends StatelessWidget {
                           )),
                       child: categoryCard(
                           widget: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Flexible(
-                                  child: Image.asset(
-                                    AppAssets.cognitive,
-                                    scale: 1,
-                                  )),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "Cognitive Milestone",
-                                style: getMediumStyle(
-                                    color: AppColors.grey, fontSize: 25 ), textAlign: TextAlign.center,
-                              )
-                            ],
-                          ))),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Flexible(
+                              child: Image.asset(
+                            AppAssets.cognitive,
+                            scale: 1,
+                          )),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            "Cognitive Milestone",
+                            style: getMediumStyle(
+                                color: AppColors.grey, fontSize: 25),
+                            textAlign: TextAlign.center,
+                          )
+                        ],
+                      ))),
                 ],
               ),
               Row(

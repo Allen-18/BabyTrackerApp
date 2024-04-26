@@ -5,7 +5,6 @@ import 'package:tracker/helpers/styles_manager.dart';
 import 'month_card_motor.dart';
 import 'month_content_motor.dart';
 
-
 class MotorSkillTracker extends StatefulWidget {
   const MotorSkillTracker({super.key});
 
