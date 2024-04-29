@@ -12,7 +12,8 @@ class MotorSkillTracker extends StatefulWidget {
   MotorSkillTrackerState createState() => MotorSkillTrackerState();
 }
 
-class MotorSkillTrackerState extends State<MotorSkillTracker> with SingleTickerProviderStateMixin {
+class MotorSkillTrackerState extends State<MotorSkillTracker>
+    with SingleTickerProviderStateMixin {
   final List<int> months = List.generate(12, (index) => index + 1);
   final CarouselController carouselController = CarouselController();
   int currentMonthIndex = 0;
@@ -20,11 +21,14 @@ class MotorSkillTrackerState extends State<MotorSkillTracker> with SingleTickerP
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text('Motor Skill Tracker',style: getMediumStyle(color: AppColors.black, fontSize: 20)),
+        title: Text('Motor Skill Tracker',
+            style: getMediumStyle(color: AppColors.black, fontSize: 20)),
       ),
       body: Column(
         children: [
-          const SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

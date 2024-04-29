@@ -12,7 +12,8 @@ class CognitiveSkillTracker extends StatefulWidget {
   CognitiveSkillTrackerState createState() => CognitiveSkillTrackerState();
 }
 
-class CognitiveSkillTrackerState extends State<CognitiveSkillTracker> with SingleTickerProviderStateMixin {
+class CognitiveSkillTrackerState extends State<CognitiveSkillTracker>
+    with SingleTickerProviderStateMixin {
   final List<int> months = List.generate(12, (index) => index + 1);
   final CarouselController carouselController = CarouselController();
   int currentMonthIndex = 0;
@@ -20,11 +21,14 @@ class CognitiveSkillTrackerState extends State<CognitiveSkillTracker> with Singl
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cognitive Skill Tracker',style: getMediumStyle(color: AppColors.black, fontSize: 20)),
+        title: Text('Cognitive Skill Tracker',
+            style: getMediumStyle(color: AppColors.black, fontSize: 20)),
       ),
       body: Column(
         children: [
-          const SizedBox(height: 20,),
+          const SizedBox(
+            height: 20,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

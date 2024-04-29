@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/helpers/colors_manager.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tracker/helpers/styles_manager.dart';
+import 'package:tracker/authentication/controller/authentication_controller.dart';
 
-class Home extends StatefulWidget {
+class Home extends ConsumerWidget {
   const Home({Key? key}) : super(key: key);
 
   @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authController = ref.read(authProvider.notifier);
+    final authUser = ref.watch(authProvider).user;
+    //Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -21,19 +19,19 @@ class _HomeState extends State<Home> {
           style: getMediumStyle(color: Colors.black, fontSize: 20),
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(8),
-        width: size.width,
-        height: size.height,
+      body: Center(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(
-              height: 10,
-            ),
-            Text(
-              "General",
-              style: getMediumStyle(color: AppColors.grey, fontSize: 15),
+            Text("user id: ${authUser.id}"),
+            Text("user email: ${authUser.email}"),
+            Text("email verified: ${authUser.emailVerified}"),
+            TextButton(
+              child: const Text("SignOut"),
+              onPressed: () {
+                authController.onSignOut();
+              },
             ),
           ],
         ),
