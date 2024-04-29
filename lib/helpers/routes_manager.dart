@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:tracker/authentication/forgot_password/forgot_password.dart';
 import 'package:tracker/features/Growth/growth_page.dart';
 import 'package:tracker/features/Health/health_page.dart';
-import 'package:tracker/features/Registration/log_in.dart';
-import 'package:tracker/features/Registration/sign_up.dart';
 import 'package:tracker/features/milestone/cognitive_skill/track_cognitive_skill.dart';
 import 'package:tracker/features/milestone/motor_skill/track_motor_skill.dart';
 import 'package:tracker/features/mainScreen/navigation_bar.dart';
 import 'package:tracker/features/userData/add_baby_data.dart';
 import 'package:tracker/features/userData/add_mother_data.dart';
 import 'package:tracker/features/userData/add_new_baby.dart';
+import 'package:tracker/authentication/signin/log_in.dart';
+import 'package:tracker/authentication/signup/sign_up.dart';
 
 class Routes {
   static const String login = "login";
@@ -21,6 +22,7 @@ class Routes {
   static const String addAnotherChild = "addAnotherChild";
   static const String motorSkillTracker = "motorSkillTracker";
   static const String cognitiveSkillTracker = "cognitiveSkillTracker";
+  static const String forgetPassword = "forgetPassword";
 }
 
 class RouteGenerator {
@@ -35,7 +37,7 @@ class RouteGenerator {
       case Routes.aboutBaby:
         return MaterialPageRoute(builder: (_) => const BabyProfile());
       case Routes.home:
-        return MaterialPageRoute(builder: (_) => const NavigationAppBar());
+        return MaterialPageRoute(builder: (_) => const HomeScreen());
       case Routes.health:
         return MaterialPageRoute(builder: (_) => const Health());
       case Routes.growth:
@@ -46,6 +48,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const MotorSkillTracker());
       case Routes.cognitiveSkillTracker:
         return MaterialPageRoute(builder: (_) => const CognitiveSkillTracker());
+      case Routes.forgetPassword:
+        return MaterialPageRoute(builder: (_) => const ForgotPasswordView());
       default:
         return unDefinedRoute();
     }

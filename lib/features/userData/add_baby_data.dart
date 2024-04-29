@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/helpers//colors_manager.dart';
-import 'package:tracker/helpers/routes_manager.dart';
 import 'package:tracker/helpers/styles_manager.dart';
 import 'package:tracker/helpers/widget_manager.dart';
+
+import '../../helpers/routes_manager.dart';
 
 class BabyProfile extends StatefulWidget {
   const BabyProfile({Key? key}) : super(key: key);
@@ -183,7 +184,6 @@ class BabyProfileState extends State<BabyProfile> {
         decoration: const InputDecoration(labelText: "Twin's Gender"),
       ),
       const SizedBox(height: 25),
-      ...measurementBirthDetailsFields(),
     ];
   }
 

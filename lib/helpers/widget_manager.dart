@@ -30,20 +30,28 @@ Widget loginBox(
   );
 }
 
-Widget appButton({required String text, Color? background, Color? textColor}) {
-  return Container(
-    height: 50,
-    margin: const EdgeInsets.symmetric(horizontal: 16),
-    padding: const EdgeInsets.all(8),
-    width: double.infinity,
-    decoration: BoxDecoration(
-      color: background ?? AppColors.primary,
-      borderRadius: BorderRadius.circular(10),
-    ),
-    alignment: Alignment.center,
-    child: Text(
-      text,
-      style: getRegularStyle(color: textColor ?? AppColors.white, fontSize: 20),
+Widget appButton({
+  required String text,
+  Color? background,
+  Color? textColor,
+  void Function()? onPressed,
+  BuildContext? context,
+}) {
+  return GestureDetector(
+    onTap: onPressed,
+    child: Container(
+      height: 50,
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: background ?? AppColors.primary,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Text(
+        text,
+        style:
+            getRegularStyle(color: textColor ?? AppColors.white, fontSize: 20),
+      ),
     ),
   );
 }

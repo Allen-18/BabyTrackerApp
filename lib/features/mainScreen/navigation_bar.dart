@@ -4,14 +4,14 @@ import 'categories_page.dart';
 import 'progress_page.dart';
 import 'home_page.dart';
 
-class NavigationAppBar extends StatefulWidget {
-  const NavigationAppBar({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<NavigationAppBar> createState() => NavigationAppBarState();
+  State<HomeScreen> createState() => NavigationAppBarState();
 }
 
-class NavigationAppBarState extends State<NavigationAppBar> {
+class NavigationAppBarState extends State<HomeScreen> {
   int _selectedIndex = 0;
   List pages = [const Home(), Categories(), const Progress()];
 
