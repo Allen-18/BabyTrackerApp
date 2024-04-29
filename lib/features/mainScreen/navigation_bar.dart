@@ -8,10 +8,10 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => NavigationAppBarState();
+  State<HomeScreen> createState() => HomeScreenState();
 }
 
-class NavigationAppBarState extends State<HomeScreen> {
+class HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   List pages = [const Home(), Categories(), const Progress()];
 
