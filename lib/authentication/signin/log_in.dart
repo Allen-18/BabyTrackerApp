@@ -1,21 +1,22 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:form_validators/form_validators.dart';
+import 'package:go_router_flow/go_router_flow.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tracker/authentication/components/loading_error.dart';
 import 'package:tracker/authentication/signin/forgot_password_button.dart';
 import 'package:tracker/helpers/assets_manager.dart';
 import 'package:tracker/helpers/colors_manager.dart';
 import 'package:tracker/helpers/dimen_manager.dart';
-import 'package:tracker/helpers/routes_manager.dart';
 import 'package:tracker/helpers/styles_manager.dart';
 import 'package:tracker/helpers/widget_manager.dart';
+import '../../services/app_router.dart';
+import '../auth/users.dart';
 import 'controller/signin_controller.dart';
 
-
 class Login extends HookConsumerWidget {
-  const Login({Key? key}) : super(key: key);
+  const Login({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -152,9 +153,12 @@ class Login extends HookConsumerWidget {
                                             content: Text(error.toString())));
                                   } // Show error if any
                                 } else {
+                                  final currentUser = await ref.read(
+                                      getCurrentUserStreamProvider.future);
                                   if (context.mounted) {
-                                    Navigator.pushReplacementNamed(
-                                        context, Routes.aboutMother);
+                                    context.pushNamed(
+                                        AppRoutes.addMotherData.name,
+                                        extra: currentUser);
                                   }
                                 }
                               },
@@ -164,8 +168,13 @@ class Login extends HookConsumerWidget {
                         height: 10,
                       ),
                       TextButton(
-                          onPressed: () =>
-                              Navigator.pushNamed(context, Routes.signUp),
+                          onPressed: () {
+                            if (context.mounted) {
+                              context.pushNamed(
+                                AppRoutes.signUp.name,
+                              );
+                            }
+                          },
                           child: Text(
                             "Don't have an Account?",
                             style: getRegularStyle(

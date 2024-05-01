@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class MonthContentMotorSkill extends StatelessWidget {
   final int month;
 
-  const MonthContentMotorSkill({Key? key, required this.month})
-      : super(key: key);
+  const MonthContentMotorSkill({super.key, required this.month});
 
   @override
   Widget build(BuildContext context) {

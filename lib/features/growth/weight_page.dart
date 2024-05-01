@@ -4,7 +4,7 @@ import 'package:tracker/helpers/colors_manager.dart';
 import 'package:tracker/helpers/styles_manager.dart';
 
 class GrowthWeight extends StatelessWidget {
-  const GrowthWeight({Key? key}) : super(key: key);
+  const GrowthWeight({super.key});
 
   @override
   Widget build(BuildContext context) {

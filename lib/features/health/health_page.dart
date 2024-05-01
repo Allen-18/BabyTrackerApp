@@ -6,7 +6,7 @@ import 'package:tracker/helpers/styles_manager.dart';
 import 'medication_page.dart';
 
 class Health extends StatefulWidget {
-  const Health({Key? key}) : super(key: key);
+  const Health({super.key});
 
   @override
   State<Health> createState() => HealthMainState();

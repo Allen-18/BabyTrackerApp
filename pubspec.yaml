@@ -40,14 +40,20 @@ dependencies:
   firebase_auth: ^4.2.4
   cloud_firestore: ^4.5.0
   flutter_riverpod: ^2.5.1
+  firebase_core: ^2.4.1
+  firebase_storage: ^11.0.10
+  freezed_annotation: ^2.2.0
+  go_router_flow: ^6.2.0
+  json_annotation: ^4.9.0
+  riverpod_annotation: ^2.0.2
   equatable: ^2.0.5
   form_validators:
     path: package/form_validators
   loading_animation_widget: ^1.2.1
   intl: ^0.19.0
-  firebase_core: ^2.4.1
   hooks_riverpod: 2.5.1
   flutter_hooks: ^0.20.3
+  path: ^1.8.2
 
 
 dev_dependencies:
@@ -59,7 +65,12 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information userData deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
+  build_runner: ^2.3.3
+  flutter_lints: ^3.0.2
+  freezed: ^2.3.2
+  json_serializable: ^6.6.1
+  riverpod_generator: ^2.1.4
+  riverpod_lint: ^2.3.10
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

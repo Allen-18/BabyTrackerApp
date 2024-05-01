@@ -9,7 +9,7 @@ import 'package:tracker/features/health/health_page.dart';
 import 'package:tracker/features/milestone/motor_skill/track_motor_skill.dart';
 
 class Categories extends StatelessWidget {
-  Categories({Key? key}) : super(key: key);
+  Categories({super.key});
 
   final List data = [];
 

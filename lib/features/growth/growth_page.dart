@@ -6,7 +6,7 @@ import 'head_page.dart';
 import 'height_page.dart';
 
 class Growth extends StatelessWidget {
-  const Growth({Key? key}) : super(key: key);
+  const Growth({super.key});
 
   @override
   Widget build(BuildContext context) {

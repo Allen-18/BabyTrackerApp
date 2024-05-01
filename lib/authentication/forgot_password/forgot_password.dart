@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_validators/form_validators.dart';
-import 'package:tracker/helpers/routes_manager.dart';
+import 'package:go_router_flow/go_router_flow.dart';
 import 'package:tracker/helpers/assets_manager.dart';
 import 'package:tracker/helpers/colors_manager.dart';
 import 'package:tracker/helpers/styles_manager.dart';
 import 'package:tracker/helpers/widget_manager.dart';
+import 'package:tracker/services/app_router.dart';
 import 'controller/forgot_password_controller.dart';
 
 class ForgotPasswordView extends ConsumerWidget {
-  const ForgotPasswordView({Key? key}) : super(key: key);
+  const ForgotPasswordView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -63,8 +64,10 @@ class ForgotPasswordView extends ConsumerWidget {
                               .status
                               .isSuccess) {
                             forgotPasswordController.forgotPassword();
-                            Navigator.pushReplacementNamed(
-                                context, Routes.login);
+                            if (context.mounted) {
+                              context
+                                  .pushReplacementNamed(AppRoutes.login.name);
+                            }
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -75,8 +78,11 @@ class ForgotPasswordView extends ConsumerWidget {
                         },
                       ),
                       TextButton(
-                        onPressed: () => Navigator.pushReplacementNamed(
-                            context, Routes.login),
+                        onPressed: () {
+                          if (context.mounted) {
+                            context.pushReplacementNamed(AppRoutes.login.name);
+                          }
+                        },
                         child: Text(
                           "Cancel",
                           style: getRegularStyle(

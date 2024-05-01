@@ -4,7 +4,7 @@ import 'package:tracker/helpers/colors_manager.dart';
 import 'package:tracker/helpers/styles_manager.dart';
 
 class HealthMedication extends StatelessWidget {
-  const HealthMedication({Key? key}) : super(key: key);
+  const HealthMedication({super.key});
 
   @override
   Widget build(BuildContext context) {

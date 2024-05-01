@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:go_router_flow/go_router_flow.dart';
 import 'package:tracker/helpers/colors_manager.dart';
 import 'package:tracker/helpers/styles_manager.dart';
 import 'package:tracker/helpers/widget_manager.dart';
 
 class AddAnotherChild extends StatefulWidget {
-  const AddAnotherChild({Key? key}) : super(key: key);
+  const AddAnotherChild({super.key});
 
   @override
   AddAnotherChildState createState() => AddAnotherChildState();
@@ -104,7 +105,9 @@ class AddAnotherChildState extends State<AddAnotherChild> {
             const SizedBox(height: 50),
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context);
+                if (context.mounted) {
+                  context.pop();
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primary,
