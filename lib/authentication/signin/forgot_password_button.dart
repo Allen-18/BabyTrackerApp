@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router_flow/go_router_flow.dart';
 import 'package:tracker/helpers/colors_manager.dart';
-import 'package:tracker/helpers/routes_manager.dart';
+import 'package:tracker/services/app_router.dart';
 
 class ForgotPasswordButton extends StatelessWidget {
   const ForgotPasswordButton({super.key});
@@ -8,8 +9,11 @@ class ForgotPasswordButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () =>
-          Navigator.pushReplacementNamed(context, Routes.forgetPassword),
+      onTap: () {
+        if (context.mounted) {
+          context.pushReplacementNamed(AppRoutes.forgetPassword.name);
+        }
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Align(

@@ -1,5 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'auth_user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fa;
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:tracker/authentication/auth/domain/user.dart';
+
+part 'auth_repo.g.dart';
 
 class SignUpWithEmailAndPasswordFailure implements Exception {
   final String code;
@@ -19,28 +23,26 @@ class ForgotPasswordFailure implements Exception {
 class SignOutFailure implements Exception {}
 
 class AuthenticationRepository {
-  final _firebaseAuth = FirebaseAuth.instance;
-
-  Stream<AuthUser> get user {
-    return _firebaseAuth.authStateChanges().map((firebaseUser) {
-      return firebaseUser == null
-          ? AuthUser.empty
-          : AuthUser(
-              id: firebaseUser.uid,
-              email: firebaseUser.email,
-              emailVerified: firebaseUser.emailVerified,
-            );
-    });
-  }
+  final _firebaseAuth = fa.FirebaseAuth.instance;
 
   Future<void> signUpWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
-      await _firebaseAuth.createUserWithEmailAndPassword(
+      fa.UserCredential userCredential =
+          await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
-    } on FirebaseAuthException catch (e) {
+      User newUser = User(
+        email: email,
+        isActive: false,
+        creationDate: DateTime.now().toUtc(),
+      );
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid)
+          .set(newUser.toJson());
+    } on fa.FirebaseAuthException catch (e) {
       throw SignUpWithEmailAndPasswordFailure(e.code);
     }
   }
@@ -54,7 +56,7 @@ class AuthenticationRepository {
         email: email,
         password: password,
       );
-    } on FirebaseAuthException catch (e) {
+    } on fa.FirebaseAuthException catch (e) {
       throw SignInWithEmailAndPasswordFailure(e.code);
     }
   }
@@ -62,10 +64,14 @@ class AuthenticationRepository {
   Future<void> forgotPassword({required String email}) async {
     try {
       await _firebaseAuth.sendPasswordResetEmail(email: email);
-    } on FirebaseAuthException catch (e) {
+    } on fa.FirebaseAuthException catch (e) {
       throw ForgotPasswordFailure(e.code);
     }
   }
+
+  //  This getter will be returning a Stream of User object.
+  //  It will be used to check if the user is logged in or not.
+  Stream<fa.User?> get authStateChange => _firebaseAuth.authStateChanges();
 
   Future<void> signOut() async {
     try {
@@ -76,4 +82,11 @@ class AuthenticationRepository {
       throw SignOutFailure();
     }
   }
+}
+
+final authInstance = AuthenticationRepository();
+
+@riverpod
+Stream<fa.User?> authStateChange(AuthStateChangeRef ref) {
+  return authInstance.authStateChange;
 }

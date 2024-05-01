@@ -4,8 +4,7 @@ import 'package:tracker/helpers/colors_manager.dart';
 class MonthCardCognitiveSkill extends StatelessWidget {
   final int month;
 
-  const MonthCardCognitiveSkill({Key? key, required this.month})
-      : super(key: key);
+  const MonthCardCognitiveSkill({super.key, required this.month});
 
   @override
   Widget build(BuildContext context) {

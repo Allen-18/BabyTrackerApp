@@ -11,6 +11,7 @@ import 'package:tracker/services/app_router.dart';
 import 'package:tracker/authentication/auth/domain/user.dart';
 import 'package:tracker/features/common/curent_parent.dart';
 
+
 class MotherProfile extends HookConsumerWidget {
   MotherProfile({super.key, required this.parent});
 

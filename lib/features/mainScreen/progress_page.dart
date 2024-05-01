@@ -3,7 +3,7 @@ import 'package:tracker/helpers/colors_manager.dart';
 import 'package:tracker/helpers/styles_manager.dart';
 
 class Progress extends StatefulWidget {
-  const Progress({Key? key}) : super(key: key);
+  const Progress({super.key});
   @override
   State<Progress> createState() => ProgressState();
 }

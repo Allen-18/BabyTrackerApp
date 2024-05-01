@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:go_router_flow/go_router_flow.dart';
+import 'package:intl/intl.dart';
+import 'package:tracker/features/userData/twin_fields.dart';
 import 'package:tracker/helpers//colors_manager.dart';
 import 'package:tracker/helpers/styles_manager.dart';
 import 'package:tracker/helpers/widget_manager.dart';
-
-import '../../helpers/routes_manager.dart';
+import 'package:tracker/services/app_router.dart';
+import 'measurement_fields.dart';
 
 class BabyProfile extends StatefulWidget {
-  const BabyProfile({Key? key}) : super(key: key);
+  const BabyProfile({super.key});
 
   @override
   State<BabyProfile> createState() => BabyProfileState();
@@ -18,6 +21,10 @@ class BabyProfileState extends State<BabyProfile> {
   final TextEditingController _weightController = TextEditingController();
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _headCircumferenceController =
+      TextEditingController();
+  final TextEditingController _twinWeightController = TextEditingController();
+  final TextEditingController _twinHeightController = TextEditingController();
+  final TextEditingController _twinHeadCircumferenceController =
       TextEditingController();
   String gender = 'Boy'; // Default gender selection
   bool isTwin = false;
@@ -80,7 +87,11 @@ class BabyProfileState extends State<BabyProfile> {
               decoration: const InputDecoration(labelText: "Baby Gender"),
             ),
             const SizedBox(height: 25),
-            ...measurementBirthDetailsFields(),
+            ...measurementBirthDetailsFields(
+              weightController: _weightController,
+              heightController: _heightController,
+              headCircumferenceController: _headCircumferenceController,
+            ),
             const SizedBox(height: 25),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -96,19 +107,30 @@ class BabyProfileState extends State<BabyProfile> {
                 ),
               ],
             ),
-            if (isTwin) ...buildTwinFields(),
+            if (isTwin)
+              ...buildTwinFields(
+                context: context,
+                twinNameController: _twinNameController,
+                twinDobController: _twinDobController,
+                twinWeightController: _twinWeightController,
+                twinHeightController: _twinHeightController,
+                twinHeadCircumferenceController:
+                    _twinHeadCircumferenceController,
+                pickDateOfBirth: pickDateOfBirth,
+                twinGender: twinGender,
+                onTwinGenderChanged: (newValue) {
+                  setState(() {
+                    twinGender = newValue!;
+                  });
+                },
+              ),
             const SizedBox(height: 50),
             GestureDetector(
-              onTap: () => Navigator.pushNamed(context, Routes.addAnotherChild),
-              child: appButton(
-                  text: "Add Another Child",
-                  background: AppColors.lightPrimary,
-                  textColor: AppColors.primary),
-            ),
-            const SizedBox(height: 50),
-            GestureDetector(
-                onTap: () =>
-                    Navigator.pushReplacementNamed(context, Routes.home),
+                onTap: () {
+                  if (context.mounted) {
+                    context.pushNamed(AppRoutes.home.name);
+                  }
+                },
                 child: appButton(text: "Finish"))
           ],
         ),
@@ -140,76 +162,8 @@ class BabyProfileState extends State<BabyProfile> {
     );
     if (pickedDate != null) {
       setState(() {
-        controller.text = "${pickedDate.toLocal()}".split(' ')[0];
+        controller.text = DateFormat('dd-MM-yyyy').format(pickedDate);
       });
     }
-  }
-
-  List<Widget> buildTwinFields() {
-    return [
-      const SizedBox(height: 25),
-      TextFormField(
-        controller: _twinNameController,
-        decoration: const InputDecoration(labelText: "Twin's Name"),
-      ),
-      const SizedBox(height: 25),
-      GestureDetector(
-        onTap: () => pickDateOfBirth(context, _twinDobController),
-        child: AbsorbPointer(
-          child: TextFormField(
-            controller: _twinDobController,
-            decoration: const InputDecoration(
-              labelText: "Twin's Date of Birth",
-              suffixIcon: Icon(Icons.calendar_today),
-            ),
-          ),
-        ),
-      ),
-      const SizedBox(height: 25),
-      DropdownButtonFormField<String>(
-        value: twinGender,
-        items: <String>['Boy', 'Girl'].map((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value, style: TextStyle(color: AppColors.darkGrey)),
-          );
-        }).toList(),
-        onChanged: (String? newValue) {
-          if (newValue != null) {
-            setState(() {
-              twinGender = newValue;
-            });
-          }
-        },
-        decoration: const InputDecoration(labelText: "Twin's Gender"),
-      ),
-      const SizedBox(height: 25),
-    ];
-  }
-
-  List<Widget> measurementBirthDetailsFields() {
-    return [
-      TextFormField(
-        controller: _weightController,
-        decoration:
-            const InputDecoration(labelText: "Child's Weight at Birth (kg)"),
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      ),
-      const SizedBox(height: 25),
-      TextFormField(
-        controller: _heightController,
-        decoration:
-            const InputDecoration(labelText: "Child's Height at Birth (cm)"),
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      ),
-      const SizedBox(height: 25),
-      TextFormField(
-        controller: _headCircumferenceController,
-        decoration:
-            const InputDecoration(labelText: "Child's Height at Birth (cm)"),
-        keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      ),
-      const SizedBox(height: 25),
-    ];
   }
 }

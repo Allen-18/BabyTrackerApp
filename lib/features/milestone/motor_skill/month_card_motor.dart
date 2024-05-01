@@ -4,7 +4,7 @@ import 'package:tracker/helpers/colors_manager.dart';
 class MonthCardMotorSkill extends StatelessWidget {
   final int month;
 
-  const MonthCardMotorSkill({Key? key, required this.month}) : super(key: key);
+  const MonthCardMotorSkill({super.key, required this.month});
 
   @override
   Widget build(BuildContext context) {

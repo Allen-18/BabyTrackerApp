@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class MonthContentCognitiveSkill extends StatelessWidget {
   final int month;
 
-  const MonthContentCognitiveSkill({Key? key, required this.month})
-      : super(key: key);
+  const MonthContentCognitiveSkill({super.key, required this.month});
 
   @override
   Widget build(BuildContext context) {
