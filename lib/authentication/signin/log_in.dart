@@ -11,8 +11,9 @@ import 'package:tracker/helpers/colors_manager.dart';
 import 'package:tracker/helpers/dimen_manager.dart';
 import 'package:tracker/helpers/styles_manager.dart';
 import 'package:tracker/helpers/widget_manager.dart';
-import '../../services/app_router.dart';
-import '../auth/users.dart';
+import 'package:tracker/services/app_router.dart';
+import 'package:tracker/authentication/repository/users.dart';
+import 'package:tracker/authentication/components/login_box.dart';
 import 'controller/signin_controller.dart';
 
 class Login extends HookConsumerWidget {
@@ -157,7 +158,7 @@ class Login extends HookConsumerWidget {
                                       getCurrentUserStreamProvider.future);
                                   if (context.mounted) {
                                     context.pushNamed(
-                                        AppRoutes.addMotherData.name,
+                                        AppRoutes.addParentData.name,
                                         extra: currentUser);
                                   }
                                 }

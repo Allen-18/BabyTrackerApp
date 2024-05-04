@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart' as fa;
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:tracker/authentication/repository/collections.dart';
+import 'package:tracker/authentication/domain/user.dart';
+import 'package:tracker/services/collections.dart';
 import 'auth_repo.dart';
-import 'domain/user.dart';
 
 part 'users.g.dart';
 

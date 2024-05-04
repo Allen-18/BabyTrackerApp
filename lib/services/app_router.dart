@@ -4,20 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:go_router_flow/go_router_flow.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-import '../authentication/auth/auth_repo.dart';
-import '../authentication/auth/domain/user.dart';
-import '../authentication/auth/users.dart';
-import '../authentication/forgot_password/forgot_password.dart';
-import '../authentication/signin/log_in.dart';
-import '../authentication/signup/sign_up.dart';
-import '../features/Growth/growth_page.dart';
-import '../features/Health/health_page.dart';
-import '../features/mainScreen/navigation_bar.dart';
-import '../features/milestone/cognitive_skill/track_cognitive_skill.dart';
-import '../features/milestone/motor_skill/track_motor_skill.dart';
-import '../features/userData/add_baby_data.dart';
-import '../features/userData/add_mother_data.dart';
-import '../features/userData/add_new_baby.dart';
+import 'package:tracker/authentication/forgot_password/forgot_password.dart';
+import 'package:tracker/authentication/signin/log_in.dart';
+import 'package:tracker/authentication/signup/sign_up.dart';
+import 'package:tracker/features/Growth/growth_page.dart';
+import 'package:tracker/features/Health/health_page.dart';
+import 'package:tracker/features/homePage/home_page.dart';
+import 'package:tracker/features/milestone/cognitive_skill/track_cognitive_skill.dart';
+import 'package:tracker/features/milestone/motor_skill/track_motor_skill.dart';
+import 'package:tracker/features/userData/kid/add_baby_data.dart';
+import 'package:tracker/features/userData/parent/add_parent_data.dart';
+import 'package:tracker/features/userData/kid/add_new_baby.dart';
+import 'package:tracker/authentication/domain/user.dart';
+import 'package:tracker/authentication/repository/auth_repo.dart';
+import 'package:tracker/authentication/repository/users.dart';
+import 'package:tracker/features/mainScreen/home_screen.dart';
 import 'initial_route.dart';
 
 part 'app_router.g.dart';
@@ -26,14 +27,15 @@ enum AppRoutes {
   login,
   signUp,
   forgetPassword,
-  addMotherData,
+  addParentData,
   addBabyData,
   addNewBaby,
-  home,
+  homeScreen,
   healthPage,
   growthPage,
   trackMotorSkill,
   trackCognitiveSkill,
+  homePage,
 }
 
 //Transitions
@@ -108,31 +110,37 @@ Future<GoRouter?> getGoRouter(GetGoRouterRef ref) async {
         ),
       ),
       GoRoute(
-          name: AppRoutes.addMotherData.name,
-          path: "/addMotherData",
+          name: AppRoutes.addParentData.name,
+          path: "/addParentData",
           pageBuilder: (context, state) {
             if (state.extra == null) {
               throw Exception(
-                  "Can't navigate to addTimelineItem because patient is null");
+                  "Can't navigate to addParentData because parent is null");
             }
             final parent = state.extra as User;
             return buildPageWithFadeTransition(
               context: context,
               state: state,
-              child: MotherProfile(
+              child: Parent(
                 parent: parent,
               ),
             );
           }),
       GoRoute(
-        name: AppRoutes.addBabyData.name,
-        path: "/addBabyData",
-        pageBuilder: (context, state) => buildPageWithFadeTransition(
-          context: context,
-          state: state,
-          child: const BabyProfile(),
-        ),
-      ),
+          name: AppRoutes.addBabyData.name,
+          path: "/addBabyData",
+          pageBuilder: (context, state) {
+            if (state.extra == null) {
+              throw Exception(
+                  "Can't navigate to addBabyData because parent is null");
+            }
+            final parent = state.extra as User;
+            return buildPageWithFadeTransition(
+              context: context,
+              state: state,
+              child: BabyProfile(parent: parent),
+            );
+          }),
       GoRoute(
           name: AppRoutes.login.name,
           path: "/login",
@@ -142,14 +150,63 @@ Future<GoRouter?> getGoRouter(GetGoRouterRef ref) async {
                 child: const Login(),
               )),
       GoRoute(
-        name: AppRoutes.home.name,
-        path: "/navigationBar",
-        pageBuilder: (context, state) => buildPageWithFadeTransition(
-          context: context,
-          state: state,
-          child: const HomeScreen(),
-        ),
-      ),
+          name: AppRoutes.homePage.name,
+          path: "/homePage",
+          pageBuilder: (context, state) {
+            var parent = state.extra as User?;
+            parent ??= currentUser;
+            if (parent == null) {
+              throw Exception(
+                "Could not navigate to homePage because parent is null",
+              );
+            }
+            if (parent.id == null) {
+              throw Exception(
+                "Could not navigate to homePage because parent.id is null",
+              );
+            }
+            if (parent.id!.isEmpty) {
+              throw Exception(
+                "Could not navigate to homePage because parent.id is empty",
+              );
+            }
+            return buildPageWithFadeTransition(
+              context: context,
+              state: state,
+              child: Home(
+                currentUser: parent,
+              ),
+            );
+          }),
+      GoRoute(
+          name: AppRoutes.homeScreen.name,
+          path: "/homeScreen",
+          pageBuilder: (context, state) {
+            var parent = state.extra as User?;
+            parent ??= currentUser;
+            if (parent == null) {
+              throw Exception(
+                "Could not navigate to homeScreen because parent is null",
+              );
+            }
+            if (parent.id == null) {
+              throw Exception(
+                "Could not navigate to homeScreen because parent.id is null",
+              );
+            }
+            if (parent.id!.isEmpty) {
+              throw Exception(
+                "Could not navigate to homeScreen because parent.id is empty",
+              );
+            }
+            return buildPageWithFadeTransition(
+              context: context,
+              state: state,
+              child: HomeScreen(
+                parent: parent,
+              ),
+            );
+          }),
       GoRoute(
         name: AppRoutes.healthPage.name,
         path: "/healthPage",
@@ -169,10 +226,17 @@ Future<GoRouter?> getGoRouter(GetGoRouterRef ref) async {
         name: AppRoutes.addNewBaby.name,
         path: "/addNewBaby",
         pageBuilder: (context, state) {
+          if (state.extra == null) {
+            throw Exception(
+                "Can't navigate to addBabyData because parent is null");
+          }
+          final parent = state.extra as User;
           return buildPageWithFadeTransition(
             context: context,
             state: state,
-            child: const AddAnotherChild(),
+            child: AddAnotherChild(
+              parent: parent,
+            ),
           );
         },
       ),

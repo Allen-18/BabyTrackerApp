@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:form_validators/form_validators.dart';
 import 'package:go_router_flow/go_router_flow.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:tracker/authentication/components/loading_error.dart';
 import 'package:tracker/helpers/assets_manager.dart';
 import 'package:tracker/helpers/colors_manager.dart';
 import 'package:tracker/helpers/dimen_manager.dart';
 import 'package:tracker/helpers/styles_manager.dart';
 import 'package:tracker/helpers/widget_manager.dart';
 import 'package:tracker/services/app_router.dart';
+import 'package:tracker/authentication/components/login_box.dart';
 import 'controller/signup_controller.dart';
 
 final emailProvider = StateProvider<String>((ref) => '');
@@ -157,7 +159,7 @@ class SignUp extends HookConsumerWidget {
                           ? const SizedBox(
                               width: 90,
                               height: 90,
-                              child: CircularProgressIndicator(),
+                              child: LoadingSheet(),
                             )
                           : TextButton(
                               onPressed: () async {

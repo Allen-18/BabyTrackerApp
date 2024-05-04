@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fa;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:tracker/authentication/auth/domain/user.dart';
+import 'package:tracker/authentication/domain/user.dart';
 
 part 'auth_repo.g.dart';
 

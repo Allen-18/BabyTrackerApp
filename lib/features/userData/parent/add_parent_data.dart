@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router_flow/go_router_flow.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:tracker/authentication/auth/users.dart';
 import 'package:tracker/helpers//colors_manager.dart';
 import 'package:tracker/helpers/styles_manager.dart';
 import 'package:tracker/helpers/widget_manager.dart';
 import 'package:tracker/services/app_router.dart';
-import 'package:tracker/authentication/auth/domain/user.dart';
-import 'package:tracker/features/common/curent_parent.dart';
+import 'package:tracker/authentication/domain/user.dart';
+import 'package:tracker/features/common/providers/relationship_pod.dart';
+import 'package:tracker/authentication/repository/users.dart';
 
-class MotherProfile extends HookConsumerWidget {
-  MotherProfile({super.key, required this.parent});
+class Parent extends HookConsumerWidget {
+  Parent({super.key, required this.parent});
 
   final User parent;
 // declare a GlobalKey
@@ -115,10 +115,11 @@ class MotherProfile extends HookConsumerWidget {
                 ),
                 SizedBox(height: size.height * 0.3),
                 GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       if (context.mounted) {
                         saveForm();
-                        context.pushNamed(AppRoutes.addBabyData.name);
+                        context.pushNamed(AppRoutes.addBabyData.name,
+                            extra: parent);
                       }
                     },
                     child: appButton(text: "Continue")),
