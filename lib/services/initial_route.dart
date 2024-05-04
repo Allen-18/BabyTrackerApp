@@ -1,5 +1,4 @@
-import 'package:tracker/authentication/auth/domain/user.dart';
-
+import 'package:tracker/authentication/domain/user.dart';
 import 'app_router.dart';
 
 AppRoutes getInitialRoute(User? user) {
@@ -8,7 +7,7 @@ AppRoutes getInitialRoute(User? user) {
     return AppRoutes.login;
   }
   if (user != null && user.isActive && user.hasChild) {
-    return AppRoutes.home;
+    return AppRoutes.homeScreen;
   }
   if (user != null && user.isActive == true && user.hasChild == false) {
     return AppRoutes.addBabyData;

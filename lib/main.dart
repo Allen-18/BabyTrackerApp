@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:tracker/features/utils/show_read_err.dart';
+import 'package:tracker/features/common/utils/show_read_err.dart';
 import 'package:tracker/services/app_router.dart';
 import 'helpers/themes_manager.dart';
 import 'firebase_options.dart';

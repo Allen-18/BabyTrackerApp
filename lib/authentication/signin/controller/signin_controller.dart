@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_validators/form_validators.dart';
-import 'package:tracker/authentication/auth/auth_repo.dart';
 import 'package:tracker/authentication/repository/auth_repo_provider.dart';
+import 'package:tracker/authentication/repository/auth_repo.dart';
 part 'signin_state.dart';
 
 final signInProvider = StateNotifierProvider<SignInController, SignInState>(
