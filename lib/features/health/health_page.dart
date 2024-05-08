@@ -22,7 +22,7 @@ class HealthMainState extends State<Health> {
           iconTheme: const IconThemeData(color: Colors.black),
           backgroundColor: Colors.white,
           title: Text(
-            'Health',
+            'Monitorizare sănătate',
             style: getMediumStyle(color: Colors.black, fontSize: 20),
           ),
           bottom: TabBar(
@@ -31,13 +31,13 @@ class HealthMainState extends State<Health> {
             unselectedLabelColor: AppColors.grey,
             tabs: const [
               Tab(
-                text: "TEMPERATURE",
+                text: "TEMPERATURĂ",
               ),
               Tab(
-                text: "MEDICATION",
+                text: "MEDICAMENTAȚIE",
               ),
               Tab(
-                text: "VACCINATION",
+                text: "VACCINĂRI",
               ),
             ],
           ),

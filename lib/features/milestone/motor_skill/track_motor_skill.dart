@@ -2,11 +2,16 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/helpers/colors_manager.dart';
 import 'package:tracker/helpers/styles_manager.dart';
+import 'package:tracker/authentication/domain/user.dart';
+import 'package:tracker/features/children/kids.dart';
 import 'month_card_motor.dart';
 import 'month_content_motor.dart';
 
 class MotorSkillTracker extends StatefulWidget {
-  const MotorSkillTracker({super.key});
+  const MotorSkillTracker(
+      {super.key, required this.currentUser, required this.kid});
+  final User currentUser;
+  final Kid kid;
 
   @override
   MotorSkillTrackerState createState() => MotorSkillTrackerState();
@@ -21,7 +26,7 @@ class MotorSkillTrackerState extends State<MotorSkillTracker>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Motor Skill Tracker',
+        title: Text('Dezvoltare motorie',
             style: getMediumStyle(color: AppColors.black, fontSize: 20)),
       ),
       body: Column(
@@ -77,7 +82,8 @@ class MotorSkillTrackerState extends State<MotorSkillTracker>
             ],
           ),
           Expanded(
-            child: MonthContentMotorSkill(month: months[currentMonthIndex]),
+            child: MonthContentMotorSkill(
+                month: months[currentMonthIndex], kid: widget.kid.id!),
           ),
         ],
       ),

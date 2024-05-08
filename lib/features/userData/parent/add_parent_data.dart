@@ -116,10 +116,12 @@ class Parent extends HookConsumerWidget {
                 SizedBox(height: size.height * 0.3),
                 GestureDetector(
                     onTap: () async {
+                      final currentUser =
+                          await ref.read(getCurrentUserStreamProvider.future);
                       if (context.mounted) {
                         saveForm();
                         context.pushNamed(AppRoutes.addBabyData.name,
-                            extra: parent);
+                            extra: currentUser);
                       }
                     },
                     child: appButton(text: "Continue")),

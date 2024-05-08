@@ -21,7 +21,7 @@ final kidsRepositoryProvider = AutoDisposeProvider<KidsRepository>.internal(
 );
 
 typedef KidsRepositoryRef = AutoDisposeProviderRef<KidsRepository>;
-String _$getKidHash() => r'42610a7e93e94a3eef570e05dbdb451d7826c442';
+String _$getKidHash() => r'41de7bc5f771abfedd50ce63a838c2f786f1c3f0';
 
 /// Copied from Dart SDK
 class _SystemHash {

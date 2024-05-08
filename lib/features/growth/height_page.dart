@@ -22,7 +22,7 @@ class GrowthHeight extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  "No height to show",
+                  "Nu sunt înregistrări",
                   style: getRegularStyle(color: Colors.grey, fontSize: 20),
                 ),
               ],
@@ -40,7 +40,7 @@ class GrowthHeight extends StatelessWidget {
                   backgroundColor:
                       MaterialStateProperty.all(AppColors.primary)),
               child: Text(
-                "Add height",
+                "Adaugă înălțime",
                 style: getRegularStyle(color: Colors.white, fontSize: 20),
               ),
             ),

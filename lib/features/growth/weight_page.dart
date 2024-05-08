@@ -22,7 +22,7 @@ class GrowthWeight extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  "No weight to show",
+                  "Nu sunt înregistrări",
                   style: getRegularStyle(color: Colors.grey, fontSize: 20),
                 ),
               ],
@@ -40,7 +40,7 @@ class GrowthWeight extends StatelessWidget {
                   backgroundColor:
                       MaterialStateProperty.all(AppColors.primary)),
               child: Text(
-                "Add weight",
+                "Adaugă greutate",
                 style: getRegularStyle(color: Colors.white, fontSize: 20),
               ),
             ),

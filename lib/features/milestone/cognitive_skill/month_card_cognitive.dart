@@ -16,10 +16,21 @@ class MonthCardCognitiveSkill extends StatelessWidget {
       ),
       child: Center(
         child: Text(
-          'Month $month',
+          getTextForMonth(month),
           style: const TextStyle(fontSize: 16.0, color: Colors.black),
         ),
       ),
     );
+  }
+
+  String getTextForMonth(int month) {
+    switch (month) {
+      case 1:
+        return 'Prima lună';
+      case 2:
+        return 'A doua lună';
+      default:
+        return '$month luni';
+    }
   }
 }
