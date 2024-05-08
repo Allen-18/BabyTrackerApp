@@ -22,40 +22,80 @@ class KidsRepository {
     }
   }
 
-  Future<void> updateKid(Kid kid) async {
+  Future<void> updateMotorSkillsKid(Kid kid) async {
     if (kid.id == null) {
+      if (kDebugMode) {
+        print("Error: Kid ID is null.");
+      }
       return;
     }
     try {
-      await kidsCollection().doc(kid.id).set(kid);
+      // Convert each KidSkills object to a map right before saving
+      var motorSkillsMap =
+          kid.motorSkills.map((skill) => skill.toJson()).toList();
+      await kidsCollection()
+          .doc(kid.id)
+          .update({'motorSkills': motorSkillsMap});
       if (kDebugMode) {
         print("Kid updated successfully");
       }
-    } catch (e) {
+    } catch (e, stacktrace) {
       if (kDebugMode) {
         print("Error updating kid: $e");
+        print("Stacktrace: $stacktrace");
       }
-      throw Exception('Failed to update kid');
+      throw Exception('Failed to update kid: $e');
+    }
+  }
+
+  Future<void> updateCognitiveSkillsKid(Kid kid) async {
+    if (kid.id == null) {
+      if (kDebugMode) {
+        print("Error: Kid ID is null.");
+      }
+      return;
+    }
+    try {
+      var cognitiveSkillsMap =
+          kid.cognitiveSkills.map((skill) => skill.toJson()).toList();
+      await kidsCollection()
+          .doc(kid.id)
+          .update({'cognitiveSkills': cognitiveSkillsMap});
+      if (kDebugMode) {
+        print("Kid updated successfully");
+      }
+    } catch (e, stacktrace) {
+      if (kDebugMode) {
+        print("Error updating kid: $e");
+        print("Stacktrace: $stacktrace");
+      }
+      throw Exception('Failed to update kid: $e');
     }
   }
 
   Future<Kid?> getKid(String? uid) async {
     if (uid == null) {
+      if (kDebugMode) {
+        print('UID is null, returning null');
+      }
       return null;
     }
-    final kid = await kidsCollection().doc(uid).get();
-    if (kid.exists) {
-      final k = kid.data();
 
+    final kidDocument = await kidsCollection().doc(uid).get();
+
+    if (kidDocument.exists) {
+      final kidData = kidDocument.data();
       if (kDebugMode) {
-        print('$k');
+        print('Retrieved kid data: $kidData');
       }
+      return kidData;
+    } else {
+      if (kDebugMode) {
+        print(
+            'Get kid by id failed because the document does not exist in Firestore');
+      }
+      return null;
     }
-    if (kDebugMode) {
-      print(
-          'Get kid by id failed because the document does not exist in firestore');
-    }
-    return null;
   }
 }
 
@@ -64,5 +104,5 @@ KidsRepository kidsRepository(KidsRepositoryRef ref) => KidsRepository();
 
 @riverpod
 Future<Kid?> getKid(GetKidRef ref, {required String? id}) {
-  return ref.watch(kidsRepositoryProvider).getKid(id);
+  return KidsRepository().getKid(id);
 }

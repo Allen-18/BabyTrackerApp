@@ -22,7 +22,7 @@ class GrowthHead extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  "No head to show",
+                  "Nu sunt înregistrări",
                   style: getRegularStyle(color: Colors.grey, fontSize: 20),
                 ),
               ],
@@ -40,7 +40,7 @@ class GrowthHead extends StatelessWidget {
                   backgroundColor:
                       MaterialStateProperty.all(AppColors.primary)),
               child: Text(
-                "Add head",
+                "Adaugă circumferința capului",
                 style: getRegularStyle(color: Colors.white, fontSize: 20),
               ),
             ),

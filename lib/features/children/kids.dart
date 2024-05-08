@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'cognitiveMilestone/cognitive_kid_skills.dart';
+import 'motorMilestone/motor_kid_skills.dart';
+
 part 'kids.freezed.dart';
 part 'kids.g.dart';
 
@@ -20,6 +23,8 @@ class Kid with _$Kid {
     @Default(0.0) double childHeight,
     @Default(0.0) double childHeadCircumference,
     @Default(null) String? profileImgUriChild,
+    @Default([]) List<MotorKidSkills> motorSkills,
+    @Default([]) List<CognitiveKidSkills> cognitiveSkills,
     String? assignedParentId,
   }) = _Kid;
 

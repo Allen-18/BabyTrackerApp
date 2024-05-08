@@ -17,7 +17,7 @@ class Growth extends StatelessWidget {
           iconTheme: const IconThemeData(color: Colors.black),
           backgroundColor: Colors.white,
           title: Text(
-            'Growth',
+            'Creșterea copilului',
             style: getMediumStyle(color: Colors.black, fontSize: 20),
           ),
           bottom: TabBar(
@@ -26,13 +26,13 @@ class Growth extends StatelessWidget {
             unselectedLabelColor: AppColors.grey,
             tabs: const [
               Tab(
-                text: "WEIGHT",
+                text: "Greutate",
               ),
               Tab(
-                text: "HEIGHT",
+                text: "Înălțime",
               ),
               Tab(
-                text: "HEAD",
+                text: "Circumferința capului",
               ),
             ],
           ),

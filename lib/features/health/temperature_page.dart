@@ -22,7 +22,7 @@ class HealthTemperature extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  "No temperature to Show",
+                  "Nu sunt înregistrări",
                   style: getRegularStyle(color: Colors.grey, fontSize: 20),
                 ),
               ],
@@ -40,7 +40,7 @@ class HealthTemperature extends StatelessWidget {
                   backgroundColor:
                       MaterialStateProperty.all(AppColors.primary)),
               child: Text(
-                "Add Temperature",
+                "Adaugă temperatură",
                 style: getRegularStyle(color: Colors.white, fontSize: 20),
               ),
             ),

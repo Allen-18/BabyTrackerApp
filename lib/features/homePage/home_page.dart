@@ -22,7 +22,7 @@ class Home extends ConsumerWidget {
             ),
         loading: () => const LoadingSheet(),
         data: (myKids) {
-          return GetScaffoldMyKids(myKids: myKids);
+          return GetScaffoldMyKids(myKids: myKids, currentUser: currentUser);
         });
   }
 }

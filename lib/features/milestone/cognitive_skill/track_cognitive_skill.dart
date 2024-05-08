@@ -2,11 +2,16 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:tracker/helpers/colors_manager.dart';
 import 'package:tracker/helpers/styles_manager.dart';
+import 'package:tracker/authentication/domain/user.dart';
+import 'package:tracker/features/children/kids.dart';
 import 'month_card_cognitive.dart';
 import 'month_content_cognitive.dart';
 
 class CognitiveSkillTracker extends StatefulWidget {
-  const CognitiveSkillTracker({super.key});
+  const CognitiveSkillTracker(
+      {super.key, required this.currentUser, required this.kid});
+  final User currentUser;
+  final Kid kid;
 
   @override
   CognitiveSkillTrackerState createState() => CognitiveSkillTrackerState();
@@ -21,7 +26,7 @@ class CognitiveSkillTrackerState extends State<CognitiveSkillTracker>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cognitive Skill Tracker',
+        title: Text('Dezvoltare cognitivă',
             style: getMediumStyle(color: AppColors.black, fontSize: 20)),
       ),
       body: Column(
@@ -77,7 +82,8 @@ class CognitiveSkillTrackerState extends State<CognitiveSkillTracker>
             ],
           ),
           Expanded(
-            child: MonthContentCognitiveSkill(month: months[currentMonthIndex]),
+            child: MonthContentCognitiveSkill(
+                month: months[currentMonthIndex], kid: widget.kid.id!),
           ),
         ],
       ),

@@ -22,7 +22,7 @@ class HealthMedication extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  "No Medication to Show",
+                  "Nu sunt înregistrări",
                   style: getRegularStyle(color: Colors.grey, fontSize: 20),
                 ),
               ],
@@ -40,7 +40,7 @@ class HealthMedication extends StatelessWidget {
                   backgroundColor:
                       MaterialStateProperty.all(AppColors.primary)),
               child: Text(
-                "Add Medication",
+                "Adaugă medicamentație",
                 style: getRegularStyle(color: Colors.white, fontSize: 20),
               ),
             ),

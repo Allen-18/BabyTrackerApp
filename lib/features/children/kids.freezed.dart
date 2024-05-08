@@ -32,6 +32,9 @@ mixin _$Kid {
   double get childHeight => throw _privateConstructorUsedError;
   double get childHeadCircumference => throw _privateConstructorUsedError;
   String? get profileImgUriChild => throw _privateConstructorUsedError;
+  List<MotorKidSkills> get motorSkills => throw _privateConstructorUsedError;
+  List<CognitiveKidSkills> get cognitiveSkills =>
+      throw _privateConstructorUsedError;
   String? get assignedParentId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -55,6 +58,8 @@ abstract class $KidCopyWith<$Res> {
       double childHeight,
       double childHeadCircumference,
       String? profileImgUriChild,
+      List<MotorKidSkills> motorSkills,
+      List<CognitiveKidSkills> cognitiveSkills,
       String? assignedParentId});
 }
 
@@ -80,6 +85,8 @@ class _$KidCopyWithImpl<$Res, $Val extends Kid> implements $KidCopyWith<$Res> {
     Object? childHeight = null,
     Object? childHeadCircumference = null,
     Object? profileImgUriChild = freezed,
+    Object? motorSkills = null,
+    Object? cognitiveSkills = null,
     Object? assignedParentId = freezed,
   }) {
     return _then(_value.copyWith(
@@ -123,6 +130,14 @@ class _$KidCopyWithImpl<$Res, $Val extends Kid> implements $KidCopyWith<$Res> {
           ? _value.profileImgUriChild
           : profileImgUriChild // ignore: cast_nullable_to_non_nullable
               as String?,
+      motorSkills: null == motorSkills
+          ? _value.motorSkills
+          : motorSkills // ignore: cast_nullable_to_non_nullable
+              as List<MotorKidSkills>,
+      cognitiveSkills: null == cognitiveSkills
+          ? _value.cognitiveSkills
+          : cognitiveSkills // ignore: cast_nullable_to_non_nullable
+              as List<CognitiveKidSkills>,
       assignedParentId: freezed == assignedParentId
           ? _value.assignedParentId
           : assignedParentId // ignore: cast_nullable_to_non_nullable
@@ -148,6 +163,8 @@ abstract class _$$KidImplCopyWith<$Res> implements $KidCopyWith<$Res> {
       double childHeight,
       double childHeadCircumference,
       String? profileImgUriChild,
+      List<MotorKidSkills> motorSkills,
+      List<CognitiveKidSkills> cognitiveSkills,
       String? assignedParentId});
 }
 
@@ -170,6 +187,8 @@ class __$$KidImplCopyWithImpl<$Res> extends _$KidCopyWithImpl<$Res, _$KidImpl>
     Object? childHeight = null,
     Object? childHeadCircumference = null,
     Object? profileImgUriChild = freezed,
+    Object? motorSkills = null,
+    Object? cognitiveSkills = null,
     Object? assignedParentId = freezed,
   }) {
     return _then(_$KidImpl(
@@ -213,6 +232,14 @@ class __$$KidImplCopyWithImpl<$Res> extends _$KidCopyWithImpl<$Res, _$KidImpl>
           ? _value.profileImgUriChild
           : profileImgUriChild // ignore: cast_nullable_to_non_nullable
               as String?,
+      motorSkills: null == motorSkills
+          ? _value._motorSkills
+          : motorSkills // ignore: cast_nullable_to_non_nullable
+              as List<MotorKidSkills>,
+      cognitiveSkills: null == cognitiveSkills
+          ? _value._cognitiveSkills
+          : cognitiveSkills // ignore: cast_nullable_to_non_nullable
+              as List<CognitiveKidSkills>,
       assignedParentId: freezed == assignedParentId
           ? _value.assignedParentId
           : assignedParentId // ignore: cast_nullable_to_non_nullable
@@ -235,8 +262,12 @@ class _$KidImpl extends _Kid {
       this.childHeight = 0.0,
       this.childHeadCircumference = 0.0,
       this.profileImgUriChild = null,
+      final List<MotorKidSkills> motorSkills = const [],
+      final List<CognitiveKidSkills> cognitiveSkills = const [],
       this.assignedParentId})
-      : super._();
+      : _motorSkills = motorSkills,
+        _cognitiveSkills = cognitiveSkills,
+        super._();
 
   factory _$KidImpl.fromJson(Map<String, dynamic> json) =>
       _$$KidImplFromJson(json);
@@ -269,12 +300,30 @@ class _$KidImpl extends _Kid {
   @override
   @JsonKey()
   final String? profileImgUriChild;
+  final List<MotorKidSkills> _motorSkills;
+  @override
+  @JsonKey()
+  List<MotorKidSkills> get motorSkills {
+    if (_motorSkills is EqualUnmodifiableListView) return _motorSkills;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_motorSkills);
+  }
+
+  final List<CognitiveKidSkills> _cognitiveSkills;
+  @override
+  @JsonKey()
+  List<CognitiveKidSkills> get cognitiveSkills {
+    if (_cognitiveSkills is EqualUnmodifiableListView) return _cognitiveSkills;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_cognitiveSkills);
+  }
+
   @override
   final String? assignedParentId;
 
   @override
   String toString() {
-    return 'Kid(id: $id, name: $name, dateOfBirth: $dateOfBirth, gender: $gender, isPremature: $isPremature, isHasTwin: $isHasTwin, childWeight: $childWeight, childHeight: $childHeight, childHeadCircumference: $childHeadCircumference, profileImgUriChild: $profileImgUriChild, assignedParentId: $assignedParentId)';
+    return 'Kid(id: $id, name: $name, dateOfBirth: $dateOfBirth, gender: $gender, isPremature: $isPremature, isHasTwin: $isHasTwin, childWeight: $childWeight, childHeight: $childHeight, childHeadCircumference: $childHeadCircumference, profileImgUriChild: $profileImgUriChild, motorSkills: $motorSkills, cognitiveSkills: $cognitiveSkills, assignedParentId: $assignedParentId)';
   }
 
   @override
@@ -299,6 +348,10 @@ class _$KidImpl extends _Kid {
                 other.childHeadCircumference == childHeadCircumference) &&
             (identical(other.profileImgUriChild, profileImgUriChild) ||
                 other.profileImgUriChild == profileImgUriChild) &&
+            const DeepCollectionEquality()
+                .equals(other._motorSkills, _motorSkills) &&
+            const DeepCollectionEquality()
+                .equals(other._cognitiveSkills, _cognitiveSkills) &&
             (identical(other.assignedParentId, assignedParentId) ||
                 other.assignedParentId == assignedParentId));
   }
@@ -317,6 +370,8 @@ class _$KidImpl extends _Kid {
       childHeight,
       childHeadCircumference,
       profileImgUriChild,
+      const DeepCollectionEquality().hash(_motorSkills),
+      const DeepCollectionEquality().hash(_cognitiveSkills),
       assignedParentId);
 
   @JsonKey(ignore: true)
@@ -345,6 +400,8 @@ abstract class _Kid extends Kid {
       final double childHeight,
       final double childHeadCircumference,
       final String? profileImgUriChild,
+      final List<MotorKidSkills> motorSkills,
+      final List<CognitiveKidSkills> cognitiveSkills,
       final String? assignedParentId}) = _$KidImpl;
   const _Kid._() : super._();
 
@@ -371,6 +428,10 @@ abstract class _Kid extends Kid {
   double get childHeadCircumference;
   @override
   String? get profileImgUriChild;
+  @override
+  List<MotorKidSkills> get motorSkills;
+  @override
+  List<CognitiveKidSkills> get cognitiveSkills;
   @override
   String? get assignedParentId;
   @override

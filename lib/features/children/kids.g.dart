@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: unnecessary_null_in_if_null_operators
+
 part of 'kids.dart';
 
 // **************************************************************************
@@ -16,8 +18,16 @@ _$KidImpl _$$KidImplFromJson(Map<String, dynamic> json) => _$KidImpl(
       childHeight: (json['childHeight'] as num?)?.toDouble() ?? 0.0,
       childHeadCircumference:
           (json['childHeadCircumference'] as num?)?.toDouble() ?? 0.0,
-      // ignore: unnecessary_null_in_if_null_operators
       profileImgUriChild: json['profileImgUriChild'] as String? ?? null,
+      motorSkills: (json['motorSkills'] as List<dynamic>?)
+              ?.map((e) => MotorKidSkills.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
+      cognitiveSkills: (json['cognitiveSkills'] as List<dynamic>?)
+              ?.map(
+                  (e) => CognitiveKidSkills.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
       assignedParentId: json['assignedParentId'] as String?,
     );
 
@@ -31,5 +41,7 @@ Map<String, dynamic> _$$KidImplToJson(_$KidImpl instance) => <String, dynamic>{
       'childHeight': instance.childHeight,
       'childHeadCircumference': instance.childHeadCircumference,
       'profileImgUriChild': instance.profileImgUriChild,
+      'motorSkills': instance.motorSkills,
+      'cognitiveSkills': instance.cognitiveSkills,
       'assignedParentId': instance.assignedParentId,
     };
