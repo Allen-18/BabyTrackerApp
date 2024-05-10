@@ -13,6 +13,7 @@ _$CognitiveKidSkillsImpl _$$CognitiveKidSkillsImplFromJson(
       skills:
           (json['skills'] as List<dynamic>?)?.map((e) => e as String).toList(),
       monthIndex: (json['monthIndex'] as num).toInt(),
+      progress: (json['progress'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$$CognitiveKidSkillsImplToJson(
@@ -21,4 +22,5 @@ Map<String, dynamic> _$$CognitiveKidSkillsImplToJson(
       'timestamp': instance.timestamp.toIso8601String(),
       'skills': instance.skills,
       'monthIndex': instance.monthIndex,
+      'progress': instance.progress,
     };

@@ -78,10 +78,18 @@ void saveSkills(
       Map<int, List<String>> monthSkills =
           ref.read(selectedMotorSkillsProvider);
       List<String> selectedSkills = List<String>.from(monthSkills[month] ?? []);
+
+      // Get total skills from the provider
+      List<String> skills = ref.read(motorSkillsProvider);
+      int totalSkills = skills.length;
+      int selectedSkillsCount = selectedSkills.length;
+      // Calculate the percentage of selected skills
+      double selectedSkillsPercentage =
+          (selectedSkillsCount / totalSkills) * 100;
       List<MotorKidSkills> motorSkills =
           List<MotorKidSkills>.from(currentKid.motorSkills);
-      MotorKidSkills newKidSkills =
-          MotorKidSkills.fromNewAction(month, DateTime.now(), selectedSkills);
+      MotorKidSkills newKidSkills = MotorKidSkills.fromNewAction(month,
+          DateTime.now().toUtc(), selectedSkills, selectedSkillsPercentage);
       int existingIndex =
           motorSkills.indexWhere((skill) => skill.monthIndex == month);
 

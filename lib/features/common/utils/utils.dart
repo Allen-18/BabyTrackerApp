@@ -58,14 +58,28 @@ extension DocumentOnStream<T> on Stream<DocumentSnapshot<T>> {
 
 Future<Kid?> kid(Kid kid) async {
   return Kid(
-      id: kid.id,
-      name: kid.name,
-      dateOfBirth: kid.dateOfBirth,
-      gender: kid.gender,
-      isPremature: kid.isPremature,
-      isHasTwin: kid.isHasTwin,
-      childWeight: kid.childWeight,
-      childHeight: kid.childHeight,
-      childHeadCircumference: kid.childHeadCircumference,
-      assignedParentId: kid.assignedParentId);
+    id: kid.id,
+    name: kid.name,
+    dateOfBirth: kid.dateOfBirth,
+    gender: kid.gender,
+    isPremature: kid.isPremature,
+    isHasTwin: kid.isHasTwin,
+    childWeight: kid.childWeight,
+    childHeight: kid.childHeight,
+    childHeadCircumference: kid.childHeadCircumference,
+    assignedParentId: kid.assignedParentId,
+    motorSkills: kid.motorSkills,
+    cognitiveSkills: kid.cognitiveSkills,
+  );
+}
+
+String getTextForMonth(int month) {
+  switch (month) {
+    case 1:
+      return 'Prima lună';
+    case 2:
+      return 'A doua lună';
+    default:
+      return '$month luni';
+  }
 }

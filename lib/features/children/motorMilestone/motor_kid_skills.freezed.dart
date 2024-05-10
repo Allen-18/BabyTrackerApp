@@ -23,6 +23,7 @@ mixin _$MotorKidSkills {
   DateTime get timestamp => throw _privateConstructorUsedError;
   List<String>? get skills => throw _privateConstructorUsedError;
   int get monthIndex => throw _privateConstructorUsedError;
+  double get progress => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +37,11 @@ abstract class $MotorKidSkillsCopyWith<$Res> {
           MotorKidSkills value, $Res Function(MotorKidSkills) then) =
       _$MotorKidSkillsCopyWithImpl<$Res, MotorKidSkills>;
   @useResult
-  $Res call({DateTime timestamp, List<String>? skills, int monthIndex});
+  $Res call(
+      {DateTime timestamp,
+      List<String>? skills,
+      int monthIndex,
+      double progress});
 }
 
 /// @nodoc
@@ -55,6 +60,7 @@ class _$MotorKidSkillsCopyWithImpl<$Res, $Val extends MotorKidSkills>
     Object? timestamp = null,
     Object? skills = freezed,
     Object? monthIndex = null,
+    Object? progress = null,
   }) {
     return _then(_value.copyWith(
       timestamp: null == timestamp
@@ -69,6 +75,10 @@ class _$MotorKidSkillsCopyWithImpl<$Res, $Val extends MotorKidSkills>
           ? _value.monthIndex
           : monthIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      progress: null == progress
+          ? _value.progress
+          : progress // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 }
@@ -81,7 +91,11 @@ abstract class _$$MotorKidSkillsImplCopyWith<$Res>
       __$$MotorKidSkillsImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({DateTime timestamp, List<String>? skills, int monthIndex});
+  $Res call(
+      {DateTime timestamp,
+      List<String>? skills,
+      int monthIndex,
+      double progress});
 }
 
 /// @nodoc
@@ -98,6 +112,7 @@ class __$$MotorKidSkillsImplCopyWithImpl<$Res>
     Object? timestamp = null,
     Object? skills = freezed,
     Object? monthIndex = null,
+    Object? progress = null,
   }) {
     return _then(_$MotorKidSkillsImpl(
       timestamp: null == timestamp
@@ -112,6 +127,10 @@ class __$$MotorKidSkillsImplCopyWithImpl<$Res>
           ? _value.monthIndex
           : monthIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      progress: null == progress
+          ? _value.progress
+          : progress // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -122,7 +141,8 @@ class _$MotorKidSkillsImpl implements _MotorKidSkills {
   const _$MotorKidSkillsImpl(
       {required this.timestamp,
       final List<String>? skills,
-      required this.monthIndex})
+      required this.monthIndex,
+      required this.progress})
       : _skills = skills;
 
   factory _$MotorKidSkillsImpl.fromJson(Map<String, dynamic> json) =>
@@ -142,10 +162,12 @@ class _$MotorKidSkillsImpl implements _MotorKidSkills {
 
   @override
   final int monthIndex;
+  @override
+  final double progress;
 
   @override
   String toString() {
-    return 'MotorKidSkills(timestamp: $timestamp, skills: $skills, monthIndex: $monthIndex)';
+    return 'MotorKidSkills(timestamp: $timestamp, skills: $skills, monthIndex: $monthIndex, progress: $progress)';
   }
 
   @override
@@ -157,13 +179,15 @@ class _$MotorKidSkillsImpl implements _MotorKidSkills {
                 other.timestamp == timestamp) &&
             const DeepCollectionEquality().equals(other._skills, _skills) &&
             (identical(other.monthIndex, monthIndex) ||
-                other.monthIndex == monthIndex));
+                other.monthIndex == monthIndex) &&
+            (identical(other.progress, progress) ||
+                other.progress == progress));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, timestamp,
-      const DeepCollectionEquality().hash(_skills), monthIndex);
+      const DeepCollectionEquality().hash(_skills), monthIndex, progress);
 
   @JsonKey(ignore: true)
   @override
@@ -184,7 +208,8 @@ abstract class _MotorKidSkills implements MotorKidSkills {
   const factory _MotorKidSkills(
       {required final DateTime timestamp,
       final List<String>? skills,
-      required final int monthIndex}) = _$MotorKidSkillsImpl;
+      required final int monthIndex,
+      required final double progress}) = _$MotorKidSkillsImpl;
 
   factory _MotorKidSkills.fromJson(Map<String, dynamic> json) =
       _$MotorKidSkillsImpl.fromJson;
@@ -195,6 +220,8 @@ abstract class _MotorKidSkills implements MotorKidSkills {
   List<String>? get skills;
   @override
   int get monthIndex;
+  @override
+  double get progress;
   @override
   @JsonKey(ignore: true)
   _$$MotorKidSkillsImplCopyWith<_$MotorKidSkillsImpl> get copyWith =>
