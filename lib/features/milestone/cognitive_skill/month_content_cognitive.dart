@@ -71,7 +71,11 @@ class MonthContentCognitiveSkill extends ConsumerWidget {
 }
 
 void saveSkills(
-    BuildContext context, WidgetRef ref, int month, String kidId) async {
+  BuildContext context,
+  WidgetRef ref,
+  int month,
+  String kidId,
+) async {
   try {
     // Fetch current kid data
     final repo = ref.read(kidsRepositoryProvider);
@@ -86,9 +90,20 @@ void saveSkills(
       List<CognitiveKidSkills> cognitiveSkills =
           List<CognitiveKidSkills>.from(currentKid.cognitiveSkills);
 
+      // Get total skills from the provider
+      List<String> skills = ref.read(cognitiveSkillsProvider);
+      int totalSkills = skills.length;
+      int selectedSkillsCount = selectedSkills.length;
+      // Calculate the percentage of selected skills
+      double selectedSkillsPercentage =
+          (selectedSkillsCount / totalSkills) * 100;
+
       // Create a new entry or update the existing entry for the month
       CognitiveKidSkills newKidSkillEntry = CognitiveKidSkills.fromNewAction(
-          month, DateTime.now().toUtc(), selectedSkills);
+          month,
+          DateTime.now().toUtc(),
+          selectedSkills,
+          selectedSkillsPercentage);
       int existingIndex =
           cognitiveSkills.indexWhere((skill) => skill.monthIndex == month);
 

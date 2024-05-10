@@ -12,6 +12,7 @@ _$MotorKidSkillsImpl _$$MotorKidSkillsImplFromJson(Map<String, dynamic> json) =>
       skills:
           (json['skills'] as List<dynamic>?)?.map((e) => e as String).toList(),
       monthIndex: (json['monthIndex'] as num).toInt(),
+      progress: (json['progress'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$$MotorKidSkillsImplToJson(
@@ -20,4 +21,5 @@ Map<String, dynamic> _$$MotorKidSkillsImplToJson(
       'timestamp': instance.timestamp.toIso8601String(),
       'skills': instance.skills,
       'monthIndex': instance.monthIndex,
+      'progress': instance.progress,
     };

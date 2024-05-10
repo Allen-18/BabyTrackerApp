@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tracker/helpers/colors_manager.dart';
+import 'package:tracker/features/common/utils/utils.dart';
 
 class MonthCardMotorSkill extends StatelessWidget {
   final int month;
@@ -21,16 +22,5 @@ class MonthCardMotorSkill extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  String getTextForMonth(int month) {
-    switch (month) {
-      case 1:
-        return 'Prima lună';
-      case 2:
-        return 'A doua lună';
-      default:
-        return '$month luni';
-    }
   }
 }

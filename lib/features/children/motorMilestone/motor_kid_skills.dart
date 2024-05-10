@@ -5,23 +5,23 @@ part 'motor_kid_skills.g.dart';
 
 @freezed
 class MotorKidSkills with _$MotorKidSkills {
-  const factory MotorKidSkills({
-    required DateTime timestamp,
-    List<String>? skills,
-    required int monthIndex,
-  }) = _MotorKidSkills;
+  const factory MotorKidSkills(
+      {required DateTime timestamp,
+      List<String>? skills,
+      required int monthIndex,
+      required double progress}) = _MotorKidSkills;
 
   factory MotorKidSkills.fromJson(Map<String, dynamic> json) =>
       _$MotorKidSkillsFromJson(json);
 
-  factory MotorKidSkills.fromNewAction(
-      int monthNumber, DateTime? when, List<String> selectedSkills) {
+  factory MotorKidSkills.fromNewAction(int monthNumber, DateTime? when,
+      List<String> selectedSkills, double progress) {
     var timestamp = when ?? DateTime.now().toUtc();
     return MotorKidSkills(
-      timestamp: timestamp,
-      monthIndex: monthNumber,
-      skills: selectedSkills,
-    );
+        timestamp: timestamp,
+        monthIndex: monthNumber,
+        skills: selectedSkills,
+        progress: progress);
   }
 }
 
