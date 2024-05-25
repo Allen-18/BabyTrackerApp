@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart' as fa;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router_flow/go_router_flow.dart';
+import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:tracker/authentication/forgot_password/forgot_password.dart';
 import 'package:tracker/authentication/signin/log_in.dart';
@@ -219,8 +219,19 @@ Future<GoRouter?> getGoRouter(GetGoRouterRef ref) async {
       GoRoute(
         name: AppRoutes.growthPage.name,
         path: "/growthPage",
-        pageBuilder: (context, state) => buildPageWithFadeTransition(
-            context: context, state: state, child: const Growth()),
+        pageBuilder: (context, state) {
+          if (state.extra == null) {
+            throw Exception(
+                "Can't navigate to growthPage because parent is null");
+          }
+          final kid = state.extra as Kid;
+          return buildPageWithFadeTransition(
+              context: context,
+              state: state,
+              child: Growth(
+                currentKid: kid,
+              ));
+        },
       ),
       GoRoute(
         name: AppRoutes.addNewBaby.name,

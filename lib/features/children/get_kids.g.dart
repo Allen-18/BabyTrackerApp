@@ -25,7 +25,7 @@ final getStreamKidsForCurrentParentProvider =
 typedef GetStreamKidsForCurrentParentRef
     = AutoDisposeStreamProviderRef<List<Kid>>;
 String _$getKidsForCurrentParentHash() =>
-    r'98ac3edae011059bc959b88488311a103a2dfef7';
+    r'9309b50038143528ad5600043740ec5fa9448f82';
 
 /// Copied from Dart SDK
 class _SystemHash {

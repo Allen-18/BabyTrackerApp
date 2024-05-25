@@ -106,7 +106,7 @@ Future<User?> getCurrentUser(GetCurrentUserRef ref) async {
   return await UsersRepository().getCurrentUser();
 }
 
-@Riverpod(keepAlive: true)
+@Riverpod()
 Stream<User?> getCurrentUserStream(GetCurrentUserStreamRef ref) {
   if (kDebugMode) {
     print('Starting stream ...');

@@ -6,7 +6,8 @@ import 'package:tracker/helpers/widget_manager.dart';
 import 'package:tracker/features/children/motorMilestone/motor_kid_skills.dart';
 import 'package:tracker/features/children/kids.dart';
 import 'package:tracker/features/children/kids_repository.dart';
-import 'components/skill_card.dart';
+import 'package:tracker/features/milestone/components/skill_card.dart';
+
 
 class MonthContentMotorSkill extends ConsumerWidget {
   final int month;

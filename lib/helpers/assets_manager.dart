@@ -14,4 +14,7 @@ class AppAssets {
   static const String physical = "$imagePath/physical.png";
   static const String cognitive = "$imagePath/cognitive.png";
   static const String noData = "$imagePath/nodata.png";
+  static const String social = "$imagePath/social.png";
+  static const String language = "$imagePath/language.png";
+
 }

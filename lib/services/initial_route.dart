@@ -6,11 +6,11 @@ AppRoutes getInitialRoute(User? user) {
   if (user != null && user.isActive == false) {
     return AppRoutes.login;
   }
-  if (user != null && user.isActive && user.hasChild) {
+  if (user != null && user.hasChild) {
     return AppRoutes.homeScreen;
   }
-  if (user != null && user.isActive == true && user.hasChild == false) {
+  /*if (user != null && user.isActive == true && user.hasChild == false) {
     return AppRoutes.addBabyData;
-  }
+  }*/
   return initialRoute;
 }

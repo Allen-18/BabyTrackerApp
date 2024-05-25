@@ -185,11 +185,11 @@ final getCurrentUserProvider = AutoDisposeFutureProvider<User?>.internal(
 
 typedef GetCurrentUserRef = AutoDisposeFutureProviderRef<User?>;
 String _$getCurrentUserStreamHash() =>
-    r'87fe8b2ce124b7ad18dcff449ef59fb7024d999d';
+    r'f5c3c711b2d86c29cd8f41357db7e4dd28003f5d';
 
 /// See also [getCurrentUserStream].
 @ProviderFor(getCurrentUserStream)
-final getCurrentUserStreamProvider = StreamProvider<User?>.internal(
+final getCurrentUserStreamProvider = AutoDisposeStreamProvider<User?>.internal(
   getCurrentUserStream,
   name: r'getCurrentUserStreamProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -199,7 +199,7 @@ final getCurrentUserStreamProvider = StreamProvider<User?>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef GetCurrentUserStreamRef = StreamProviderRef<User?>;
+typedef GetCurrentUserStreamRef = AutoDisposeStreamProviderRef<User?>;
 String _$getUserStreamHash() => r'4fcbb884a94eaa0c0223927a7f9fa41b01d4113c';
 
 /// See also [getUserStream].

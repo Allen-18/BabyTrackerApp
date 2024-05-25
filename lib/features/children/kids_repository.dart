@@ -72,6 +72,129 @@ class KidsRepository {
       throw Exception('Failed to update kid: $e');
     }
   }
+  Future<void> updateSocialSkillsKid(Kid kid) async {
+    if (kid.id == null) {
+      if (kDebugMode) {
+        print("Error: Kid ID is null.");
+      }
+      return;
+    }
+    try {
+      // Convert each KidSkills object to a map right before saving
+      var socialSkillsMap =
+      kid.socialSkills.map((skill) => skill.toJson()).toList();
+      await kidsCollection()
+          .doc(kid.id)
+          .update({'socialSkills': socialSkillsMap});
+      if (kDebugMode) {
+        print("Kid updated successfully");
+      }
+    } catch (e, stacktrace) {
+      if (kDebugMode) {
+        print("Error updating kid: $e");
+        print("Stacktrace: $stacktrace");
+      }
+      throw Exception('Failed to update kid: $e');
+    }
+  }
+  Future<void> updateLinguisticSkillsKid(Kid kid) async {
+    if (kid.id == null) {
+      if (kDebugMode) {
+        print("Error: Kid ID is null.");
+      }
+      return;
+    }
+    try {
+      // Convert each KidSkills object to a map right before saving
+      var linguisticSkillsMap =
+      kid.socialSkills.map((skill) => skill.toJson()).toList();
+      await kidsCollection()
+          .doc(kid.id)
+          .update({'linguisticSkills': linguisticSkillsMap});
+      if (kDebugMode) {
+        print("Kid updated successfully");
+      }
+    } catch (e, stacktrace) {
+      if (kDebugMode) {
+        print("Error updating kid: $e");
+        print("Stacktrace: $stacktrace");
+      }
+      throw Exception('Failed to update kid: $e');
+    }
+  }
+  Future<void> updateWeightMeasurementsForKid(Kid kid) async {
+    if (kid.id == null) {
+      if (kDebugMode) {
+        print("Error: Kid ID is null.");
+      }
+      return;
+    }
+    try {
+      var weightMeasurementsMap =
+      kid.weightMeasurements.map((weight) => weight.toJson()).toList();
+      await kidsCollection()
+          .doc(kid.id)
+          .update({'weightMeasurements': weightMeasurementsMap});
+      if (kDebugMode) {
+        print("Kid updated successfully");
+      }
+    } catch (e, stacktrace) {
+      if (kDebugMode) {
+        print("Error updating kid: $e");
+        print("Stacktrace: $stacktrace");
+      }
+      throw Exception('Failed to update kid: $e');
+    }
+  }
+  Future<void> updateHeightMeasurementsForKid(Kid kid) async {
+    if (kid.id == null) {
+      if (kDebugMode) {
+        print("Error: Kid ID is null.");
+      }
+      return;
+    }
+    try {
+      var heightMeasurementsMap =
+      kid.heightMeasurements.map((height) => height.toJson()).toList();
+      await kidsCollection()
+          .doc(kid.id)
+          .update({'heightMeasurements': heightMeasurementsMap});
+      if (kDebugMode) {
+        print("Kid updated successfully");
+      }
+    } catch (e, stacktrace) {
+      if (kDebugMode) {
+        print("Error updating kid: $e");
+        print("Stacktrace: $stacktrace");
+      }
+      throw Exception('Failed to update kid: $e');
+    }
+  }
+  Future<void> updateHeadMeasurementsForKid(Kid kid) async {
+    if (kid.id == null) {
+      if (kDebugMode) {
+        print("Error: Kid ID is null.");
+      }
+      return;
+    }
+    try {
+      var headMeasurementsMap =
+      kid.headCircumferenceMeasurements.map((head) => head.toJson()).toList();
+      await kidsCollection()
+          .doc(kid.id)
+          .update({'headCircumferenceMeasurements': headMeasurementsMap});
+      if (kDebugMode) {
+        print("Kid updated successfully");
+      }
+    } catch (e, stacktrace) {
+      if (kDebugMode) {
+        print("Error updating kid: $e");
+        print("Stacktrace: $stacktrace");
+      }
+      throw Exception('Failed to update kid: $e');
+    }
+  }
+
 
   Future<Kid?> getKid(String? uid) async {
     if (uid == null) {

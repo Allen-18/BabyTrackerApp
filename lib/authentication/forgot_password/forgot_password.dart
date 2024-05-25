@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_validators/form_validators.dart';
-import 'package:go_router_flow/go_router_flow.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tracker/helpers/assets_manager.dart';
 import 'package:tracker/helpers/colors_manager.dart';
 import 'package:tracker/helpers/styles_manager.dart';
