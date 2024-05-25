@@ -1,7 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:tracker/features/children/socialMilestone/social_kid_skills.dart';
+import 'package:tracker/features/children/weightMeasurements/weight_measurements.dart';
 
 import 'cognitiveMilestone/cognitive_kid_skills.dart';
+import 'headMeasurements/head_measurements.dart';
+import 'height_measurements/height_measurements.dart';
+import 'linguisticMilestone/linguistic_kid_skills.dart';
 import 'motorMilestone/motor_kid_skills.dart';
 
 part 'kids.freezed.dart';
@@ -25,6 +30,11 @@ class Kid with _$Kid {
     @Default(null) String? profileImgUriChild,
     @Default([]) List<MotorKidSkills> motorSkills,
     @Default([]) List<CognitiveKidSkills> cognitiveSkills,
+    @Default([]) List<SocialKidSkills> socialSkills,
+    @Default([]) List<LinguisticKidSkills> linguisticSkills,
+    @Default([]) List<WeightMeasurements> weightMeasurements,
+    @Default([]) List<HeightMeasurements> heightMeasurements,
+    @Default([]) List<HeadMeasurements> headCircumferenceMeasurements,
     String? assignedParentId,
   }) = _Kid;
 
@@ -57,7 +67,7 @@ class Kid with _$Kid {
   // method for getting the current age of the kid ->
   String getCurrentAge(String dateOfBirth) {
     DateTime currentDate = DateTime.now();
-    List<String> dateComponents = dateOfBirth.split('-');
+    List<String> dateComponents = dateOfBirth.split('.');
     int day = int.parse(dateComponents[0]);
     int month = int.parse(dateComponents[1]);
     int year = int.parse(dateComponents[2]);

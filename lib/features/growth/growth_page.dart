@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/features/growth/weight_page.dart';
+import 'package:tracker/features/growth/weight/weight_page.dart';
 import 'package:tracker/helpers/colors_manager.dart';
 import 'package:tracker/helpers/styles_manager.dart';
-import 'head_page.dart';
-import 'height_page.dart';
+import 'package:tracker/features/children/kids.dart';
+import 'head/head_page.dart';
+import 'height/height_page.dart';
 
 class Growth extends StatelessWidget {
-  const Growth({super.key});
+  const Growth({super.key, required this.currentKid});
+  final Kid currentKid;
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +39,11 @@ class Growth extends StatelessWidget {
             ],
           ),
         ),
-        body: const TabBarView(
+        body:  TabBarView(
           children: [
-            GrowthWeight(),
-            GrowthHeight(),
-            GrowthHead(),
+            GrowthWeight(currentKid: currentKid,),
+            GrowthHeight(currentKid: currentKid,),
+            GrowthHead(currentKid: currentKid,),
           ],
         ),
       ),

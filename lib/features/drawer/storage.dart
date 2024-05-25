@@ -5,17 +5,22 @@ import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
 
 class Storage {
-  const Storage({this.clientId = 'oradea'});
-  final String clientId;
 
   Future<String> getProfilePicUrl(String fileName) async {
     final ref = FirebaseStorage.instance.refFromURL(fileName);
     final url = ref.getDownloadURL();
     return url;
   }
+  Future<String> getKidProfilePicUrl(String kidId) async {
+    final kidPicPath = "${getGsBaseDirProfilePicsPath()}kids/$kidId.jpg";
+    final ref = FirebaseStorage.instance.refFromURL(kidPicPath);
+    final url = await ref.getDownloadURL();
+    return url;
+  }
+
 
   String getGsBaseDirProfilePicsPath() {
-    return "gs://kid-tracker-425b3.appspot.com/clients/oradea/profile_pics/";
+    return "gs://kid-tracker-425b3.appspot.com/clients/profile_pics/";
   }
 
   String _f(int d) => d.toString().padLeft(2, '0');

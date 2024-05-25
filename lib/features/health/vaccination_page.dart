@@ -38,7 +38,7 @@ class HealthVaccination extends StatelessWidget {
               onPressed: () {},
               style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all(AppColors.primary)),
+                      WidgetStateProperty.all(AppColors.primary)),
               child: Text(
                 "Add Vaccination",
                 style: getRegularStyle(color: Colors.white, fontSize: 20),

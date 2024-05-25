@@ -56,7 +56,7 @@ extension DocumentOnStream<T> on Stream<DocumentSnapshot<T>> {
   }
 }
 
-Future<Kid?> kid(Kid kid) async {
+Future<Kid?> returnKid(Kid kid) async {
   return Kid(
     id: kid.id,
     name: kid.name,
@@ -70,6 +70,11 @@ Future<Kid?> kid(Kid kid) async {
     assignedParentId: kid.assignedParentId,
     motorSkills: kid.motorSkills,
     cognitiveSkills: kid.cognitiveSkills,
+    socialSkills: kid.socialSkills,
+    linguisticSkills: kid.linguisticSkills,
+    weightMeasurements: kid.weightMeasurements,
+    heightMeasurements: kid.heightMeasurements,
+    headCircumferenceMeasurements: kid.headCircumferenceMeasurements,
   );
 }
 
@@ -82,4 +87,17 @@ String getTextForMonth(int month) {
     default:
       return '$month luni';
   }
+}
+String formatTimestamp(DateTime timestamp) {
+  // Format day, month, and year
+  String formattedDate = '${timestamp.day.toString().padLeft(2, '0')}/'
+      '${timestamp.month.toString().padLeft(2, '0')}/'
+      '${timestamp.year}';
+
+  // Format hour and minutes
+  String formattedTime = 'la ora ${timestamp.hour.toString().padLeft(2, '0')}:'
+      '${timestamp.minute.toString().padLeft(2, '0')}';
+
+  // return concatenate both format
+  return '$formattedDate $formattedTime';
 }

@@ -2,9 +2,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tracker/authentication/repository/users.dart';
-import 'package:tracker/features/drawer/storage.dart';
 import 'package:tracker/authentication/domain/user.dart';
 import 'package:tracker/features/common/utils/show_read_err.dart';
+import 'package:tracker/features/drawer/storage.dart';
 
 enum AvatarSize { listTile, drawerBig, drawerSmall, profilePic }
 
@@ -19,7 +19,6 @@ class ParentNetworkAvatar extends ConsumerWidget {
   final AvatarSize avatarSize;
   final String? parentId;
   final User? parent;
-  final st = const Storage(clientId: 'oradea');
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -47,8 +46,9 @@ class ParentNetworkAvatar extends ConsumerWidget {
         parent.profileImgUri!.isEmpty) {
       return defaultAvatar(context, avatarSize, parent);
     }
+    final storage = Storage();
     return FutureBuilder<String>(
-        future: st.getProfilePicUrl(parent.profileImgUri!),
+        future: storage.getProfilePicUrl(parent.profileImgUri!),
         builder: (BuildContext context, AsyncSnapshot<String> url) {
           if (url.hasError) {
             if (kDebugMode) {

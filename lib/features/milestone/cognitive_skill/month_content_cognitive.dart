@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tracker/features/milestone/cognitive_skill/provider/cognitive_skills_provider.dart';
-import 'package:tracker/features/milestone/motor_skill/provider/selected_cognitive_skills_provider.dart';
+import 'package:tracker/features/milestone/cognitive_skill/provider/selected_cognitive_skills_provider.dart';
 import 'package:tracker/helpers/widget_manager.dart';
 import 'package:tracker/features/children/cognitiveMilestone/cognitive_kid_skills.dart';
 import 'package:tracker/features/children/kids.dart';
 import 'package:tracker/features/children/kids_repository.dart';
-import 'package:tracker/features/milestone/motor_skill/components/skill_card.dart';
+import 'package:tracker/features/milestone/components/skill_card.dart';
+
 
 class MonthContentCognitiveSkill extends ConsumerWidget {
   final int month;

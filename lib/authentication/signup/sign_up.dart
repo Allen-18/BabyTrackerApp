@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validators/form_validators.dart';
-import 'package:go_router_flow/go_router_flow.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:tracker/authentication/components/loading_error.dart';
 import 'package:tracker/helpers/assets_manager.dart';
@@ -26,11 +26,13 @@ class SignUp extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     Size size = MediaQuery.of(context).size;
     final signUpState = ref.watch(signUpProvider);
-    final showErrorEmail = signUpState.email.isNotValid;
-    final showErrorPassword = signUpState.password.isNotValid;
-    final showErrorConfirmPassword = signUpState.confirmPassword.isNotValid;
     final signUpController = ref.read(signUpProvider.notifier);
     final isLoading = useState(false);
+    final signUpAttempted = useState(false);
+
+    final showErrorEmail = signUpAttempted.value && signUpState.email.isNotValid;
+    final showErrorPassword = signUpAttempted.value && signUpState.password.isNotValid;
+    final showErrorConfirmPassword = signUpAttempted.value && signUpState.confirmPassword.isNotValid;
 
     return Scaffold(
       body: Container(
@@ -48,7 +50,7 @@ class SignUp extends HookConsumerWidget {
                   margin: const EdgeInsets.only(top: AppMargin.m70),
                   child: Text('Sign Up',
                       style:
-                          getBoldStyle(color: AppColors.white, fontSize: 40))),
+                      getBoldStyle(color: AppColors.black, fontSize: 40))),
             ),
             Expanded(
               flex: 4,
@@ -58,7 +60,7 @@ class SignUp extends HookConsumerWidget {
                   decoration: BoxDecoration(
                     color: AppColors.white,
                     borderRadius:
-                        const BorderRadius.only(topLeft: Radius.circular(100)),
+                    const BorderRadius.only(topLeft: Radius.circular(100)),
                   ),
                   child: ListView(
                     children: [
@@ -71,14 +73,14 @@ class SignUp extends HookConsumerWidget {
                           children: [
                             Flexible(
                                 child: TextFormField(
-                              initialValue: signUpState.email.value,
-                              onChanged: (value) =>
-                                  signUpController.onEmailChange(value),
-                              decoration: const InputDecoration(
-                                hintText: 'Enter your email',
-                                border: InputBorder.none,
-                              ),
-                            )),
+                                  initialValue: signUpState.email.value,
+                                  onChanged: (value) =>
+                                      signUpController.onEmailChange(value),
+                                  decoration: const InputDecoration(
+                                    hintText: 'Enter your email',
+                                    border: InputBorder.none,
+                                  ),
+                                )),
                           ],
                         ),
                       ),
@@ -86,14 +88,15 @@ class SignUp extends HookConsumerWidget {
                         const SizedBox(
                           height: 5,
                         ),
-                      Padding(
-                          padding: const EdgeInsets.only(left: 18.0),
-                          child: Text(
-                            Email.showEmailErrorMessage(
-                                    signUpState.email.error) ??
-                                "",
-                            style: const TextStyle(color: Colors.red),
-                          )),
+                      if (showErrorEmail)
+                        Padding(
+                            padding: const EdgeInsets.only(left: 18.0),
+                            child: Text(
+                              Email.showEmailErrorMessage(
+                                  signUpState.email.error) ??
+                                  "",
+                              style: const TextStyle(color: Colors.red),
+                            )),
                       const SizedBox(
                         height: AppMargin.m14,
                       ),
@@ -115,14 +118,15 @@ class SignUp extends HookConsumerWidget {
                         const SizedBox(
                           height: 5,
                         ),
-                      Padding(
-                          padding: const EdgeInsets.only(left: 18.0),
-                          child: Text(
-                            Password.showPasswordErrorMessage(
-                                    signUpState.password.error) ??
-                                "",
-                            style: const TextStyle(color: Colors.red),
-                          )),
+                      if (showErrorPassword)
+                        Padding(
+                            padding: const EdgeInsets.only(left: 18.0),
+                            child: Text(
+                              Password.showPasswordErrorMessage(
+                                  signUpState.password.error) ??
+                                  "",
+                              style: const TextStyle(color: Colors.red),
+                            )),
                       const SizedBox(
                         height: AppMargin.m14,
                       ),
@@ -144,38 +148,40 @@ class SignUp extends HookConsumerWidget {
                         const SizedBox(
                           height: 5,
                         ),
-                      Padding(
-                          padding: const EdgeInsets.only(left: 18.0),
-                          child: Text(
-                            ConfirmPassword.showConfirmPasswordErrorMessage(
-                                    signUpState.confirmPassword.error) ??
-                                "",
-                            style: const TextStyle(color: Colors.red),
-                          )),
+                      if (showErrorConfirmPassword)
+                        Padding(
+                            padding: const EdgeInsets.only(left: 18.0),
+                            child: Text(
+                              ConfirmPassword.showConfirmPasswordErrorMessage(
+                                  signUpState.confirmPassword.error) ??
+                                  "",
+                              style: const TextStyle(color: Colors.red),
+                            )),
                       const SizedBox(
                         height: AppMargin.m14,
                       ),
                       isLoading.value
                           ? const SizedBox(
-                              width: 90,
-                              height: 90,
-                              child: LoadingSheet(),
-                            )
+                        width: 90,
+                        height: 90,
+                        child: LoadingSheet(),
+                      )
                           : TextButton(
-                              onPressed: () async {
-                                if (context.mounted) {
-                                  context.pushNamed(AppRoutes.login.name);
-                                }
-                              },
-                              child: Text(
-                                "Already have an account",
-                                style: getRegularStyle(
-                                    color: AppColors.primary, fontSize: 14),
-                              ),
-                            ),
+                        onPressed: () async {
+                          if (context.mounted) {
+                            context.pushNamed(AppRoutes.login.name);
+                          }
+                        },
+                        child: Text(
+                          "Already have an account",
+                          style: getRegularStyle(
+                              color: AppColors.primary, fontSize: 14),
+                        ),
+                      ),
                       const SizedBox(height: 40),
                       GestureDetector(
                         onTap: () async {
+                          signUpAttempted.value = true;
                           isLoading.value = true; // Start loading
                           FirebaseException? error = await signUpController
                               .signUpWithEmailAndPassword();

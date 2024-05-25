@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:tracker/features/progress/cognitive/cognitive_progress.dart';
-import 'package:tracker/features/progress/motor/kid_data_motor_progress.dart';
 import 'package:tracker/helpers/assets_manager.dart';
 import 'package:tracker/helpers/styles_manager.dart';
 import 'package:tracker/features/progress/skill_data.dart';
+import 'package:tracker/features/progress/social/social_progress.dart';
+import '../social/kid_data_social_progress.dart' show KidDataSocialSkills;
 
-Widget socialWidget(BuildContext context, KidDataMotorSkills kidDataService) {
+Widget socialWidget(BuildContext context, KidDataSocialSkills kidDataService) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       const SizedBox(height: 10),
       Expanded(
         child: FutureBuilder<List<SkillChartData>>(
-          future: kidDataService.fetchMotorSkillsProgress(),
+          future: kidDataService.fetchSocialSkillsProgress(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-              return CognitiveSkillSelectionChart(
-                  chartData: snapshot.data!); // it will be changed
+              return SocialSkillSelectionChart(
+                  chartData: snapshot.data!, kid: kidDataService.kid.id!,);
             } else {
               return Column(children: [
                 Expanded(

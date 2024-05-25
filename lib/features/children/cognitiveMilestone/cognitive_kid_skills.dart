@@ -24,18 +24,3 @@ class CognitiveKidSkills with _$CognitiveKidSkills {
         progress: progress);
   }
 }
-
-class MonthIndices {
-  static const int firstMonth = 1;
-  static const int secondMonth = 2;
-  static const int thirdMonth = 3;
-  static const int fourthMonth = 4;
-  static const int fifthMonth = 5;
-  static const int sixthMonth = 6;
-  static const int seventhMonth = 7;
-  static const int eighthMonth = 8;
-  static const int ninthMonth = 9;
-  static const int tenthMonth = 10;
-  static const int eleventhMonth = 11;
-  static const int twelfthMonth = 12;
-}

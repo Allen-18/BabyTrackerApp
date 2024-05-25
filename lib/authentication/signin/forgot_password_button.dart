@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router_flow/go_router_flow.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tracker/helpers/colors_manager.dart';
 import 'package:tracker/services/app_router.dart';
 

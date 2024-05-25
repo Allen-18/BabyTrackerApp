@@ -14,6 +14,8 @@ import 'package:tracker/authentication/domain/user.dart';
 import 'package:tracker/features/milestone/motor_skill/track_motor_skill.dart';
 import 'package:tracker/services/app_router.dart';
 import 'package:tracker/features/drawer/user_drawer.dart';
+import '../milestone/linguistic_skill/track_linguistic_skill.dart';
+import '../milestone/social_skill/track_social_skill.dart';
 import 'home_screen.dart';
 
 class Categories extends ConsumerWidget {
@@ -65,9 +67,9 @@ class Categories extends ConsumerWidget {
                 style: getMediumStyle(color: Colors.black, fontSize: 20),
               ),
               Text(
-                'Născută la data de ${kid.cognitiveSkills.length}',
-                style: TextStyle(
-                  color: Colors.grey[700],
+                'Născută la data de ${kid.dateOfBirth}',
+                style: const TextStyle(
+                  color: Colors.black,
                   fontSize: 17,
                 ),
               ),
@@ -76,7 +78,8 @@ class Categories extends ConsumerWidget {
         ),
         backgroundColor: AppColors.primary,
       ),
-      body: Container(
+      body: SingleChildScrollView(child:
+      Container(
         padding: const EdgeInsets.all(8),
         width: size.width,
         height: size.height,
@@ -144,6 +147,73 @@ class Categories extends ConsumerWidget {
                     ))),
               ],
             ),
+            const SizedBox(
+              height: 25,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => LinguisticSkillTracker(
+                              currentUser: currentUser, kid: kid),
+                        )),
+                    child: categoryCard(
+                        widget: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                                child: Image.asset(
+                                  AppAssets.language,
+                                  scale: 1,
+                                )),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "Dezvoltare Lingvistică",
+                              style: getMediumStyle(
+                                  color: AppColors.grey, fontSize: 25),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ))),
+                GestureDetector(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SocialSkillTracker(
+                            currentUser: currentUser,
+                            kid: kid,
+                          ),
+                        )),
+                    child: categoryCard(
+                        widget: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Flexible(
+                                child: Image.asset(
+                                  AppAssets.social,
+                                  scale: 1,
+                                )),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(
+                              "Dezvoltare Socială",
+                              style: getMediumStyle(
+                                  color: AppColors.grey, fontSize: 25),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ))),
+              ],
+            ),
+            const SizedBox(
+              height: 25,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -177,7 +247,7 @@ class Categories extends ConsumerWidget {
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const Growth(),
+                          builder: (context) => Growth(currentKid: kid,),
                         )),
                     child: categoryCard(
                         widget: Column(
@@ -203,7 +273,7 @@ class Categories extends ConsumerWidget {
             ),
           ],
         ),
-      ),
+          )),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -220,7 +290,7 @@ class Categories extends ConsumerWidget {
           ),
         ],
         currentIndex: selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: AppColors.primary,
         onTap: onItemTapped,
       ),
     );

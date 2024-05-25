@@ -19,7 +19,7 @@ Widget motorWidget(BuildContext context, KidDataMotorSkills kidData) {
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-              return MotorSkillSelectionChart(chartData: snapshot.data!);
+              return MotorSkillSelectionChart(chartData: snapshot.data!, kid: kidData.kid.id!,);
             } else {
               return Column(children: [
                 Expanded(

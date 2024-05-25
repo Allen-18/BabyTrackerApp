@@ -1,6 +1,6 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, duplicate_ignore
+// ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'kids.dart';
@@ -35,6 +35,15 @@ mixin _$Kid {
   List<MotorKidSkills> get motorSkills => throw _privateConstructorUsedError;
   List<CognitiveKidSkills> get cognitiveSkills =>
       throw _privateConstructorUsedError;
+  List<SocialKidSkills> get socialSkills => throw _privateConstructorUsedError;
+  List<LinguisticKidSkills> get linguisticSkills =>
+      throw _privateConstructorUsedError;
+  List<WeightMeasurements> get weightMeasurements =>
+      throw _privateConstructorUsedError;
+  List<HeightMeasurements> get heightMeasurements =>
+      throw _privateConstructorUsedError;
+  List<HeadMeasurements> get headCircumferenceMeasurements =>
+      throw _privateConstructorUsedError;
   String? get assignedParentId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -60,6 +69,11 @@ abstract class $KidCopyWith<$Res> {
       String? profileImgUriChild,
       List<MotorKidSkills> motorSkills,
       List<CognitiveKidSkills> cognitiveSkills,
+      List<SocialKidSkills> socialSkills,
+      List<LinguisticKidSkills> linguisticSkills,
+      List<WeightMeasurements> weightMeasurements,
+      List<HeightMeasurements> heightMeasurements,
+      List<HeadMeasurements> headCircumferenceMeasurements,
       String? assignedParentId});
 }
 
@@ -87,6 +101,11 @@ class _$KidCopyWithImpl<$Res, $Val extends Kid> implements $KidCopyWith<$Res> {
     Object? profileImgUriChild = freezed,
     Object? motorSkills = null,
     Object? cognitiveSkills = null,
+    Object? socialSkills = null,
+    Object? linguisticSkills = null,
+    Object? weightMeasurements = null,
+    Object? heightMeasurements = null,
+    Object? headCircumferenceMeasurements = null,
     Object? assignedParentId = freezed,
   }) {
     return _then(_value.copyWith(
@@ -138,6 +157,26 @@ class _$KidCopyWithImpl<$Res, $Val extends Kid> implements $KidCopyWith<$Res> {
           ? _value.cognitiveSkills
           : cognitiveSkills // ignore: cast_nullable_to_non_nullable
               as List<CognitiveKidSkills>,
+      socialSkills: null == socialSkills
+          ? _value.socialSkills
+          : socialSkills // ignore: cast_nullable_to_non_nullable
+              as List<SocialKidSkills>,
+      linguisticSkills: null == linguisticSkills
+          ? _value.linguisticSkills
+          : linguisticSkills // ignore: cast_nullable_to_non_nullable
+              as List<LinguisticKidSkills>,
+      weightMeasurements: null == weightMeasurements
+          ? _value.weightMeasurements
+          : weightMeasurements // ignore: cast_nullable_to_non_nullable
+              as List<WeightMeasurements>,
+      heightMeasurements: null == heightMeasurements
+          ? _value.heightMeasurements
+          : heightMeasurements // ignore: cast_nullable_to_non_nullable
+              as List<HeightMeasurements>,
+      headCircumferenceMeasurements: null == headCircumferenceMeasurements
+          ? _value.headCircumferenceMeasurements
+          : headCircumferenceMeasurements // ignore: cast_nullable_to_non_nullable
+              as List<HeadMeasurements>,
       assignedParentId: freezed == assignedParentId
           ? _value.assignedParentId
           : assignedParentId // ignore: cast_nullable_to_non_nullable
@@ -165,6 +204,11 @@ abstract class _$$KidImplCopyWith<$Res> implements $KidCopyWith<$Res> {
       String? profileImgUriChild,
       List<MotorKidSkills> motorSkills,
       List<CognitiveKidSkills> cognitiveSkills,
+      List<SocialKidSkills> socialSkills,
+      List<LinguisticKidSkills> linguisticSkills,
+      List<WeightMeasurements> weightMeasurements,
+      List<HeightMeasurements> heightMeasurements,
+      List<HeadMeasurements> headCircumferenceMeasurements,
       String? assignedParentId});
 }
 
@@ -189,6 +233,11 @@ class __$$KidImplCopyWithImpl<$Res> extends _$KidCopyWithImpl<$Res, _$KidImpl>
     Object? profileImgUriChild = freezed,
     Object? motorSkills = null,
     Object? cognitiveSkills = null,
+    Object? socialSkills = null,
+    Object? linguisticSkills = null,
+    Object? weightMeasurements = null,
+    Object? heightMeasurements = null,
+    Object? headCircumferenceMeasurements = null,
     Object? assignedParentId = freezed,
   }) {
     return _then(_$KidImpl(
@@ -240,6 +289,26 @@ class __$$KidImplCopyWithImpl<$Res> extends _$KidCopyWithImpl<$Res, _$KidImpl>
           ? _value._cognitiveSkills
           : cognitiveSkills // ignore: cast_nullable_to_non_nullable
               as List<CognitiveKidSkills>,
+      socialSkills: null == socialSkills
+          ? _value._socialSkills
+          : socialSkills // ignore: cast_nullable_to_non_nullable
+              as List<SocialKidSkills>,
+      linguisticSkills: null == linguisticSkills
+          ? _value._linguisticSkills
+          : linguisticSkills // ignore: cast_nullable_to_non_nullable
+              as List<LinguisticKidSkills>,
+      weightMeasurements: null == weightMeasurements
+          ? _value._weightMeasurements
+          : weightMeasurements // ignore: cast_nullable_to_non_nullable
+              as List<WeightMeasurements>,
+      heightMeasurements: null == heightMeasurements
+          ? _value._heightMeasurements
+          : heightMeasurements // ignore: cast_nullable_to_non_nullable
+              as List<HeightMeasurements>,
+      headCircumferenceMeasurements: null == headCircumferenceMeasurements
+          ? _value._headCircumferenceMeasurements
+          : headCircumferenceMeasurements // ignore: cast_nullable_to_non_nullable
+              as List<HeadMeasurements>,
       assignedParentId: freezed == assignedParentId
           ? _value.assignedParentId
           : assignedParentId // ignore: cast_nullable_to_non_nullable
@@ -264,9 +333,19 @@ class _$KidImpl extends _Kid {
       this.profileImgUriChild = null,
       final List<MotorKidSkills> motorSkills = const [],
       final List<CognitiveKidSkills> cognitiveSkills = const [],
+      final List<SocialKidSkills> socialSkills = const [],
+      final List<LinguisticKidSkills> linguisticSkills = const [],
+      final List<WeightMeasurements> weightMeasurements = const [],
+      final List<HeightMeasurements> heightMeasurements = const [],
+      final List<HeadMeasurements> headCircumferenceMeasurements = const [],
       this.assignedParentId})
       : _motorSkills = motorSkills,
         _cognitiveSkills = cognitiveSkills,
+        _socialSkills = socialSkills,
+        _linguisticSkills = linguisticSkills,
+        _weightMeasurements = weightMeasurements,
+        _heightMeasurements = heightMeasurements,
+        _headCircumferenceMeasurements = headCircumferenceMeasurements,
         super._();
 
   factory _$KidImpl.fromJson(Map<String, dynamic> json) =>
@@ -318,12 +397,61 @@ class _$KidImpl extends _Kid {
     return EqualUnmodifiableListView(_cognitiveSkills);
   }
 
+  final List<SocialKidSkills> _socialSkills;
+  @override
+  @JsonKey()
+  List<SocialKidSkills> get socialSkills {
+    if (_socialSkills is EqualUnmodifiableListView) return _socialSkills;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_socialSkills);
+  }
+
+  final List<LinguisticKidSkills> _linguisticSkills;
+  @override
+  @JsonKey()
+  List<LinguisticKidSkills> get linguisticSkills {
+    if (_linguisticSkills is EqualUnmodifiableListView)
+      return _linguisticSkills;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_linguisticSkills);
+  }
+
+  final List<WeightMeasurements> _weightMeasurements;
+  @override
+  @JsonKey()
+  List<WeightMeasurements> get weightMeasurements {
+    if (_weightMeasurements is EqualUnmodifiableListView)
+      return _weightMeasurements;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_weightMeasurements);
+  }
+
+  final List<HeightMeasurements> _heightMeasurements;
+  @override
+  @JsonKey()
+  List<HeightMeasurements> get heightMeasurements {
+    if (_heightMeasurements is EqualUnmodifiableListView)
+      return _heightMeasurements;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_heightMeasurements);
+  }
+
+  final List<HeadMeasurements> _headCircumferenceMeasurements;
+  @override
+  @JsonKey()
+  List<HeadMeasurements> get headCircumferenceMeasurements {
+    if (_headCircumferenceMeasurements is EqualUnmodifiableListView)
+      return _headCircumferenceMeasurements;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_headCircumferenceMeasurements);
+  }
+
   @override
   final String? assignedParentId;
 
   @override
   String toString() {
-    return 'Kid(id: $id, name: $name, dateOfBirth: $dateOfBirth, gender: $gender, isPremature: $isPremature, isHasTwin: $isHasTwin, childWeight: $childWeight, childHeight: $childHeight, childHeadCircumference: $childHeadCircumference, profileImgUriChild: $profileImgUriChild, motorSkills: $motorSkills, cognitiveSkills: $cognitiveSkills, assignedParentId: $assignedParentId)';
+    return 'Kid(id: $id, name: $name, dateOfBirth: $dateOfBirth, gender: $gender, isPremature: $isPremature, isHasTwin: $isHasTwin, childWeight: $childWeight, childHeight: $childHeight, childHeadCircumference: $childHeadCircumference, profileImgUriChild: $profileImgUriChild, motorSkills: $motorSkills, cognitiveSkills: $cognitiveSkills, socialSkills: $socialSkills, linguisticSkills: $linguisticSkills, weightMeasurements: $weightMeasurements, heightMeasurements: $heightMeasurements, headCircumferenceMeasurements: $headCircumferenceMeasurements, assignedParentId: $assignedParentId)';
   }
 
   @override
@@ -352,6 +480,17 @@ class _$KidImpl extends _Kid {
                 .equals(other._motorSkills, _motorSkills) &&
             const DeepCollectionEquality()
                 .equals(other._cognitiveSkills, _cognitiveSkills) &&
+            const DeepCollectionEquality()
+                .equals(other._socialSkills, _socialSkills) &&
+            const DeepCollectionEquality()
+                .equals(other._linguisticSkills, _linguisticSkills) &&
+            const DeepCollectionEquality()
+                .equals(other._weightMeasurements, _weightMeasurements) &&
+            const DeepCollectionEquality()
+                .equals(other._heightMeasurements, _heightMeasurements) &&
+            const DeepCollectionEquality().equals(
+                other._headCircumferenceMeasurements,
+                _headCircumferenceMeasurements) &&
             (identical(other.assignedParentId, assignedParentId) ||
                 other.assignedParentId == assignedParentId));
   }
@@ -372,6 +511,11 @@ class _$KidImpl extends _Kid {
       profileImgUriChild,
       const DeepCollectionEquality().hash(_motorSkills),
       const DeepCollectionEquality().hash(_cognitiveSkills),
+      const DeepCollectionEquality().hash(_socialSkills),
+      const DeepCollectionEquality().hash(_linguisticSkills),
+      const DeepCollectionEquality().hash(_weightMeasurements),
+      const DeepCollectionEquality().hash(_heightMeasurements),
+      const DeepCollectionEquality().hash(_headCircumferenceMeasurements),
       assignedParentId);
 
   @JsonKey(ignore: true)
@@ -402,6 +546,11 @@ abstract class _Kid extends Kid {
       final String? profileImgUriChild,
       final List<MotorKidSkills> motorSkills,
       final List<CognitiveKidSkills> cognitiveSkills,
+      final List<SocialKidSkills> socialSkills,
+      final List<LinguisticKidSkills> linguisticSkills,
+      final List<WeightMeasurements> weightMeasurements,
+      final List<HeightMeasurements> heightMeasurements,
+      final List<HeadMeasurements> headCircumferenceMeasurements,
       final String? assignedParentId}) = _$KidImpl;
   const _Kid._() : super._();
 
@@ -432,6 +581,16 @@ abstract class _Kid extends Kid {
   List<MotorKidSkills> get motorSkills;
   @override
   List<CognitiveKidSkills> get cognitiveSkills;
+  @override
+  List<SocialKidSkills> get socialSkills;
+  @override
+  List<LinguisticKidSkills> get linguisticSkills;
+  @override
+  List<WeightMeasurements> get weightMeasurements;
+  @override
+  List<HeightMeasurements> get heightMeasurements;
+  @override
+  List<HeadMeasurements> get headCircumferenceMeasurements;
   @override
   String? get assignedParentId;
   @override

@@ -21,3 +21,13 @@ CollectionReference<Map<String, dynamic>> cognitiveSkillsCollection() {
   FirebaseFirestore db = FirebaseFirestore.instance;
   return db.collection('cognitiveSkills');
 }
+
+CollectionReference<Map<String, dynamic>> socialSkillsCollection() {
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  return db.collection('socialSkills');
+}
+
+CollectionReference<Map<String, dynamic>> linguisticSkillsCollection() {
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  return db.collection('linguisticSkills');
+}

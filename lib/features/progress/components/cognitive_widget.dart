@@ -20,7 +20,7 @@ Widget cognitiveWidget(
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-              return CognitiveSkillSelectionChart(chartData: snapshot.data!);
+              return CognitiveSkillSelectionChart(chartData: snapshot.data!, kid: kidDataCognitive.kid.id!,);
             } else {
               return Column(children: [
                 Expanded(

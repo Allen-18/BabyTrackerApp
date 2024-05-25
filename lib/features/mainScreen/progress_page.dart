@@ -8,6 +8,9 @@ import 'package:tracker/features/progress/components/linguistic_widget.dart';
 import 'package:tracker/features/progress/components/motor_widget.dart';
 import 'package:tracker/features/progress/components/social_widget.dart';
 
+import '../progress/linguistic/kid_data_linguistic_progress.dart';
+import '../progress/social/kid_data_social_progress.dart';
+
 class ProgressPage extends StatefulWidget {
   final Kid currentKid;
 
@@ -23,6 +26,9 @@ class _ProgressState extends State<ProgressPage> {
     KidDataCognitiveSkills kidDataCognitive =
         KidDataCognitiveSkills(widget.currentKid);
     KidDataMotorSkills kidDataMotor = KidDataMotorSkills(widget.currentKid);
+
+    KidDataSocialSkills kidDataSocial = KidDataSocialSkills(widget.currentKid);
+    KidDataLinguisticSkills kidDataLinguistic = KidDataLinguisticSkills(widget.currentKid);
     Size size = MediaQuery.of(context).size;
 
     return DefaultTabController(
@@ -36,8 +42,8 @@ class _ProgressState extends State<ProgressPage> {
           ),
           bottom: const TabBar(
             tabs: [
-              Tab(text: 'Motor'),
               Tab(text: 'Cognitiv'),
+              Tab(text: 'Motor'),
               Tab(text: 'Lingvistic'),
               Tab(text: 'Social'),
             ],
@@ -53,10 +59,10 @@ class _ProgressState extends State<ProgressPage> {
               cognitiveWidget(context, kidDataCognitive), // cognitive progress
               motorWidget(context, kidDataMotor), // motor progress
               socialWidget(
-                  context, kidDataMotor), // social progress - will be changed
+                  context, kidDataSocial), // social progress
               linguisticWidget(context,
-                  kidDataMotor), // linguistic progress - will be changed
-            ],
+                  kidDataLinguistic), // linguistic progress
+          ]
           ),
         ),
       ),

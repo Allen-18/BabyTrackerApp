@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:go_router_flow/go_router_flow.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:tracker/helpers/colors_manager.dart';
 import 'package:tracker/helpers/styles_manager.dart';
@@ -15,8 +17,9 @@ import 'measurement_fields.dart';
 class AddAnotherChild extends HookConsumerWidget {
   AddAnotherChild({super.key, required this.parent});
   final User parent;
-  // declare a GlobalKey
+  // Declare a GlobalKey
   final _formKey = GlobalKey<FormState>();
+  final ImagePicker _picker = ImagePicker();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,21 +36,24 @@ class AddAnotherChild extends HookConsumerWidget {
     final gender = useState('Boy');
     final twinGender = useState('Boy');
     final isTwin = useState(false);
+    final imageFile = useState<XFile?>(null);
+    final twinImageFile = useState<XFile?>(null);
 
     Future<void> saveForm() async {
       if (!_formKey.currentState!.validate()) {
         return;
       }
       Kid addKid = Kid(
-          name: nameController.text.trim(),
-          dateOfBirth: dobController.text.trim(),
-          gender: gender.value,
-          isHasTwin: isTwin.value,
-          childWeight: double.parse(weightController.text),
-          childHeight: double.parse(heightController.text),
-          childHeadCircumference:
-              double.parse(headCircumferenceController.text),
-          assignedParentId: parent.id);
+        name: nameController.text.trim(),
+        dateOfBirth: dobController.text.trim(),
+        gender: gender.value,
+        isHasTwin: isTwin.value,
+        childWeight: double.parse(weightController.text),
+        childHeight: double.parse(heightController.text),
+        childHeadCircumference: double.parse(headCircumferenceController.text),
+        assignedParentId: parent.id,
+        profileImgUriChild: imageFile.value?.path, // Include image file path
+      );
       try {
         final repo = ref.read(kidsRepositoryProvider);
         await repo.createNewKid(addKid);
@@ -57,9 +63,6 @@ class AddAnotherChild extends HookConsumerWidget {
         }
       }
       if (isTwin.value == true) {
-        if (!_formKey.currentState!.validate()) {
-          return;
-        }
         Kid twinKid = Kid(
           name: twinNameController.text.trim(),
           dateOfBirth: twinDobController.text.trim(),
@@ -68,8 +71,9 @@ class AddAnotherChild extends HookConsumerWidget {
           childWeight: double.parse(twinWeightController.text),
           childHeight: double.parse(twinHeightController.text),
           childHeadCircumference:
-              double.parse(twinHeadCircumferenceController.text),
+          double.parse(twinHeadCircumferenceController.text),
           assignedParentId: parent.id,
+          profileImgUriChild: twinImageFile.value?.path, // Include twin's image file path
         );
         try {
           final repo = ref.read(kidsRepositoryProvider);
@@ -79,6 +83,20 @@ class AddAnotherChild extends HookConsumerWidget {
             print("Could not save new Twin: $twinKid");
           }
         }
+      }
+    }
+
+    Future<void> pickImage() async {
+      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        imageFile.value = pickedFile;
+      }
+    }
+
+    Future<void> pickTwinImage() async {
+      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        twinImageFile.value = pickedFile;
       }
     }
 
@@ -95,6 +113,22 @@ class AddAnotherChild extends HookConsumerWidget {
           key: _formKey,
           child: ListView(
             children: [
+              Center(
+                child: GestureDetector(
+                  onTap: pickImage,
+                  child: CircleAvatar(
+                    radius: 50,
+                    backgroundColor: AppColors.lightPrimary,
+                    backgroundImage: imageFile.value != null
+                        ? FileImage(File(imageFile.value!.path))
+                        : null,
+                    child: imageFile.value == null
+                        ? const Icon(Icons.camera_alt, size: 50, color: Colors.grey)
+                        : null,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 25),
               TextFormField(
                 controller: nameController,
                 decoration: const InputDecoration(
@@ -127,7 +161,7 @@ class AddAnotherChild extends HookConsumerWidget {
               ),
               RadioListTile<String>(
                 title:
-                    Text('Girl', style: TextStyle(color: AppColors.darkGrey)),
+                Text('Girl', style: TextStyle(color: AppColors.darkGrey)),
                 value: 'Girl',
                 groupValue: gender.value,
                 onChanged: (String? value) {
@@ -156,6 +190,22 @@ class AddAnotherChild extends HookConsumerWidget {
                 ],
               ),
               if (isTwin.value) ...[
+                Center(
+                  child: GestureDetector(
+                    onTap: pickTwinImage,
+                    child: CircleAvatar(
+                      radius: 50,
+                      backgroundColor: AppColors.lightPrimary,
+                      backgroundImage: twinImageFile.value != null
+                          ? FileImage(File(twinImageFile.value!.path))
+                          : null,
+                      child: twinImageFile.value == null
+                          ? const Icon(Icons.camera_alt, size: 50, color: Colors.grey)
+                          : null,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 25),
                 TextFormField(
                   controller: twinNameController,
                   decoration: const InputDecoration(
@@ -178,7 +228,7 @@ class AddAnotherChild extends HookConsumerWidget {
                 const SizedBox(height: 25),
                 RadioListTile<String>(
                   title:
-                      Text('Boy', style: TextStyle(color: AppColors.darkGrey)),
+                  Text('Boy', style: TextStyle(color: AppColors.darkGrey)),
                   value: 'Boy',
                   groupValue: twinGender.value,
                   onChanged: (String? value) {
@@ -189,7 +239,7 @@ class AddAnotherChild extends HookConsumerWidget {
                 ),
                 RadioListTile<String>(
                   title:
-                      Text('Girl', style: TextStyle(color: AppColors.darkGrey)),
+                  Text('Girl', style: TextStyle(color: AppColors.darkGrey)),
                   value: 'Girl',
                   groupValue: twinGender.value,
                   onChanged: (String? value) {
@@ -234,7 +284,7 @@ class AddAnotherChild extends HookConsumerWidget {
       lastDate: DateTime.now(),
     );
     if (pickedDate != null) {
-      controller.text = DateFormat('dd-MM-yyyy').format(pickedDate);
+      controller.text = DateFormat('dd.MM.yyyy').format(pickedDate);
     }
   }
 }
