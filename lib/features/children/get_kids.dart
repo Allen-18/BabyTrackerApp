@@ -29,7 +29,8 @@ Future<List<Kid>> getKidsForCurrentParent(GetKidsForCurrentParentRef ref,
     print('kids.len=${kids.length}');
   }
   final sw = Stopwatch()..start();
-  final kidsList = await Future.wait(kids.map((kids) async => await returnKid(kids)));
+  final kidsList =
+      await Future.wait(kids.map((kids) async => await returnKid(kids)));
 
   List<Kid> finalKids = [];
   for (var i = 0; i < kidsList.length; i++) {

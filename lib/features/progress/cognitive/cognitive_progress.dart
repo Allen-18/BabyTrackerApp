@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
@@ -10,12 +11,15 @@ import 'package:tracker/features/children/kids.dart';
 import 'package:tracker/features/children/kids_repository.dart';
 import 'package:tracker/features/progress/components/load_custom_font.dart';
 import 'package:tracker/helpers/widget_manager.dart';
+import 'package:tracker/helpers/colors_manager.dart';
+import 'package:tracker/features/common/utils/utils.dart';
 
 class CognitiveSkillSelectionChart extends ConsumerWidget {
   final List<SkillChartData> chartData;
   final String kid;
 
-  const CognitiveSkillSelectionChart({super.key, required this.chartData, required this.kid});
+  const CognitiveSkillSelectionChart(
+      {super.key, required this.chartData, required this.kid});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,7 +28,8 @@ class CognitiveSkillSelectionChart extends ConsumerWidget {
       children: [
         SfCartesianChart(
           primaryXAxis: const CategoryAxis(),
-          primaryYAxis: const NumericAxis(minimum: 0, maximum: 100, interval: 10),
+          primaryYAxis:
+              const NumericAxis(minimum: 0, maximum: 100, interval: 10),
           title: const ChartTitle(text: 'Progres dezvoltare cognitivă'),
           legend: const Legend(isVisible: true),
           tooltipBehavior: TooltipBehavior(enable: true),
@@ -34,7 +39,7 @@ class CognitiveSkillSelectionChart extends ConsumerWidget {
               xValueMapper: (SkillChartData data, _) => data.monthIndex,
               yValueMapper: (SkillChartData data, _) => data.value,
               name: 'Dezvoltare cognitivă',
-              color: Colors.blue,
+              color: AppColors.primary,
             )
           ],
         ),
@@ -42,9 +47,11 @@ class CognitiveSkillSelectionChart extends ConsumerWidget {
         GestureDetector(
             onTap: () async {
               final currentKid = await repo.getKid(kid);
-              if(context.mounted){
-                extractCognitiveSkillsForPDF(context,currentKid!);}},
-            child: appButton(text: "Save PDF")),
+              if (context.mounted) {
+                extractCognitiveSkillsForPDF(context, currentKid!);
+              }
+            },
+            child: appButton(text: "Salvează PDF")),
       ],
     );
   }
@@ -53,21 +60,25 @@ class CognitiveSkillSelectionChart extends ConsumerWidget {
     final document = PdfDocument();
     final PdfFont headerFont = await loadCustomFont(18);
     final PdfFont bodyFont = await loadCustomFont(20);
+    final PdfFont footerFont = await loadCustomFont(20);
+    final imageData = await rootBundle.load('assets/images/logo.png');
+    final imageBytes = imageData.buffer.asUint8List();
 
     final cognitiveSkillsPage = document.pages.add();
-    addCognitiveSkillsData(cognitiveSkillsPage, kid, headerFont, bodyFont);
+    addCognitiveSkillsData(
+        cognitiveSkillsPage, kid, headerFont, bodyFont, imageBytes, footerFont);
 
     try {
       final directory = await getExternalStorageDirectory();
-      final file = File("${directory?.path}/ProgresDezvoltareCognitiva.pdf");
+      final file = File("${directory?.path}/ProgresDezvoltareCognitivă.pdf");
       await file.writeAsBytes(document.saveSync());
       document.dispose();
       if (kDebugMode) {
-        print('PDF Saved: ${file.path}');
+        print('PDF Salvat: ${file.path}');
       }
     } catch (e) {
       if (kDebugMode) {
-        print("Failed to save PDF: $e");
+        print("Eșec la salvarea PDF-ului: $e");
       }
     }
   }
@@ -75,24 +86,24 @@ class CognitiveSkillSelectionChart extends ConsumerWidget {
   void extractCognitiveSkillsForPDF(BuildContext context, Kid kid) async {
     await saveCognitivePDF(kid);
     final directory = await getExternalStorageDirectory();
-    String filePath = '${directory?.path}/ProgresDezvoltareCognitiva.pdf';
-
+    String filePath = '${directory?.path}/ProgresDezvoltareCognitivă.pdf';
     try {
       final bytes = await File(filePath).readAsBytes();
       final document = PdfDocument(inputBytes: bytes);
-      String text = 'Date salvate in fisierul: ProgresDezvoltareCognitiva.pdf \n';
+      String text =
+          'Datele salvate în fișierul: ProgresDezvoltareCognitivă.pdf \n';
       if (context.mounted) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text('Progres dezvoltare cognitivă'),
+              title: const Text('Progres Dezvoltare Cognitivă'),
               content: SingleChildScrollView(
                 child: Text(text),
               ),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('Close'),
+                  child: const Text('Închide'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -105,24 +116,24 @@ class CognitiveSkillSelectionChart extends ConsumerWidget {
       document.dispose();
     } catch (e) {
       if (kDebugMode) {
-        print('Failed to extract text from PDF: $e');
+        print('Eșec la extragerea textului din PDF: $e');
       }
       if (context.mounted) {
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text('Error'),
+              title: const Text('Eroare'),
               content: SingleChildScrollView(
                 child: ListBody(
                   children: <Widget>[
-                    Text('Failed to extract text from PDF: $e')
+                    Text('Eșec la extragerea textului din PDF: $e')
                   ],
                 ),
               ),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('Close'),
+                  child: const Text('Închide'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -135,11 +146,52 @@ class CognitiveSkillSelectionChart extends ConsumerWidget {
     }
   }
 
-  void addCognitiveSkillsData(PdfPage page, Kid kid, PdfFont headerFont, PdfFont bodyFont) {
-    final bounds = Rect.fromLTWH(0, 0, page.getClientSize().width, page.getClientSize().height);
-    page.graphics.drawString('Progres dezvoltare cognitivă ${kid.name}', headerFont, bounds: bounds, brush: PdfSolidBrush(PdfColor(0, 0, 0)));
+  void addCognitiveSkillsData(PdfPage page, Kid kid, PdfFont headerFont,
+      PdfFont bodyFont, Uint8List imageBytes, PdfFont footerFont) {
+    final pageWidth = page.getClientSize().width;
+    final pageHeight = page.getClientSize().height;
 
-    final skillsText = kid.cognitiveSkills.map((e) => '${e.monthIndex}: ${e.skills}').join('\n');
-    page.graphics.drawString(skillsText, bodyFont, bounds: Rect.fromLTWH(0, 30, page.getClientSize().width, page.getClientSize().height));
+    page.graphics.drawString(
+      'Progres dezvoltare cognitivă pentru ${kid.name}',
+      headerFont,
+      bounds: Rect.fromLTWH(0, 0, pageWidth, 30),
+      format: PdfStringFormat(alignment: PdfTextAlignment.center),
+      brush: PdfSolidBrush(PdfColor(0, 0, 0)),
+    );
+
+    final skillsText = kid.cognitiveSkills.map((e) {
+      final skills =
+          e.skills != null ? e.skills?.map((s) => '- $s').join('\n  ') : '';
+      return 'Progres ${getTextForMonth(e.monthIndex)} - înregistrată la data de ${formatDateOnly(e.timestamp)}\n  $skills';
+    }).join('\n\n');
+    page.graphics.drawString(
+      skillsText,
+      bodyFont,
+      bounds: Rect.fromLTWH(0, 40, pageWidth, pageHeight - 160),
+      brush: PdfSolidBrush(PdfColor(0, 0, 0)),
+    );
+
+    final image = PdfBitmap(imageBytes);
+
+    const footerHeight = 80;
+    final footerYPosition = pageHeight - footerHeight - 40;
+
+    const imageSize = Size(80, 80);
+    page.graphics.drawImage(
+      image,
+      Rect.fromLTWH((pageWidth - imageSize.width) / 2, footerYPosition,
+          imageSize.width, imageSize.height),
+    );
+
+    const footerText = 'Generat de KidTracker';
+    final textBounds =
+        Rect.fromLTRB(0, footerYPosition + imageSize.height + 5, pageWidth, 20);
+    page.graphics.drawString(
+      footerText,
+      footerFont,
+      bounds: textBounds,
+      format: PdfStringFormat(alignment: PdfTextAlignment.center),
+      brush: PdfSolidBrush(PdfColor(0, 0, 0)),
+    );
   }
 }

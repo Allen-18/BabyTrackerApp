@@ -15,10 +15,14 @@ class HealthMedication extends ConsumerWidget {
 
     return Column(
       children: [
-        const SizedBox(height: 15,),
+        const SizedBox(
+          height: 15,
+        ),
         Expanded(
           flex: 5,
-          child: medications.isEmpty ? noRecords(context) : medicationTable(medications),
+          child: medications.isEmpty
+              ? noRecords(context)
+              : medicationTable(context, ref, medications),
         ),
         Expanded(
           flex: 1,
@@ -31,7 +35,7 @@ class HealthMedication extends ConsumerWidget {
                 backgroundColor: WidgetStateProperty.all(AppColors.primary),
               ),
               child: const Text(
-                "Adaugă medicamentație",
+                "Adaugă medicație",
                 style: TextStyle(color: Colors.white, fontSize: 20),
               ),
             ),
@@ -43,42 +47,85 @@ class HealthMedication extends ConsumerWidget {
 
   Widget noRecords(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Flexible(child:
-          Image.asset(AppAssets.medication, scale: 2,)),
-          const SizedBox(height: 10),
-          Text(
-            "Nu sunt înregistrări",
-            style: getRegularStyle(color: Colors.grey, fontSize: 20),
+      child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Flexible(
+            child: Image.asset(
+          AppAssets.medication,
+          scale: 2,
+        )),
+        const SizedBox(height: 10),
+        Text(
+          "Nu sunt înregistrări",
+          style: getRegularStyle(color: Colors.grey, fontSize: 20),
+        ),
+      ]),
+    );
+  }
+
+  Widget medicationTable(
+      BuildContext context, WidgetRef ref, List<Medication> medications) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minWidth: constraints.maxWidth),
+            child: DataTable(
+              columnSpacing: 20.0,
+              columns: const [
+                DataColumn(label: Text('Nume')),
+                DataColumn(label: Text('Dozaj')),
+                DataColumn(
+                  label: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(text: 'Data\n'),
+                        TextSpan(text: 'introducerii'),
+                      ],
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                DataColumn(label: Text('')),
+              ],
+              rows: List<DataRow>.generate(
+                medications.length,
+                (index) => DataRow(
+                  cells: [
+                    DataCell(Text(medications[index].name)),
+                    DataCell(Text(medications[index].dosage)),
+                    DataCell(
+                        Text(formatTimestamp(medications[index].timestamp))),
+                    DataCell(
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () => showEditMedicationDialog(
+                                context, ref, medications[index], index),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () => ref
+                                .read(medicationProvider.notifier)
+                                .deleteMedication(index),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
-        ]
-      ),
+        );
+      },
     );
   }
 
-  Widget medicationTable(List<Medication> medications) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: DataTable(
-        columns: const [
-          DataColumn(label: Text('Nume')),
-          DataColumn(label: Text('Dozaj')),
-          DataColumn(label: Text('Data introducerii')),
-        ],
-        rows: medications.map((medication) {
-          return DataRow(cells: [
-            DataCell(Text(medication.name)),
-            DataCell(Text(medication.dosage)),
-            DataCell(Text(formatTimestamp(medication.timestamp))),  // Assuming formatTimestamp is implemented
-          ]);
-        }).toList(),
-      ),
-    );
-  }
-
-  Future<void> showAddMedicationDialog(BuildContext context, WidgetRef ref) async {
+  Future<void> showAddMedicationDialog(
+      BuildContext context, WidgetRef ref) async {
     TextEditingController nameController = TextEditingController();
     TextEditingController dosageController = TextEditingController();
 
@@ -86,38 +133,97 @@ class HealthMedication extends ConsumerWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Add Medication'),
+          title: const Text('Adaugă medicație'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: nameController,
-                decoration: const InputDecoration(hintText: 'Enter medication name'),
+                decoration: const InputDecoration(
+                    hintText: 'Introdu numele medicației'),
               ),
-              const SizedBox(height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               TextField(
                 controller: dosageController,
-                decoration: const InputDecoration(hintText: 'Enter dosage'),
+                decoration: const InputDecoration(hintText: 'Introdu doza'),
               ),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel'),
+              child: const Text('Anulează'),
             ),
             TextButton(
               onPressed: () {
-                if (nameController.text.isNotEmpty && dosageController.text.isNotEmpty) {
+                if (nameController.text.isNotEmpty &&
+                    dosageController.text.isNotEmpty) {
                   ref.read(medicationProvider.notifier).addMedication(
-                    nameController.text,
-                    dosageController.text,
-                    DateTime.now(),
-                  );
+                        nameController.text,
+                        dosageController.text,
+                        DateTime.now(),
+                      );
                   Navigator.pop(context);
                 }
               },
-              child: const Text('Salvare date'),
+              child: const Text('Salvează'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> showEditMedicationDialog(BuildContext context, WidgetRef ref,
+      Medication medication, int index) async {
+    TextEditingController nameController =
+        TextEditingController(text: medication.name);
+    TextEditingController dosageController =
+        TextEditingController(text: medication.dosage);
+
+    return showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Editează medicația'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: nameController,
+                decoration: const InputDecoration(
+                    hintText: 'Introdu numele medicației'),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextField(
+                controller: dosageController,
+                decoration: const InputDecoration(hintText: 'Introdu doza'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Anulează'),
+            ),
+            TextButton(
+              onPressed: () {
+                if (nameController.text.isNotEmpty &&
+                    dosageController.text.isNotEmpty) {
+                  ref.read(medicationProvider.notifier).editMedication(
+                        index,
+                        nameController.text,
+                        dosageController.text,
+                        medication.timestamp,
+                      );
+                  Navigator.pop(context);
+                }
+              },
+              child: const Text('Salvează'),
             ),
           ],
         );

@@ -6,7 +6,7 @@ import 'package:tracker/authentication/domain/user.dart';
 import 'package:tracker/features/common/utils/show_read_err.dart';
 import 'package:tracker/features/drawer/storage.dart';
 
-enum AvatarSize { listTile, drawerBig, drawerSmall, profilePic }
+enum AvatarSizeForParent { listTile, drawerBig, drawerSmall, profilePic }
 
 class ParentNetworkAvatar extends ConsumerWidget {
   const ParentNetworkAvatar({
@@ -16,7 +16,7 @@ class ParentNetworkAvatar extends ConsumerWidget {
     this.parent,
   });
 
-  final AvatarSize avatarSize;
+  final AvatarSizeForParent avatarSize;
   final String? parentId;
   final User? parent;
 
@@ -70,19 +70,19 @@ class ParentNetworkAvatar extends ConsumerWidget {
         });
   }
 
-  double getRadius(AvatarSize av) {
+  double getRadius(AvatarSizeForParent av) {
     double radius = 20.0;
     switch (avatarSize) {
-      case AvatarSize.profilePic:
+      case AvatarSizeForParent.profilePic:
         radius = 60;
         break;
-      case AvatarSize.listTile:
-        radius = 20;
+      case AvatarSizeForParent.listTile:
+        radius = 40;
         break;
-      case AvatarSize.drawerBig:
+      case AvatarSizeForParent.drawerBig:
         radius = 90;
         break;
-      case AvatarSize.drawerSmall:
+      case AvatarSizeForParent.drawerSmall:
         radius = 20;
         break;
     }
@@ -98,7 +98,7 @@ class ParentNetworkAvatar extends ConsumerWidget {
   }
 
   Widget addOnTap(BuildContext context, CircleAvatar w) {
-    if (avatarSize == AvatarSize.drawerSmall) {
+    if (avatarSize == AvatarSizeForParent.drawerSmall) {
       return GestureDetector(
         child: w,
         onTap: () => Scaffold.of(context).openEndDrawer(),
@@ -108,55 +108,12 @@ class ParentNetworkAvatar extends ConsumerWidget {
     }
   }
 
-  CircleAvatar addIsActive(CircleAvatar w, bool? isActive) {
-    if (isActive == null) {
-      return w;
-    }
-    var margin = 2.0;
-    if (avatarSize == AvatarSize.drawerBig) {
-      margin = 6.0;
-    }
-    if (avatarSize == AvatarSize.listTile) {
-      margin = 0.5;
-    }
-    if (avatarSize == AvatarSize.drawerSmall) {
-      margin = 4.5;
-    }
-    return CircleAvatar(
-        backgroundImage: w.backgroundImage,
-        radius: w.radius,
-        child: Stack(
-          children: [
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Container(
-                margin: EdgeInsets.all(margin),
-                width: 12,
-                height: 12,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: isActive ? Colors.lightGreenAccent[700] : Colors.red,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 2,
-                      blurRadius: 7,
-                      offset: const Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ));
-  }
-
   Widget addPadding(Widget w) {
     return Padding(padding: const EdgeInsets.only(right: 10), child: w);
   }
 
   Widget defaultAvatar(
-      BuildContext context, AvatarSize avatarSize, User? parent) {
+      BuildContext context, AvatarSizeForParent avatarSize, User? parent) {
     final radius = getRadius(avatarSize);
     const defaultImg = AssetImage('assets/images/profile.jpg');
     return CircleAvatar(backgroundImage: defaultImg, radius: radius);

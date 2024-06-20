@@ -12,6 +12,7 @@ import 'package:tracker/services/app_router.dart';
 import 'package:tracker/authentication/domain/user.dart';
 import 'package:tracker/features/common/providers/relationship_pod.dart';
 import 'package:tracker/authentication/repository/users.dart';
+import 'package:tracker/features/drawer/storage.dart';
 
 class Parent extends HookConsumerWidget {
   Parent({super.key, required this.parent});
@@ -25,35 +26,46 @@ class Parent extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedRelationship = ref.watch(selectedRelationshipPod);
     final nameController = useTextEditingController();
-    final imageFile = useState<XFile?>(null);
+    final imageFile = useState<String?>(parent.profileImgUri);
 
-    Future<void> saveForm() async {
-      if (!_formKey.currentState!.validate()) {
-        return;
-      }
-      User u = parent.copyWith(
-        name: nameController.text.trim(),
-        relationship: selectedRelationship,
-        isActive: true,
-        hasChild: false,
-        // Add image to user if needed
-      );
-
-      try {
-        final repo = ref.read(usersRepositoryProvider);
-        await repo.updateUser(u);
-      } catch (ex) {
-        if (kDebugMode) {
-          print("Could not save new User: $u");
-        }
-      }
+    Future<void> takePhoto(
+        ImageSource source, ValueNotifier<String?> imageFile) async {
+      final XFile? image = await _picker.pickImage(source: source);
+      debugPrint('Parent | takePhoto | image=${image?.path}');
+      final l = await image?.length();
+      debugPrint('Parent | takePhoto | image length=$l');
+      imageFile.value = image?.path;
     }
 
-    Future<void> pickImage() async {
-      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        imageFile.value = pickedFile;
-      }
+    void showImageSourceActionSheet(
+        BuildContext context, ValueNotifier<String?> imageFile) {
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SafeArea(
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                  leading: const Icon(Icons.photo_library),
+                  title: const Text('Galerie'),
+                  onTap: () {
+                    takePhoto(ImageSource.gallery, imageFile);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.photo_camera),
+                  title: const Text('Camera'),
+                  onTap: () {
+                    takePhoto(ImageSource.camera, imageFile);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      );
     }
 
     Size size = MediaQuery.of(context).size;
@@ -77,22 +89,23 @@ class Parent extends HookConsumerWidget {
               const Center(
                 child: Text(
                   "Vă rugăm să acordați un moment pentru a personaliza aplicația.",
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: 18),
                   textAlign: TextAlign.center,
                 ),
               ),
               const SizedBox(height: 25),
               Center(
                 child: GestureDetector(
-                  onTap: pickImage,
+                  onTap: () => showImageSourceActionSheet(context, imageFile),
                   child: CircleAvatar(
                     radius: 50,
                     backgroundColor: AppColors.lightPrimary,
                     backgroundImage: imageFile.value != null
-                        ? FileImage(File(imageFile.value!.path))
+                        ? FileImage(File(imageFile.value!))
                         : null,
                     child: imageFile.value == null
-                        ? const Icon(Icons.camera_alt, size: 50, color: Colors.grey)
+                        ? const Icon(Icons.camera_alt,
+                            size: 50, color: Colors.grey)
                         : null,
                   ),
                 ),
@@ -110,6 +123,12 @@ class Parent extends HookConsumerWidget {
                   ),
                 ),
                 style: getRegularStyle(color: AppColors.grey, fontSize: 15),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Introduceți numele dvs.';
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 25),
               Text(
@@ -125,7 +144,8 @@ class Parent extends HookConsumerWidget {
                       value: Relationship.mother.name,
                       groupValue: selectedRelationship,
                       onChanged: (String? value) {
-                        ref.read(selectedRelationshipPod.notifier).state = value;
+                        ref.read(selectedRelationshipPod.notifier).state =
+                            value;
                       },
                     ),
                   ),
@@ -135,7 +155,8 @@ class Parent extends HookConsumerWidget {
                       value: Relationship.father.name,
                       groupValue: selectedRelationship,
                       onChanged: (String? value) {
-                        ref.read(selectedRelationshipPod.notifier).state = value;
+                        ref.read(selectedRelationshipPod.notifier).state =
+                            value;
                       },
                     ),
                   ),
@@ -144,12 +165,54 @@ class Parent extends HookConsumerWidget {
               SizedBox(height: size.height * 0.2),
               GestureDetector(
                 onTap: () async {
-                  final currentUser =
-                  await ref.read(getCurrentUserStreamProvider.future);
-                  if (context.mounted) {
-                    saveForm();
-                    context.pushNamed(AppRoutes.addBabyData.name,
-                        extra: currentUser);
+                  if (!_formKey.currentState!.validate()) {
+                    return;
+                  }
+                  if (selectedRelationship != null &&
+                      nameController.text.isNotEmpty) {
+                    final st = Storage();
+                    final gsFilePath = st
+                        .getGsProfilePicPathBasedOnDate(imageFile.value ?? '');
+                    if (imageFile.value != null) {
+                      await st.uploadFile(gsFilePath, imageFile.value!);
+                    }
+                    var updatedUser = parent.copyWith(
+                      profileImgUri: gsFilePath,
+                      name: nameController.text.trim(),
+                      relationship: selectedRelationship,
+                      isActive: true,
+                      hasChild: false,
+                    );
+                    try {
+                      final repo = ref.read(usersRepositoryProvider);
+                      await repo.updateUser(updatedUser);
+                      if (context.mounted) {
+                        context
+                            .pushReplacementNamed(AppRoutes.addBabyData.name);
+                      }
+                    } catch (ex) {
+                      if (kDebugMode) {
+                        print("Could not save new User: $updatedUser");
+                      }
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content:
+                                  Text('Eroare la salvarea utilizatorului.')),
+                        );
+                      }
+                      return;
+                    }
+                  } else {
+                    if (kDebugMode) {
+                      print("Form fields are not correctly filled.");
+                    }
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text(
+                              'Vă rugăm să completați toate câmpurile corect.')),
+                    );
+                    return;
                   }
                 },
                 child: appButton(text: "Continuă"),

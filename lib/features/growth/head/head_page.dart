@@ -34,7 +34,8 @@ class GrowthHead extends ConsumerWidget {
             padding: const EdgeInsets.all(16),
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () => showAddHeadCircumferenceDialog(context, ref, currentKid),
+              onPressed: () =>
+                  showAddHeadCircumferenceDialog(context, ref, currentKid),
               style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.all(AppColors.primary)),
               child: Text(

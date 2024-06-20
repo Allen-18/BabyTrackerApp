@@ -14,13 +14,16 @@ import 'package:tracker/features/children/kids_repository.dart';
 import 'package:tracker/features/children/kids.dart';
 import 'package:tracker/authentication/domain/user.dart';
 import 'package:tracker/authentication/repository/users.dart';
+import '../../drawer/storage.dart';
 import 'measurement_fields.dart';
 
 class BabyProfile extends HookConsumerWidget {
-  BabyProfile({super.key, required this.parent});
-  final User parent;
+  BabyProfile({
+    super.key,
+  });
 
-  // Declare a GlobalKey
+  //final User parent;
+
   final _formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
 
@@ -41,68 +44,49 @@ class BabyProfile extends HookConsumerWidget {
     final gender = useState('Boy');
     final twinGender = useState('Boy');
     final isTwin = useState(false);
-    final imageFile = useState<XFile?>(null);
-    final twinImageFile = useState<XFile?>(null);
+    final twinIsPremature = useState(false);
+    final isPremature = useState(false);
+    final imageFile = useState<String?>('');
+    final twinImageFile = useState<String?>('');
 
-    Future<void> saveForm() async {
-      if (!_formKey.currentState!.validate()) {
-        return;
-      }
-      Kid addKid = Kid(
-        name: nameController.text.trim(),
-        dateOfBirth: dobController.text.trim(),
-        gender: gender.value,
-        isHasTwin: isTwin.value,
-        childWeight: double.parse(weightController.text),
-        childHeight: double.parse(heightController.text),
-        childHeadCircumference: double.parse(headCircumferenceController.text),
-        assignedParentId: parent.id,
-        profileImgUriChild: imageFile.value?.path, // Include image file path
+    Future<void> takePhoto(
+        ImageSource source, ValueNotifier<String?> imageFile) async {
+      final XFile? image = await _picker.pickImage(source: source);
+      debugPrint('_BabyProfile | takePhoto | image=${image?.path}');
+      final l = await image?.length();
+      debugPrint('_BabyProfile | takePhoto | image length=$l');
+      imageFile.value = image?.path;
+    }
+
+    void showImageSourceActionSheet(
+        BuildContext context, ValueNotifier<String?> imageFile) {
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SafeArea(
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                  leading: const Icon(Icons.photo_library),
+                  title: const Text('Galerie'),
+                  onTap: () {
+                    takePhoto(ImageSource.gallery, imageFile);
+                    Navigator.of(context).pop();
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.photo_camera),
+                  title: const Text('Cameră'),
+                  onTap: () {
+                    takePhoto(ImageSource.camera, imageFile);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            ),
+          );
+        },
       );
-      try {
-        final repo = ref.read(kidsRepositoryProvider);
-        await repo.createNewKid(addKid);
-      } catch (ex) {
-        if (kDebugMode) {
-          print("Could not save new Kid: $addKid");
-        }
-      }
-      if (isTwin.value == true) {
-        Kid twinKid = Kid(
-          name: twinNameController.text.trim(),
-          dateOfBirth: twinDobController.text.trim(),
-          gender: twinGender.value,
-          isHasTwin: true,
-          childWeight: double.parse(twinWeightController.text),
-          childHeight: double.parse(twinHeightController.text),
-          childHeadCircumference:
-          double.parse(twinHeadCircumferenceController.text),
-          assignedParentId: parent.id,
-          profileImgUriChild: twinImageFile.value?.path, // Include twin's image file path
-        );
-        try {
-          final repo = ref.read(kidsRepositoryProvider);
-          await repo.createNewKid(twinKid);
-        } catch (ex) {
-          if (kDebugMode) {
-            print("Could not save new Twin: $twinKid");
-          }
-        }
-      }
-    }
-
-    Future<void> pickImage() async {
-      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        imageFile.value = pickedFile;
-      }
-    }
-
-    Future<void> pickTwinImage() async {
-      final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-      if (pickedFile != null) {
-        twinImageFile.value = pickedFile;
-      }
     }
 
     return Scaffold(
@@ -123,15 +107,16 @@ class BabyProfile extends HookConsumerWidget {
               const SizedBox(height: 25),
               Center(
                 child: GestureDetector(
-                  onTap: pickImage,
+                  onTap: () => showImageSourceActionSheet(context, imageFile),
                   child: CircleAvatar(
                     radius: 50,
                     backgroundColor: AppColors.lightPrimary,
                     backgroundImage: imageFile.value != null
-                        ? FileImage(File(imageFile.value!.path))
+                        ? FileImage(File(imageFile.value!))
                         : null,
                     child: imageFile.value == null
-                        ? const Icon(Icons.camera_alt, size: 50, color: Colors.grey)
+                        ? const Icon(Icons.camera_alt,
+                            size: 50, color: Colors.grey)
                         : null,
                   ),
                 ),
@@ -139,7 +124,8 @@ class BabyProfile extends HookConsumerWidget {
               const SizedBox(height: 25),
               TextFormField(
                 controller: nameController,
-                decoration: const InputDecoration(labelText: "Numele copilului"),
+                decoration:
+                    const InputDecoration(labelText: "Numele copilului"),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Numele copilului nu poate fi gol';
@@ -168,7 +154,8 @@ class BabyProfile extends HookConsumerWidget {
               ),
               const SizedBox(height: 25),
               RadioListTile<String>(
-                title: Text('Băiat', style: TextStyle(color: AppColors.darkGrey)),
+                title:
+                    Text('Băiat', style: TextStyle(color: AppColors.darkGrey)),
                 value: 'Boy',
                 groupValue: gender.value,
                 onChanged: (String? value) {
@@ -178,7 +165,8 @@ class BabyProfile extends HookConsumerWidget {
                 },
               ),
               RadioListTile<String>(
-                title: Text('Fată', style: TextStyle(color: AppColors.darkGrey)),
+                title:
+                    Text('Fată', style: TextStyle(color: AppColors.darkGrey)),
                 value: 'Girl',
                 groupValue: gender.value,
                 onChanged: (String? value) {
@@ -192,7 +180,21 @@ class BabyProfile extends HookConsumerWidget {
                 weightController: weightController,
                 heightController: heightController,
                 headCircumferenceController: headCircumferenceController,
-
+              ),
+              const SizedBox(height: 25),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Bebeluș născut prematur'),
+                  Checkbox(
+                    value: isPremature.value,
+                    onChanged: (bool? value) {
+                      if (value != null) {
+                        isPremature.value = value;
+                      }
+                    },
+                  ),
+                ],
               ),
               const SizedBox(height: 25),
               Row(
@@ -210,15 +212,17 @@ class BabyProfile extends HookConsumerWidget {
               if (isTwin.value) ...[
                 Center(
                   child: GestureDetector(
-                    onTap: pickTwinImage,
+                    onTap: () =>
+                        showImageSourceActionSheet(context, twinImageFile),
                     child: CircleAvatar(
                       radius: 50,
                       backgroundColor: AppColors.lightPrimary,
                       backgroundImage: twinImageFile.value != null
-                          ? FileImage(File(twinImageFile.value!.path))
+                          ? FileImage(File(twinImageFile.value!))
                           : null,
                       child: twinImageFile.value == null
-                          ? const Icon(Icons.camera_alt, size: 50, color: Colors.grey)
+                          ? const Icon(Icons.camera_alt,
+                              size: 50, color: Colors.grey)
                           : null,
                     ),
                   ),
@@ -257,7 +261,8 @@ class BabyProfile extends HookConsumerWidget {
                 ),
                 const SizedBox(height: 25),
                 RadioListTile<String>(
-                  title: Text('Băiat', style: TextStyle(color: AppColors.darkGrey)),
+                  title: Text('Băiat',
+                      style: TextStyle(color: AppColors.darkGrey)),
                   value: 'Boy',
                   groupValue: twinGender.value,
                   onChanged: (String? value) {
@@ -267,7 +272,8 @@ class BabyProfile extends HookConsumerWidget {
                   },
                 ),
                 RadioListTile<String>(
-                  title: Text('Fată', style: TextStyle(color: AppColors.darkGrey)),
+                  title:
+                      Text('Fată', style: TextStyle(color: AppColors.darkGrey)),
                   value: 'Girl',
                   groupValue: twinGender.value,
                   onChanged: (String? value) {
@@ -282,23 +288,28 @@ class BabyProfile extends HookConsumerWidget {
                   heightController: twinHeightController,
                   headCircumferenceController: twinHeadCircumferenceController,
                 ),
+                const SizedBox(height: 25),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('Bebeluș născut prematur'),
+                    Checkbox(
+                      value: twinIsPremature.value,
+                      onChanged: (bool? value) {
+                        if (value != null) {
+                          twinIsPremature.value = value;
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ],
               const SizedBox(height: 50),
               GestureDetector(
-                onTap: () {
-                  if (context.mounted) {
-                    context.pushNamed(AppRoutes.addNewBaby.name);
-                  }
-                },
-                child: appButton(
-                    text: "Adaugă o soră sau un frate",
-                    background: AppColors.lightPrimary,
-                    textColor: AppColors.primary),
-              ),
-              const SizedBox(height: 50),
-              GestureDetector(
                 onTap: () async {
-                  User u = parent.copyWith(hasChild: true);
+                  final currentUser =
+                      await ref.read(getCurrentUserStreamProvider.future);
+                  User u = currentUser!.copyWith(hasChild: true);
                   try {
                     final repo = ref.read(usersRepositoryProvider);
                     await repo.updateUser(u);
@@ -307,10 +318,79 @@ class BabyProfile extends HookConsumerWidget {
                       print("Could not save new User: $u");
                     }
                   }
-                  final currentUser =
-                  await ref.read(getCurrentUserStreamProvider.future);
+                  final st = Storage();
+                  String? gsFilePath;
+                  String? gsFilePathTwin;
+
+                  if (imageFile.value != null) {
+                    gsFilePath = st.getGsKidPicPathBasedOnDate(
+                        imageFile.value!, currentUser.id.toString());
+                    await st.uploadFile(gsFilePath, imageFile.value!);
+                  }
+
+                  if (twinImageFile.value != null) {
+                    gsFilePathTwin = st.getGsKidPicPathBasedOnDate(
+                        twinImageFile.value!, currentUser.id.toString());
+                    await st.uploadFile(gsFilePathTwin, twinImageFile.value!);
+                  }
+
+                  if (!_formKey.currentState!.validate()) {
+                    return;
+                  }
+
+                  Kid addKid = Kid(
+                    name: nameController.text.trim(),
+                    dateOfBirth: dobController.text.trim(),
+                    gender: gender.value,
+                    isHasTwin: isTwin.value,
+                    isPremature: isPremature.value,
+                    childWeight: double.parse(
+                        weightController.text.replaceAll(',', '.')),
+                    childHeight: double.parse(
+                        heightController.text.replaceAll(',', '.')),
+                    childHeadCircumference: double.parse(
+                        headCircumferenceController.text.replaceAll(',', '.')),
+                    assignedParentId: currentUser.id,
+                    profileImgUriChild: gsFilePath,
+                  );
+
+                  try {
+                    final repo = ref.read(kidsRepositoryProvider);
+                    await repo.createNewKid(addKid);
+                  } catch (ex) {
+                    if (kDebugMode) {
+                      print("Could not save new Kid: $addKid");
+                    }
+                  }
+
+                  if (isTwin.value) {
+                    Kid twinKid = Kid(
+                      name: twinNameController.text.trim(),
+                      dateOfBirth: twinDobController.text.trim(),
+                      gender: twinGender.value,
+                      isHasTwin: true,
+                      isPremature: twinIsPremature.value,
+                      childWeight: double.parse(
+                          twinWeightController.text.replaceAll(',', '.')),
+                      childHeight: double.parse(
+                          twinHeightController.text.replaceAll(',', '.')),
+                      childHeadCircumference: double.parse(
+                          twinHeadCircumferenceController.text
+                              .replaceAll(',', '.')),
+                      assignedParentId: currentUser.id,
+                      profileImgUriChild: gsFilePathTwin,
+                    );
+
+                    try {
+                      final repo = ref.read(kidsRepositoryProvider);
+                      await repo.createNewKid(twinKid);
+                    } catch (ex) {
+                      if (kDebugMode) {
+                        print("Could not save new Twin: $twinKid");
+                      }
+                    }
+                  }
                   if (context.mounted) {
-                    saveForm();
                     context.pushNamed(AppRoutes.homeScreen.name,
                         extra: currentUser);
                   }

@@ -19,9 +19,9 @@ class ChildName extends FormzInput<String, ChildValidationError> {
 
   static String? showChildNameErrorMessage(ChildValidationError? error) {
     if (error == ChildValidationError.empty) {
-      return 'Empty name';
+      return 'Numele este gol';
     } else if (error == ChildValidationError.invalid) {
-      return 'Too short name';
+      return 'Numele este prea scurt';
     } else {
       return null;
     }

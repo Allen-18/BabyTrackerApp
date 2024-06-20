@@ -2,7 +2,7 @@ const String imagePath = "assets/images";
 
 class AppAssets {
   static const String logo = "$imagePath/logo.png";
-  static const String registrationBackground = "$imagePath/loginBackground.png";
+  static const String registrationBackground = "$imagePath/loginBackground.jpg";
   static const String growth = "$imagePath/baby.png";
   static const String health = "$imagePath/health.png";
   static const String temperature = "$imagePath/temperature.png";
@@ -16,5 +16,4 @@ class AppAssets {
   static const String noData = "$imagePath/nodata.png";
   static const String social = "$imagePath/social.png";
   static const String language = "$imagePath/language.png";
-
 }

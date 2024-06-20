@@ -2,6 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tracker/features/drawer/storage.dart';
+import 'package:tracker/features/children/kids.dart';
+
+import '../children/kids_repository.dart';
+import '../common/utils/show_read_err.dart';
 
 enum AvatarSize { listTile, drawerBig, drawerSmall, profilePic }
 
@@ -9,32 +13,42 @@ class KidNetworkAvatar extends ConsumerWidget {
   const KidNetworkAvatar({
     super.key,
     required this.avatarSize,
-    required this.kidId,
+    required this.kid,
   });
 
   final AvatarSize avatarSize;
-  final String kidId;
+  final Kid kid;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return getKidCircleAvatar(context, kidId);
+    final pod = getKidFutureProvider(kidId: kid.id!);
+    final da = ref.watch(pod);
+    final radius = getRadius(avatarSize);
+    return da.when(
+        loading: () => loading(radius),
+        error: (err, stack) => ShowReadErr(
+            err: err, stack: stack, retry: () => ref.invalidate(pod)),
+        data: (parent) => getKidCircleAvatar(context, kid));
   }
 
-  Widget getKidCircleAvatar(BuildContext context, String kidId) {
+  Widget getKidCircleAvatar(BuildContext context, Kid kid) {
     final radius = getRadius(avatarSize);
+    if (kid.profileImgUriChild == null || kid.profileImgUriChild!.isEmpty) {
+      return defaultAvatar(context, avatarSize, kid);
+    }
     final storage = Storage();
     return FutureBuilder<String>(
-        future: storage.getKidProfilePicUrl(kidId),
+        future: storage.getProfilePicUrl(kid.profileImgUriChild!),
         builder: (BuildContext context, AsyncSnapshot<String> url) {
           if (url.hasError) {
             if (kDebugMode) {
-              print('Could not load profile pic for kid $kidId');
+              print('Could not load profile pic for kid $kid');
             }
-            return defaultAvatar(context, avatarSize);
+            return defaultAvatar(context, avatarSize, kid);
           }
           if (url.hasData) {
             if (url.data == null || url.data!.isEmpty) {
-              return defaultAvatar(context, avatarSize);
+              return defaultAvatar(context, avatarSize, kid);
             }
             return CircleAvatar(
               radius: radius,
@@ -73,7 +87,7 @@ class KidNetworkAvatar extends ConsumerWidget {
     );
   }
 
-  Widget defaultAvatar(BuildContext context, AvatarSize avatarSize) {
+  Widget defaultAvatar(BuildContext context, AvatarSize avatarSize, Kid kid) {
     final radius = getRadius(avatarSize);
     const defaultImg = AssetImage('assets/images/profile.jpg');
     return CircleAvatar(backgroundImage: defaultImg, radius: radius);

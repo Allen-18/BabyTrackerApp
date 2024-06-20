@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter/material.dart';
 import 'package:form_validators/form_validators.dart';
@@ -30,9 +28,12 @@ class SignUp extends HookConsumerWidget {
     final isLoading = useState(false);
     final signUpAttempted = useState(false);
 
-    final showErrorEmail = signUpAttempted.value && signUpState.email.isNotValid;
-    final showErrorPassword = signUpAttempted.value && signUpState.password.isNotValid;
-    final showErrorConfirmPassword = signUpAttempted.value && signUpState.confirmPassword.isNotValid;
+    final showErrorEmail =
+        signUpAttempted.value && signUpState.email.isNotValid;
+    final showErrorPassword =
+        signUpAttempted.value && signUpState.password.isNotValid;
+    final showErrorConfirmPassword =
+        signUpAttempted.value && signUpState.confirmPassword.isNotValid;
 
     return Scaffold(
       body: Container(
@@ -48,9 +49,9 @@ class SignUp extends HookConsumerWidget {
               flex: 1,
               child: Container(
                   margin: const EdgeInsets.only(top: AppMargin.m70),
-                  child: Text('Sign Up',
+                  child: Text('Înregistrare',
                       style:
-                      getBoldStyle(color: AppColors.black, fontSize: 40))),
+                          getBoldStyle(color: AppColors.black, fontSize: 40))),
             ),
             Expanded(
               flex: 4,
@@ -60,7 +61,7 @@ class SignUp extends HookConsumerWidget {
                   decoration: BoxDecoration(
                     color: AppColors.white,
                     borderRadius:
-                    const BorderRadius.only(topLeft: Radius.circular(100)),
+                        const BorderRadius.only(topLeft: Radius.circular(100)),
                   ),
                   child: ListView(
                     children: [
@@ -73,14 +74,14 @@ class SignUp extends HookConsumerWidget {
                           children: [
                             Flexible(
                                 child: TextFormField(
-                                  initialValue: signUpState.email.value,
-                                  onChanged: (value) =>
-                                      signUpController.onEmailChange(value),
-                                  decoration: const InputDecoration(
-                                    hintText: 'Enter your email',
-                                    border: InputBorder.none,
-                                  ),
-                                )),
+                              initialValue: signUpState.email.value,
+                              onChanged: (value) =>
+                                  signUpController.onEmailChange(value),
+                              decoration: const InputDecoration(
+                                hintText: 'Introduceți email-ul',
+                                border: InputBorder.none,
+                              ),
+                            )),
                           ],
                         ),
                       ),
@@ -93,7 +94,7 @@ class SignUp extends HookConsumerWidget {
                             padding: const EdgeInsets.only(left: 18.0),
                             child: Text(
                               Email.showEmailErrorMessage(
-                                  signUpState.email.error) ??
+                                      signUpState.email.error) ??
                                   "",
                               style: const TextStyle(color: Colors.red),
                             )),
@@ -102,14 +103,14 @@ class SignUp extends HookConsumerWidget {
                       ),
                       loginBox(
                         context: context,
-                        text: "Password",
+                        text: "Parolă",
                         child: TextFormField(
                           initialValue: signUpState.password.value,
                           onChanged: (value) =>
                               signUpController.onPasswordChange(value),
                           obscureText: true,
                           decoration: const InputDecoration(
-                            hintText: 'Enter your password',
+                            hintText: 'Introduceți parola',
                             border: InputBorder.none,
                           ),
                         ),
@@ -123,7 +124,7 @@ class SignUp extends HookConsumerWidget {
                             padding: const EdgeInsets.only(left: 18.0),
                             child: Text(
                               Password.showPasswordErrorMessage(
-                                  signUpState.password.error) ??
+                                      signUpState.password.error) ??
                                   "",
                               style: const TextStyle(color: Colors.red),
                             )),
@@ -132,14 +133,14 @@ class SignUp extends HookConsumerWidget {
                       ),
                       loginBox(
                         context: context,
-                        text: "Confirm Password",
+                        text: "Confirmare Parolă",
                         child: TextFormField(
                           initialValue: signUpState.confirmPassword.value,
                           onChanged: (value) =>
                               signUpController.onConfirmPasswordChange(value),
                           obscureText: true,
                           decoration: const InputDecoration(
-                            hintText: 'Confirm your password',
+                            hintText: 'Confirmați parola',
                             border: InputBorder.none,
                           ),
                         ),
@@ -153,7 +154,7 @@ class SignUp extends HookConsumerWidget {
                             padding: const EdgeInsets.only(left: 18.0),
                             child: Text(
                               ConfirmPassword.showConfirmPasswordErrorMessage(
-                                  signUpState.confirmPassword.error) ??
+                                      signUpState.confirmPassword.error) ??
                                   "",
                               style: const TextStyle(color: Colors.red),
                             )),
@@ -162,41 +163,42 @@ class SignUp extends HookConsumerWidget {
                       ),
                       isLoading.value
                           ? const SizedBox(
-                        width: 90,
-                        height: 90,
-                        child: LoadingSheet(),
-                      )
+                              width: 90,
+                              height: 90,
+                              child: LoadingSheet(),
+                            )
                           : TextButton(
-                        onPressed: () async {
-                          if (context.mounted) {
-                            context.pushNamed(AppRoutes.login.name);
-                          }
-                        },
-                        child: Text(
-                          "Already have an account",
-                          style: getRegularStyle(
-                              color: AppColors.primary, fontSize: 14),
-                        ),
-                      ),
+                              onPressed: () async {
+                                if (context.mounted) {
+                                  context.pushNamed(AppRoutes.login.name);
+                                }
+                              },
+                              child: Text(
+                                "Deja aveți un cont?",
+                                style: getRegularStyle(
+                                    color: AppColors.primary, fontSize: 14),
+                              ),
+                            ),
                       const SizedBox(height: 40),
                       GestureDetector(
                         onTap: () async {
                           signUpAttempted.value = true;
                           isLoading.value = true; // Start loading
-                          FirebaseException? error = await signUpController
+                          String? errorMessage = await signUpController
                               .signUpWithEmailAndPassword();
-                          if (error != null) {
+                          if (errorMessage != null) {
                             if (context.mounted) {
                               ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(error.toString())));
-                            } // Show error if any
+                                  SnackBar(content: Text(errorMessage)));
+                            }
+                            isLoading.value = false; // Stop loading
                           } else {
                             if (context.mounted) {
                               context.pushNamed(AppRoutes.login.name);
                             }
                           }
                         },
-                        child: appButton(text: "Create Account"),
+                        child: appButton(text: "Creează cont"),
                       ),
                       const SizedBox(height: 20),
                     ],

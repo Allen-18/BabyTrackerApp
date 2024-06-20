@@ -7,9 +7,9 @@ part 'social_kid_skills.g.dart';
 class SocialKidSkills with _$SocialKidSkills {
   const factory SocialKidSkills(
       {required DateTime timestamp,
-        List<String>? skills,
-        required int monthIndex,
-        required double progress}) = _SocialKidSkills;
+      List<String>? skills,
+      required int monthIndex,
+      required double progress}) = _SocialKidSkills;
 
   factory SocialKidSkills.fromJson(Map<String, dynamic> json) =>
       _$SocialKidSkillsFromJson(json);

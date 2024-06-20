@@ -16,13 +16,12 @@ class UsersRepository {
     }
 
     final userStream = userCollection().doc(uid).snapshots().map((querySnap) {
-      final usr = querySnap.data();
+      final user = querySnap.data();
       if (kDebugMode) {
-        print('$usr');
+        print('$user');
       }
       return querySnap.data();
     });
-
     return userStream;
   }
 

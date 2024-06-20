@@ -97,7 +97,7 @@ class Kid with _$Kid {
         age = "$months luni";
       }
       if (days > 0) {
-        age += " $days zile";
+        age += " și $days zile";
       }
     } else {
       int days = ageDifference.inDays;
