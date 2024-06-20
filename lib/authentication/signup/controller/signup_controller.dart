@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:form_validators/form_validators.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:equatable/equatable.dart';
@@ -14,7 +13,6 @@ final signUpProvider = StateNotifierProvider<SignUpController, SignUpState>(
 class SignUpController extends StateNotifier<SignUpState> {
   final AuthenticationRepository _authenticationRepository;
   SignUpController(this._authenticationRepository) : super(const SignUpState());
-
   void onEmailChange(String value) {
     final email = Email.dirty(value);
     final isValid = Formz.validate(
@@ -23,7 +21,6 @@ class SignUpController extends StateNotifier<SignUpState> {
         state.password,
       ],
     );
-
     FormzSubmissionStatus newStatus =
         isValid ? FormzSubmissionStatus.success : FormzSubmissionStatus.failure;
 
@@ -41,7 +38,6 @@ class SignUpController extends StateNotifier<SignUpState> {
         password,
       ],
     );
-
     FormzSubmissionStatus newStatus =
         isValid ? FormzSubmissionStatus.success : FormzSubmissionStatus.failure;
 
@@ -68,7 +64,7 @@ class SignUpController extends StateNotifier<SignUpState> {
     );
   }
 
-  Future<FirebaseException?> signUpWithEmailAndPassword() async {
+  Future<String?> signUpWithEmailAndPassword() async {
     state = state.copyWith(status: FormzSubmissionStatus.inProgress);
     try {
       await _authenticationRepository.signUpWithEmailAndPassword(
@@ -77,16 +73,30 @@ class SignUpController extends StateNotifier<SignUpState> {
       return null;
     } catch (e) {
       String errorMessage = 'An unexpected error occurred.';
-      FirebaseException? exceptionToReturn;
 
       if (e is SignUpWithEmailAndPasswordFailure) {
-        errorMessage = e.code;
-        exceptionToReturn = FirebaseException(
-            plugin: 'auth', code: e.code, message: errorMessage);
+        switch (e.error) {
+          case SignUpError.weakPassword:
+            errorMessage = 'Parola furnizată este prea slabă.';
+            break;
+          case SignUpError.emailAlreadyInUse:
+            errorMessage = 'Există deja un cont cu acest email.';
+            break;
+          case SignUpError.invalidEmail:
+            errorMessage = 'Adresa de email nu este validă.';
+            break;
+          case SignUpError.operationNotAllowed:
+            errorMessage =
+                'Operațiunea nu este permisă. Vă rugăm să contactați suportul.';
+            break;
+          default:
+            errorMessage = 'A apărut o eroare neașteptată.';
+        }
       }
+
       state = state.copyWith(
           status: FormzSubmissionStatus.failure, errorMessage: errorMessage);
-      return exceptionToReturn;
+      return errorMessage;
     }
   }
 }

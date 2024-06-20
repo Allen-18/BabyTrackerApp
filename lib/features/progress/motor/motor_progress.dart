@@ -11,23 +11,25 @@ import 'package:tracker/features/children/kids_repository.dart';
 import 'package:tracker/features/progress/components/load_custom_font.dart';
 import 'package:tracker/helpers/colors_manager.dart';
 import 'package:tracker/helpers/widget_manager.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:tracker/features/common/utils/utils.dart';
 
 class MotorSkillSelectionChart extends ConsumerWidget {
   final List<SkillChartData> chartData;
   final String kid;
 
-  const MotorSkillSelectionChart({super.key, required this.chartData, required this.kid});
-
+  const MotorSkillSelectionChart(
+      {super.key, required this.chartData, required this.kid});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref)  {
+  Widget build(BuildContext context, WidgetRef ref) {
     final repo = ref.read(kidsRepositoryProvider);
     return Column(
       children: [
         SfCartesianChart(
           primaryXAxis: const CategoryAxis(),
-          primaryYAxis: const NumericAxis(
-              minimum: 0, maximum: 100, interval: 10),
+          primaryYAxis:
+              const NumericAxis(minimum: 0, maximum: 100, interval: 10),
           title: const ChartTitle(text: 'Progres dezvoltare motorie'),
           legend: const Legend(isVisible: true),
           tooltipBehavior: TooltipBehavior(enable: true),
@@ -45,9 +47,12 @@ class MotorSkillSelectionChart extends ConsumerWidget {
         GestureDetector(
           onTap: () async {
             final currentKid = await repo.getKid(kid);
-            if(context.mounted){
-              extractSkillsForPDF(context,currentKid!);}},
-          child: appButton(text: "Save PDF")),
+            if (context.mounted) {
+              extractSkillsForPDF(context, currentKid!);
+            }
+          },
+          child: appButton(text: "Salvează PDF"),
+        ),
       ],
     );
   }
@@ -56,9 +61,13 @@ class MotorSkillSelectionChart extends ConsumerWidget {
     final document = PdfDocument();
     final PdfFont headerFont = await loadCustomFont(18);
     final PdfFont bodyFont = await loadCustomFont(20);
+    final PdfFont footerFont = await loadCustomFont(20);
+    final imageData = await rootBundle.load('assets/images/logo.png');
+    final imageBytes = imageData.buffer.asUint8List();
 
     final motorSkillsPage = document.pages.add();
-    addMotorSkillsData(motorSkillsPage, kid, headerFont, bodyFont);
+    addMotorSkillsData(
+        motorSkillsPage, kid, headerFont, bodyFont, imageBytes, footerFont);
 
     try {
       final directory = await getExternalStorageDirectory();
@@ -83,7 +92,8 @@ class MotorSkillSelectionChart extends ConsumerWidget {
     try {
       final bytes = await File(filePath).readAsBytes();
       final document = PdfDocument(inputBytes: bytes);
-      String text = 'Date salvate in fisierul: ProgresDezvoltareMotorie.pdf \n';
+      String text =
+          'Datele salvate în fișierul: ProgresDezvoltareMotorie.pdf \n';
       if (context.mounted) {
         showDialog(
           context: context,
@@ -95,7 +105,7 @@ class MotorSkillSelectionChart extends ConsumerWidget {
               ),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('Close'),
+                  child: const Text('Închide'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -115,17 +125,17 @@ class MotorSkillSelectionChart extends ConsumerWidget {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text('Error'),
+              title: const Text('Eroare'),
               content: SingleChildScrollView(
                 child: ListBody(
                   children: <Widget>[
-                    Text('Failed to extract text from PDF: $e')
+                    Text('Eșec la extragerea textului din PDF: $e')
                   ],
                 ),
               ),
               actions: <Widget>[
                 TextButton(
-                  child: const Text('Close'),
+                  child: const Text('Închide'),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -138,11 +148,50 @@ class MotorSkillSelectionChart extends ConsumerWidget {
     }
   }
 
-  void addMotorSkillsData(PdfPage page, Kid kid, PdfFont headerFont, PdfFont bodyFont) {
-    final bounds = Rect.fromLTWH(0, 0, page.getClientSize().width, page.getClientSize().height);
-    page.graphics.drawString('Progres dezvoltare cognitivă ${kid.name}', headerFont, bounds: bounds, brush: PdfSolidBrush(PdfColor(0, 0, 0)));
+  void addMotorSkillsData(PdfPage page, Kid kid, PdfFont headerFont,
+      PdfFont bodyFont, Uint8List imageBytes, PdfFont footerFont) {
+    final pageWidth = page.getClientSize().width;
+    final pageHeight = page.getClientSize().height;
+    page.graphics.drawString(
+      'Progres dezvoltare motorie pentru ${kid.name}',
+      headerFont,
+      bounds: Rect.fromLTWH(0, 0, pageWidth, 30),
+      format: PdfStringFormat(alignment: PdfTextAlignment.center),
+      brush: PdfSolidBrush(PdfColor(0, 0, 0)),
+    );
 
-    final skillsText = kid.motorSkills.map((e) => '${e.monthIndex}: ${e.skills}').join('\n');
-    page.graphics.drawString(skillsText, bodyFont, bounds: Rect.fromLTWH(0, 30, page.getClientSize().width, page.getClientSize().height));
+    final skillsText = kid.motorSkills.map((e) {
+      final skills =
+          e.skills != null ? e.skills?.map((s) => '- $s').join('\n  ') : '';
+      return 'Progres ${getTextForMonth(e.monthIndex)} - înregistrată la data de ${formatDateOnly(e.timestamp)}\n  $skills';
+    }).join('\n\n');
+    page.graphics.drawString(
+      skillsText,
+      bodyFont,
+      bounds: Rect.fromLTWH(0, 40, pageWidth, pageHeight - 160),
+      brush: PdfSolidBrush(PdfColor(0, 0, 0)),
+    );
+
+    final image = PdfBitmap(imageBytes);
+    const footerHeight = 80;
+    final footerYPosition = pageHeight - footerHeight - 40;
+
+    const imageSize = Size(80, 80);
+    page.graphics.drawImage(
+      image,
+      Rect.fromLTWH((pageWidth - imageSize.width) / 2, footerYPosition,
+          imageSize.width, imageSize.height),
+    );
+
+    const footerText = 'Generat de KidTracker';
+    final textBounds =
+        Rect.fromLTRB(0, footerYPosition + imageSize.height + 5, pageWidth, 20);
+    page.graphics.drawString(
+      footerText,
+      footerFont,
+      bounds: textBounds,
+      format: PdfStringFormat(alignment: PdfTextAlignment.center),
+      brush: PdfSolidBrush(PdfColor(0, 0, 0)),
+    );
   }
 }

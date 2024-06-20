@@ -19,9 +19,9 @@ class MotherName extends FormzInput<String, NameValidationError> {
 
   static String? showMotherNameErrorMessage(NameValidationError? error) {
     if (error == NameValidationError.empty) {
-      return 'Empty name';
+      return 'Numele este gol';
     } else if (error == NameValidationError.invalid) {
-      return 'Too short name';
+      return 'Numele este prea scurt';
     } else {
       return null;
     }

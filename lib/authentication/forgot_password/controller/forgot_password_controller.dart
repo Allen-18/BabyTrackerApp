@@ -35,8 +35,19 @@ class ForgotPasswordController extends StateNotifier<ForgotPasswordState> {
       await _authenticationRepository.forgotPassword(email: state.email.value);
       state = state.copyWith(status: FormzSubmissionStatus.success);
     } on ForgotPasswordFailure catch (e) {
+      String errorMessage = 'A apărut o eroare neașteptată.';
+      switch (e.error) {
+        case ForgotPasswordError.invalidEmail:
+          errorMessage = 'Adresa de email nu este validă.';
+          break;
+        case ForgotPasswordError.userNotFound:
+          errorMessage = 'Nu a fost găsit niciun utilizator cu acest email.';
+          break;
+        default:
+          errorMessage = 'A apărut o eroare neașteptată.';
+      }
       state = state.copyWith(
-          status: FormzSubmissionStatus.failure, errorMessage: e.code);
+          status: FormzSubmissionStatus.failure, errorMessage: errorMessage);
     }
   }
 }

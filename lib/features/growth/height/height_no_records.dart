@@ -9,9 +9,9 @@ Widget heightNoRecords(BuildContext context) {
       children: [
         Flexible(
             child: Image.asset(
-              AppAssets.height,
-              scale: 2,
-            )),
+          AppAssets.height,
+          scale: 2,
+        )),
         const SizedBox(height: 10),
         Text(
           "Nu sunt înregistrări",

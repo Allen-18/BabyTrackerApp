@@ -5,19 +5,22 @@ part 'weight_measurements.g.dart';
 
 @freezed
 class WeightMeasurements with _$WeightMeasurements {
-  const factory WeightMeasurements(
-      {required DateTime timestamp,
-        String? measurements,
-        }) = _WeightMeasurements;
+  const factory WeightMeasurements({
+    required DateTime timestamp,
+    String? measurements,
+  }) = _WeightMeasurements;
 
   factory WeightMeasurements.fromJson(Map<String, dynamic> json) =>
       _$WeightMeasurementsFromJson(json);
 
-  factory WeightMeasurements.fromNewAction( DateTime? when,
-      String measurement,) {
+  factory WeightMeasurements.fromNewAction(
+    DateTime? when,
+    String measurement,
+  ) {
     var timestamp = when ?? DateTime.now().toUtc();
     return WeightMeasurements(
-        timestamp: timestamp,
-        measurements: measurement,);
+      timestamp: timestamp,
+      measurements: measurement,
+    );
   }
 }

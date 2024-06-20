@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_validators/form_validators.dart';
@@ -12,9 +11,7 @@ final signInProvider = StateNotifierProvider<SignInController, SignInState>(
 
 class SignInController extends StateNotifier<SignInState> {
   final AuthenticationRepository _authenticationRepository;
-
   SignInController(this._authenticationRepository) : super(const SignInState());
-
   void onEmailChange(String value) {
     final email = Email.dirty(value);
     final isValid = Formz.validate(
@@ -36,7 +33,6 @@ class SignInController extends StateNotifier<SignInState> {
         password,
       ],
     );
-
     FormzSubmissionStatus newStatus =
         isValid ? FormzSubmissionStatus.success : FormzSubmissionStatus.failure;
 
@@ -46,7 +42,7 @@ class SignInController extends StateNotifier<SignInState> {
     );
   }
 
-  Future<FirebaseException?> signInWithEmailAndPassword() async {
+  Future<String?> signInWithEmailAndPassword() async {
     state = state.copyWith(status: FormzSubmissionStatus.inProgress);
     try {
       await _authenticationRepository.signInWithEmailAndPassword(
@@ -57,16 +53,29 @@ class SignInController extends StateNotifier<SignInState> {
       state = state.copyWith(status: FormzSubmissionStatus.success);
       return null;
     } catch (e) {
-      String errorMessage = 'An unexpected error occurred.';
-      FirebaseException? exceptionToReturn;
+      String errorMessage = 'A apărut o eroare neașteptată.';
+
       if (e is SignInWithEmailAndPasswordFailure) {
-        errorMessage = e.code;
-        exceptionToReturn =
-            FirebaseException(plugin: 'Authentication', message: errorMessage);
+        switch (e.error) {
+          case SignInError.userNotFound:
+            errorMessage = 'Nu a fost găsit niciun utilizator cu acest email.';
+            break;
+          case SignInError.wrongPassword:
+            errorMessage = 'Parolă incorectă.';
+            break;
+          case SignInError.invalidEmail:
+            errorMessage = 'Adresa de email nu este validă.';
+            break;
+          case SignInError.userDisabled:
+            errorMessage = 'Contul de utilizator a fost dezactivat.';
+            break;
+          default:
+            errorMessage = 'A apărut o eroare neașteptată.';
+        }
       }
       state = state.copyWith(
           status: FormzSubmissionStatus.failure, errorMessage: errorMessage);
-      return exceptionToReturn;
+      return errorMessage;
     }
   }
 }

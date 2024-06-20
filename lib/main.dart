@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tracker/features/common/utils/show_read_err.dart';
 import 'package:tracker/services/app_router.dart';
+import 'authentication/components/show_loading.dart';
 import 'helpers/themes_manager.dart';
 import 'firebase_options.dart';
 
@@ -43,6 +44,8 @@ class MyApp extends ConsumerWidget {
             err: err,
             stack: stack,
             retry: () => ref.invalidate(getGoRouterProvider)),
-        loading: () => const CircularProgressIndicator());
+        loading: () => const ShowLoading(
+              includeMaterialApp: true,
+            ));
   }
 }

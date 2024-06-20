@@ -4,12 +4,13 @@ import 'package:tracker/services/collections.dart';
 
 // Provider for cognitive skills that watches changes in Firestore
 final cognitiveSkillsProvider =
-    StateNotifierProvider<CognitiveSkillsNotifier, List<String>>((ref) {
+    StateNotifierProvider<CognitiveSkillsNotifier, Map<String, List<String>>>(
+        (ref) {
   return CognitiveSkillsNotifier();
 });
 
-class CognitiveSkillsNotifier extends StateNotifier<List<String>> {
-  CognitiveSkillsNotifier() : super([]);
+class CognitiveSkillsNotifier extends StateNotifier<Map<String, List<String>>> {
+  CognitiveSkillsNotifier() : super({'skills': [], 'guidance': []});
 
   Future<void> fetchCognitiveSkills(int month) async {
     try {
@@ -17,13 +18,16 @@ class CognitiveSkillsNotifier extends StateNotifier<List<String>> {
           await cognitiveSkillsCollection().doc(month.toString()).get();
 
       if (document.exists) {
-        state = List.from(document.data()?['skills'] ?? []);
+        state = {
+          'skills': List.from(document.data()?['skills'] ?? []),
+          'guidance': List.from(document.data()?['guidance'] ?? []),
+        };
       }
     } catch (e) {
       if (kDebugMode) {
         print("Error fetching skills: $e");
       }
-      state = [];
+      state = {'skills': [], 'guidance': []};
     }
   }
 }

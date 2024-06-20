@@ -9,6 +9,7 @@ import 'package:tracker/authentication/signup/sign_up.dart';
 import 'package:tracker/features/Growth/growth_page.dart';
 import 'package:tracker/features/Health/health_page.dart';
 import 'package:tracker/features/homePage/home_page.dart';
+import 'package:tracker/features/mainScreen/progress_page.dart';
 import 'package:tracker/features/milestone/cognitive_skill/track_cognitive_skill.dart';
 import 'package:tracker/features/userData/kid/add_baby_data.dart';
 import 'package:tracker/features/userData/parent/add_parent_data.dart';
@@ -16,9 +17,14 @@ import 'package:tracker/features/userData/kid/add_new_baby.dart';
 import 'package:tracker/authentication/domain/user.dart';
 import 'package:tracker/authentication/repository/auth_repo.dart';
 import 'package:tracker/authentication/repository/users.dart';
-import 'package:tracker/features/mainScreen/home_screen.dart';
 import '../features/children/kids.dart';
+import '../features/mainScreen/categories_page.dart';
+import '../features/mainScreen/home_screen.dart';
+import '../features/milestone/linguistic_skill/track_linguistic_skill.dart';
 import '../features/milestone/motor_skill/track_motor_skill.dart';
+import '../features/milestone/social_skill/track_social_skill.dart';
+import '../features/profile/kid_profile_page.dart';
+import '../features/profile/profile_page.dart';
 import 'initial_route.dart';
 
 part 'app_router.g.dart';
@@ -35,7 +41,13 @@ enum AppRoutes {
   growthPage,
   trackMotorSkill,
   trackCognitiveSkill,
+  trackSocialSkill,
+  trackLinguisticSkill,
   homePage,
+  category,
+  progress,
+  profile,
+  kidProfile,
 }
 
 //Transitions
@@ -127,18 +139,23 @@ Future<GoRouter?> getGoRouter(GetGoRouterRef ref) async {
             );
           }),
       GoRoute(
-          name: AppRoutes.addBabyData.name,
-          path: "/addBabyData",
+          name: AppRoutes.profile.name,
+          path: "/profilePage",
           pageBuilder: (context, state) {
-            if (state.extra == null) {
-              throw Exception(
-                  "Can't navigate to addBabyData because parent is null");
-            }
-            final parent = state.extra as User;
             return buildPageWithFadeTransition(
               context: context,
               state: state,
-              child: BabyProfile(parent: parent),
+              child: ProfileScreen(),
+            );
+          }),
+      GoRoute(
+          name: AppRoutes.addBabyData.name,
+          path: "/addBabyData",
+          pageBuilder: (context, state) {
+            return buildPageWithFadeTransition(
+              context: context,
+              state: state,
+              child: BabyProfile(),
             );
           }),
       GoRoute(
@@ -208,13 +225,49 @@ Future<GoRouter?> getGoRouter(GetGoRouterRef ref) async {
             );
           }),
       GoRoute(
-        name: AppRoutes.healthPage.name,
-        path: "/healthPage",
-        pageBuilder: (context, state) => buildPageWithFadeTransition(
-          context: context,
-          state: state,
-          child: const Health(),
-        ),
+          name: AppRoutes.kidProfile.name,
+          path: "/kidProfilePage",
+          pageBuilder: (context, state) {
+            if (state.extra == null) {
+              throw Exception(
+                  "Can't navigate to kidProfilePage because kid is null");
+            }
+            final kid = state.extra as Kid;
+            return buildPageWithFadeTransition(
+              context: context,
+              state: state,
+              child: KidProfileScreen(
+                kidData: kid,
+              ),
+            );
+          }),
+      GoRoute(
+          name: AppRoutes.healthPage.name,
+          path: "/healthPage",
+          pageBuilder: (context, state) {
+            if (state.extra == null) {
+              throw Exception(
+                  "Can't navigate to healthPage because parent is null");
+            }
+            final kid = state.extra as Kid;
+            return buildPageWithFadeTransition(
+              context: context,
+              state: state,
+              child: Health(kid: kid),
+            );
+          }),
+      GoRoute(
+        name: AppRoutes.category.name,
+        path: '/categoriesPage',
+        pageBuilder: (context, state) {
+          final args = state.extra as Map<String, dynamic>;
+          final user = args['user'] as User;
+          final kid = args['kid'] as Kid;
+          return buildPageWithFadeTransition(
+              context: context,
+              state: state,
+              child: Categories(currentUser: user, kid: kid));
+        },
       ),
       GoRoute(
         name: AppRoutes.growthPage.name,
@@ -229,6 +282,23 @@ Future<GoRouter?> getGoRouter(GetGoRouterRef ref) async {
               context: context,
               state: state,
               child: Growth(
+                currentKid: kid,
+              ));
+        },
+      ),
+      GoRoute(
+        name: AppRoutes.progress.name,
+        path: "/progressPage",
+        pageBuilder: (context, state) {
+          if (state.extra == null) {
+            throw Exception(
+                "Can't navigate to growthPage because parent is null");
+          }
+          final kid = state.extra as Kid;
+          return buildPageWithFadeTransition(
+              context: context,
+              state: state,
+              child: ProgressPage(
                 currentKid: kid,
               ));
         },
@@ -259,13 +329,11 @@ Future<GoRouter?> getGoRouter(GetGoRouterRef ref) async {
               throw Exception(
                   "Can't navigate to trackMotorSkill because parent is null");
             }
-            final parent = state.extra as User;
             final kid = state.extra as Kid;
             return buildPageWithFadeTransition(
               context: context,
               state: state,
               child: MotorSkillTracker(
-                currentUser: parent,
                 kid: kid,
               ),
             );
@@ -278,18 +346,50 @@ Future<GoRouter?> getGoRouter(GetGoRouterRef ref) async {
             throw Exception(
                 "Can't navigate to trackMotorSkill because parent is null");
           }
-          final parent = state.extra as User;
           final kid = state.extra as Kid;
           return buildPageWithFadeTransition(
             context: context,
             state: state,
             child: CognitiveSkillTracker(
-              currentUser: parent,
               kid: kid,
             ),
           );
         },
       ),
+      GoRoute(
+          name: AppRoutes.trackSocialSkill.name,
+          path: "/trackSocialSkill",
+          pageBuilder: (context, state) {
+            if (state.extra == null) {
+              throw Exception(
+                  "Can't navigate to trackSocialSkill because parent is null");
+            }
+            final kid = state.extra as Kid;
+            return buildPageWithFadeTransition(
+              context: context,
+              state: state,
+              child: SocialSkillTracker(
+                kid: kid,
+              ),
+            );
+          }),
+      GoRoute(
+          name: AppRoutes.trackLinguisticSkill.name,
+          path: "/trackLinguisticSkill",
+          pageBuilder: (context, state) {
+            if (state.extra == null) {
+              throw Exception(
+                  "Can't navigate to trackLinguisticSkill because parent is null");
+            }
+            final kid = state.extra as Kid;
+            return buildPageWithFadeTransition(
+              context: context,
+              state: state,
+              child: LinguisticSkillTracker(
+                kid: kid,
+              ),
+            );
+          }),
       GoRoute(
         name: AppRoutes.forgetPassword.name,
         path: "/forgotPassword",

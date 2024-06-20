@@ -5,8 +5,6 @@ import 'package:tracker/features/growth/weight/widget_weight_table.dart';
 import 'package:tracker/helpers/colors_manager.dart';
 import 'package:tracker/features/children/kids.dart';
 
-
-
 class GrowthWeight extends ConsumerWidget {
   const GrowthWeight({super.key, required this.currentKid});
   final Kid currentKid;
@@ -36,8 +34,7 @@ class GrowthWeight extends ConsumerWidget {
             child: ElevatedButton(
               onPressed: () => showAddWeightDialog(context, ref, currentKid),
               style: ButtonStyle(
-                  backgroundColor:
-                      WidgetStateProperty.all(AppColors.primary)),
+                  backgroundColor: WidgetStateProperty.all(AppColors.primary)),
               child: const Text(
                 "Adaugă o nouă măsurătoare",
                 style: TextStyle(color: Colors.white, fontSize: 20),

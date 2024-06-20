@@ -31,3 +31,8 @@ CollectionReference<Map<String, dynamic>> linguisticSkillsCollection() {
   FirebaseFirestore db = FirebaseFirestore.instance;
   return db.collection('linguisticSkills');
 }
+
+CollectionReference<Map<String, dynamic>> vaccinationCollection() {
+  FirebaseFirestore db = FirebaseFirestore.instance;
+  return db.collection('vaccineList');
+}

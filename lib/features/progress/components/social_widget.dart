@@ -20,7 +20,9 @@ Widget socialWidget(BuildContext context, KidDataSocialSkills kidDataService) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
               return SocialSkillSelectionChart(
-                  chartData: snapshot.data!, kid: kidDataService.kid.id!,);
+                chartData: snapshot.data!,
+                kid: kidDataService.kid.id!,
+              );
             } else {
               return Column(children: [
                 Expanded(

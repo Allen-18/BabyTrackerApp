@@ -13,7 +13,7 @@ class KidDataSocialSkills {
 
     return sortedSkills
         .map((data) => SkillChartData(
-        " ${getTextForMonth(data.monthIndex)}", data.progress))
+            " ${getTextForMonth(data.monthIndex)}", data.progress))
         .toList();
   }
 }

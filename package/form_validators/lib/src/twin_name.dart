@@ -19,9 +19,9 @@ class TwinName extends FormzInput<String, TwinValidationError> {
 
   static String? showTwinNameErrorMessage(TwinValidationError? error) {
     if (error == TwinValidationError.empty) {
-      return 'Empty name';
+      return 'Numele este gol';
     } else if (error == TwinValidationError.invalid) {
-      return 'Too short name';
+      return 'Numele este prea scurt';
     } else {
       return null;
     }

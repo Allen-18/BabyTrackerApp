@@ -11,36 +11,25 @@ class LogOffListTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return parent.isActive
-        ? ListTile(
-            leading:
-                const Icon(Icons.hourglass_bottom_sharp, color: Colors.blue),
-            title: const Text("Dezactivare"),
-            onTap: () async {
-              debugPrint('LogOffTile | deactivate | pop all routes...');
-              Navigator.of(context).popUntil((route) => route.isFirst);
-              if (context.mounted) {
-                Scaffold.of(context).closeEndDrawer();
-
-                if (parent.isActive) {
-                  final ur = UsersRepository();
-                  final newDoc = parent.copyWith(
-                    isActive: false, // <- auto-redirects to LoginScreen
-                  );
-                  await ur.updateUser(newDoc);
-                  debugPrint(
-                      'LoginScreen | afterDelay | Done deactivating user ${parent.id}');
-                }
-              }
-            },
-          )
-        : ListTile(
-            leading: const Icon(Icons.logout, color: Colors.blue),
-            title: const Text('Log Out'),
-            onTap: () {
-              debugPrint("Signing out ...");
-              fa.FirebaseAuth.instance.signOut();
-            },
-          );
+    return ListTile(
+      leading: const Icon(Icons.hourglass_bottom_sharp, color: Colors.blue),
+      title: const Text("Dezactivare"),
+      onTap: () async {
+        debugPrint('LogOffTile | deactivate | pop all routes...');
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        if (context.mounted) {
+          Scaffold.of(context).closeEndDrawer();
+          if (parent.isActive) {
+            final ur = UsersRepository();
+            final newDoc = parent.copyWith(
+              isActive: false, // <- auto-redirects to LoginScreen
+            );
+            await ur.updateUser(newDoc);
+          }
+          debugPrint("Signing out ...");
+          fa.FirebaseAuth.instance.signOut();
+        }
+      },
+    );
   }
 }

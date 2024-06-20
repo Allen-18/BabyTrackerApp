@@ -5,7 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tracker/features/common/utils/sorted_list.dart';
 
+import '../../children/cognitiveMilestone/cognitive_kid_skills.dart';
 import '../../children/kids.dart';
+import '../../children/linguisticMilestone/linguistic_kid_skills.dart';
+import '../../children/motorMilestone/motor_kid_skills.dart';
+import '../../children/socialMilestone/social_kid_skills.dart';
 
 extension ChangesOnStream<T> on Stream<QuerySnapshot<T>> {
   Stream<List<T>> toStreamChanges(StreamProviderRef ref,
@@ -48,7 +52,7 @@ extension ChangesOnStream<T> on Stream<QuerySnapshot<T>> {
 }
 
 extension DocumentOnStream<T> on Stream<DocumentSnapshot<T>> {
-  Stream<T?> toStreamDoc({required String parentId}) {
+  Stream<T?> toStreamDoc({required String kidId}) {
     return map((e) {
       final p = e.data();
       return p;
@@ -88,6 +92,7 @@ String getTextForMonth(int month) {
       return '$month luni';
   }
 }
+
 String formatTimestamp(DateTime timestamp) {
   // Format day, month, and year
   String formattedDate = '${timestamp.day.toString().padLeft(2, '0')}/'
@@ -100,4 +105,137 @@ String formatTimestamp(DateTime timestamp) {
 
   // return concatenate both format
   return '$formattedDate $formattedTime';
+}
+
+String formatDateOnly(DateTime timestamp) {
+  // Format day, month, and year
+  String formattedDate = '${timestamp.day.toString().padLeft(2, '0')}/'
+      '${timestamp.month.toString().padLeft(2, '0')}/'
+      '${timestamp.year}';
+
+  // Return the formatted date
+  return formattedDate;
+}
+
+String getFirstKidName(List<Kid> myKids) {
+  if (myKids.isNotEmpty) {
+    return myKids.first.name;
+  } else {
+    return 'Nu sunt copii înregistrați';
+  }
+}
+
+String getNewestMotorSkillTimestamp(List<MotorKidSkills> motorSkills) {
+  if (motorSkills.isEmpty) {
+    return 'Nu sunt înregistrate abilități motorii';
+  }
+
+  DateTime newestTimestamp = motorSkills.first.timestamp;
+
+  for (var skill in motorSkills) {
+    if (skill.timestamp.isAfter(newestTimestamp)) {
+      newestTimestamp = skill.timestamp;
+    }
+  }
+
+  return newestTimestamp.toIso8601String();
+}
+
+String getNewestCognitiveSkillTimestamp(
+    List<CognitiveKidSkills> cognitiveSkills) {
+  if (cognitiveSkills.isEmpty) {
+    return 'Nu sunt înregistrate abilități cognitive';
+  }
+
+  DateTime newestTimestamp = cognitiveSkills.first.timestamp;
+
+  for (var skill in cognitiveSkills) {
+    if (skill.timestamp.isAfter(newestTimestamp)) {
+      newestTimestamp = skill.timestamp;
+    }
+  }
+
+  return newestTimestamp.toIso8601String();
+}
+
+String getNewestSocialSkillTimestamp(List<SocialKidSkills> socialSkills) {
+  if (socialSkills.isEmpty) {
+    return 'Nu sunt înregistrate abilități sociale';
+  }
+
+  DateTime newestTimestamp = socialSkills.first.timestamp;
+
+  for (var skill in socialSkills) {
+    if (skill.timestamp.isAfter(newestTimestamp)) {
+      newestTimestamp = skill.timestamp;
+    }
+  }
+
+  return newestTimestamp.toIso8601String();
+}
+
+String getNewestLinguisticSkillTimestamp(
+    List<LinguisticKidSkills> linguisticSkills) {
+  if (linguisticSkills.isEmpty) {
+    return 'Nu sunt înregistrate abilități lingvistice';
+  }
+
+  DateTime newestTimestamp = linguisticSkills.first.timestamp;
+
+  for (var skill in linguisticSkills) {
+    if (skill.timestamp.isAfter(newestTimestamp)) {
+      newestTimestamp = skill.timestamp;
+    }
+  }
+
+  return newestTimestamp.toIso8601String();
+}
+
+String timeAgo(String? pastDateString) {
+  if (pastDateString == null) {
+    return '';
+  }
+
+  DateTime? pastDate;
+  try {
+    pastDate = DateTime.parse(pastDateString);
+  } catch (e) {
+    return pastDateString;
+  }
+
+  Duration timeDifference = DateTime.now().difference(pastDate.toLocal());
+  if (timeDifference.inDays > 365) {
+    int ani = (timeDifference.inDays / 365).floor();
+    int remainingDays = timeDifference.inDays - (ani * 365);
+    int luni = (remainingDays / 30).floor();
+    String yearString = ani == 1 ? 'an' : 'ani';
+    String monthString = luni == 1 ? 'lună' : 'luni';
+    return '$ani $yearString și $luni $monthString';
+  } else if (timeDifference.inDays > 0) {
+    int remainingDays = timeDifference.inDays;
+    int ore = timeDifference.inHours.remainder(24);
+    String dayString = remainingDays == 1 ? 'zi' : 'zile';
+    String hourString = ore == 1 ? 'oră' : 'ore';
+    if (ore == 0) {
+      return '$remainingDays $dayString';
+    } else {
+      return '$remainingDays $dayString și $ore $hourString';
+    }
+  } else if (timeDifference.inHours > 0) {
+    int remainingHours = timeDifference.inHours;
+    int minute = timeDifference.inMinutes.remainder(60);
+    String hourString = remainingHours == 1 ? 'oră' : 'ore';
+    String minuteString = minute == 1 ? 'minut' : 'minute';
+    if (minute == 0) {
+      return '$remainingHours $hourString';
+    } else {
+      return '$remainingHours $hourString și $minute $minuteString';
+    }
+  } else if (timeDifference.inMinutes > 0) {
+    int remainingMinutes = timeDifference.inMinutes;
+    String minuteString = remainingMinutes == 1 ? 'minut' : 'minute';
+    return '$remainingMinutes $minuteString';
+  } else {
+    return 'câteva momente';
+  }
 }

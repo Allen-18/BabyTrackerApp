@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:form_validators/form_validators.dart';
@@ -28,7 +27,8 @@ class Login extends HookConsumerWidget {
     final loginAttempted = useState(false);
 
     final showErrorEmail = loginAttempted.value && signInState.email.isNotValid;
-    final showErrorPassword = loginAttempted.value && signInState.password.isNotValid;
+    final showErrorPassword =
+        loginAttempted.value && signInState.password.isNotValid;
 
     return Scaffold(
       body: Container(
@@ -56,7 +56,7 @@ class Login extends HookConsumerWidget {
                 decoration: BoxDecoration(
                     color: AppColors.white,
                     borderRadius:
-                    const BorderRadius.only(topLeft: Radius.circular(100))),
+                        const BorderRadius.only(topLeft: Radius.circular(100))),
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
@@ -67,7 +67,7 @@ class Login extends HookConsumerWidget {
                           margin: const EdgeInsets.only(
                               top: AppMargin.m20, bottom: 40),
                           child: Text(
-                            'Login',
+                            'Autentificare',
                             style: getBoldStyle(
                                 color: AppColors.black, fontSize: 40),
                           )),
@@ -79,7 +79,7 @@ class Login extends HookConsumerWidget {
                           onChanged: (value) =>
                               signInController.onEmailChange(value),
                           decoration: const InputDecoration(
-                            hintText: 'Enter your email',
+                            hintText: 'Introduceți emailul dvs.',
                             border: InputBorder.none,
                           ),
                         ),
@@ -94,7 +94,7 @@ class Login extends HookConsumerWidget {
                           child: Row(children: [
                             Text(
                               Email.showEmailErrorMessage(
-                                  signInState.email.error) ??
+                                      signInState.email.error) ??
                                   "",
                               style: const TextStyle(color: Colors.red),
                             )
@@ -105,14 +105,14 @@ class Login extends HookConsumerWidget {
                       ),
                       loginBox(
                         context: context,
-                        text: "Password",
+                        text: "Parolă",
                         child: TextFormField(
                           initialValue: signInState.password.value,
                           onChanged: (value) =>
                               signInController.onPasswordChange(value),
                           obscureText: true,
                           decoration: const InputDecoration(
-                            hintText: 'Enter your password',
+                            hintText: 'Introduceți parola dvs.',
                             border: InputBorder.none,
                           ),
                         ),
@@ -123,12 +123,13 @@ class Login extends HookConsumerWidget {
                           padding: const EdgeInsets.only(left: 18.0),
                           child: Row(
                             children: [
-                              Text(
+                              Flexible(
+                                  child: Text(
                                 Password.showPasswordErrorMessage(
-                                    signInState.password.error) ??
+                                        signInState.password.error) ??
                                     "",
                                 style: const TextStyle(color: Colors.red),
-                              ),
+                              )),
                             ],
                           ),
                         ),
@@ -141,36 +142,35 @@ class Login extends HookConsumerWidget {
                       ),
                       isLoading.value
                           ? const SizedBox(
-                        width: 90,
-                        height: 90,
-                        child: LoadingSheet(),
-                      )
+                              width: 90,
+                              height: 90,
+                              child: LoadingSheet(),
+                            )
                           : GestureDetector(
-                        onTap: () async {
-                          loginAttempted.value = true;
-                          isLoading.value = true; // Start loading
-                          FirebaseException? error =
-                          await signInController
-                              .signInWithEmailAndPassword();
-                          isLoading.value = false; // Stop loading
-                          if (error != null) {
-                            if (context.mounted) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text(error.toString())));
-                            } // Show error if any
-                          } else {
-                            final currentUser = await ref.read(
-                                getCurrentUserStreamProvider.future);
-                            if (context.mounted) {
-                              context.pushNamed(
-                                  AppRoutes.addParentData.name,
-                                  extra: currentUser);
-                            }
-                          }
-                        },
-                        child: appButton(text: "Login"),
-                      ),
+                              onTap: () async {
+                                loginAttempted.value = true;
+                                isLoading.value = true; // Start loading
+                                String? errorMessage = await signInController
+                                    .signInWithEmailAndPassword();
+                                isLoading.value = false; // Stop loading
+                                if (errorMessage != null) {
+                                  if (context.mounted) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(content: Text(errorMessage)));
+                                  }
+                                } else {
+                                  final currentUser = await ref.read(
+                                      getCurrentUserStreamProvider.future);
+                                  if (context.mounted) {
+                                    isLoading.value = false;
+                                    context.pushNamed(
+                                        AppRoutes.addParentData.name,
+                                        extra: currentUser);
+                                  }
+                                }
+                              },
+                              child: appButton(text: "Autentificare"),
+                            ),
                       const SizedBox(
                         height: 10,
                       ),
@@ -183,7 +183,7 @@ class Login extends HookConsumerWidget {
                             }
                           },
                           child: Text(
-                            "Don't have an Account?",
+                            "Nu aveți un cont?",
                             style: getRegularStyle(
                                 color: AppColors.primary, fontSize: 14),
                           ))

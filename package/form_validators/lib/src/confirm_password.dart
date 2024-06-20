@@ -24,9 +24,9 @@ class ConfirmPassword
   static String? showConfirmPasswordErrorMessage(
       ConfirmPasswordValidationError? error) {
     if (error == ConfirmPasswordValidationError.empty) {
-      return 'Confirm password is required';
+      return 'Confirmarea parolei este necesară';
     } else if (error == ConfirmPasswordValidationError.mismatch) {
-      return 'Passwords do not match';
+      return 'Parolele nu se potrivesc';
     } else {
       return null;
     }

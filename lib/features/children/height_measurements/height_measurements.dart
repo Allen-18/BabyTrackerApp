@@ -5,19 +5,19 @@ part 'height_measurements.g.dart';
 
 @freezed
 class HeightMeasurements with _$HeightMeasurements {
-  const factory HeightMeasurements(
-      {required DateTime timestamp,
-        String? measurements,
-      }) = _HeightMeasurements;
+  const factory HeightMeasurements({
+    required DateTime timestamp,
+    String? measurements,
+  }) = _HeightMeasurements;
 
   factory HeightMeasurements.fromJson(Map<String, dynamic> json) =>
       _$HeightMeasurementsFromJson(json);
 
-  factory HeightMeasurements.fromNewAction( DateTime? when,
-      String measurements,) {
+  factory HeightMeasurements.fromNewAction(
+    DateTime? when,
+    String measurements,
+  ) {
     var timestamp = when ?? DateTime.now().toUtc();
-    return HeightMeasurements(
-        timestamp: timestamp,
-        measurements: measurements);
+    return HeightMeasurements(timestamp: timestamp, measurements: measurements);
   }
 }

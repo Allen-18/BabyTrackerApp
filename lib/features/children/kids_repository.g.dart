@@ -168,5 +168,261 @@ class _GetKidProviderElement extends AutoDisposeFutureProviderElement<Kid?>
   @override
   String? get id => (origin as GetKidProvider).id;
 }
+
+String _$getKidStreamHash() => r'0cba9229d8e7d9477468f7d8bcbe8f1be415cc5d';
+
+/// See also [getKidStream].
+@ProviderFor(getKidStream)
+const getKidStreamProvider = GetKidStreamFamily();
+
+/// See also [getKidStream].
+class GetKidStreamFamily extends Family<AsyncValue<Kid?>> {
+  /// See also [getKidStream].
+  const GetKidStreamFamily();
+
+  /// See also [getKidStream].
+  GetKidStreamProvider call({
+    required String kidId,
+  }) {
+    return GetKidStreamProvider(
+      kidId: kidId,
+    );
+  }
+
+  @override
+  GetKidStreamProvider getProviderOverride(
+    covariant GetKidStreamProvider provider,
+  ) {
+    return call(
+      kidId: provider.kidId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getKidStreamProvider';
+}
+
+/// See also [getKidStream].
+class GetKidStreamProvider extends AutoDisposeStreamProvider<Kid?> {
+  /// See also [getKidStream].
+  GetKidStreamProvider({
+    required String kidId,
+  }) : this._internal(
+          (ref) => getKidStream(
+            ref as GetKidStreamRef,
+            kidId: kidId,
+          ),
+          from: getKidStreamProvider,
+          name: r'getKidStreamProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getKidStreamHash,
+          dependencies: GetKidStreamFamily._dependencies,
+          allTransitiveDependencies:
+              GetKidStreamFamily._allTransitiveDependencies,
+          kidId: kidId,
+        );
+
+  GetKidStreamProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.kidId,
+  }) : super.internal();
+
+  final String kidId;
+
+  @override
+  Override overrideWith(
+    Stream<Kid?> Function(GetKidStreamRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetKidStreamProvider._internal(
+        (ref) => create(ref as GetKidStreamRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        kidId: kidId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeStreamProviderElement<Kid?> createElement() {
+    return _GetKidStreamProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetKidStreamProvider && other.kidId == kidId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, kidId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetKidStreamRef on AutoDisposeStreamProviderRef<Kid?> {
+  /// The parameter `kidId` of this provider.
+  String get kidId;
+}
+
+class _GetKidStreamProviderElement
+    extends AutoDisposeStreamProviderElement<Kid?> with GetKidStreamRef {
+  _GetKidStreamProviderElement(super.provider);
+
+  @override
+  String get kidId => (origin as GetKidStreamProvider).kidId;
+}
+
+String _$getKidFutureHash() => r'da7a5c3ccffc704320354bd8bd1ea696c55b2600';
+
+/// See also [getKidFuture].
+@ProviderFor(getKidFuture)
+const getKidFutureProvider = GetKidFutureFamily();
+
+/// See also [getKidFuture].
+class GetKidFutureFamily extends Family<AsyncValue<Kid?>> {
+  /// See also [getKidFuture].
+  const GetKidFutureFamily();
+
+  /// See also [getKidFuture].
+  GetKidFutureProvider call({
+    required String kidId,
+  }) {
+    return GetKidFutureProvider(
+      kidId: kidId,
+    );
+  }
+
+  @override
+  GetKidFutureProvider getProviderOverride(
+    covariant GetKidFutureProvider provider,
+  ) {
+    return call(
+      kidId: provider.kidId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getKidFutureProvider';
+}
+
+/// See also [getKidFuture].
+class GetKidFutureProvider extends AutoDisposeFutureProvider<Kid?> {
+  /// See also [getKidFuture].
+  GetKidFutureProvider({
+    required String kidId,
+  }) : this._internal(
+          (ref) => getKidFuture(
+            ref as GetKidFutureRef,
+            kidId: kidId,
+          ),
+          from: getKidFutureProvider,
+          name: r'getKidFutureProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getKidFutureHash,
+          dependencies: GetKidFutureFamily._dependencies,
+          allTransitiveDependencies:
+              GetKidFutureFamily._allTransitiveDependencies,
+          kidId: kidId,
+        );
+
+  GetKidFutureProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.kidId,
+  }) : super.internal();
+
+  final String kidId;
+
+  @override
+  Override overrideWith(
+    FutureOr<Kid?> Function(GetKidFutureRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetKidFutureProvider._internal(
+        (ref) => create(ref as GetKidFutureRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        kidId: kidId,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<Kid?> createElement() {
+    return _GetKidFutureProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetKidFutureProvider && other.kidId == kidId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, kidId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin GetKidFutureRef on AutoDisposeFutureProviderRef<Kid?> {
+  /// The parameter `kidId` of this provider.
+  String get kidId;
+}
+
+class _GetKidFutureProviderElement
+    extends AutoDisposeFutureProviderElement<Kid?> with GetKidFutureRef {
+  _GetKidFutureProviderElement(super.provider);
+
+  @override
+  String get kidId => (origin as GetKidFutureProvider).kidId;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -8,10 +8,10 @@ List<Widget> measurementBirthDetailsFields({
   return [
     TextFormField(
       controller: weightController,
-      decoration:
-          const InputDecoration(labelText: "Greutatea copilului la naștere(kg)"),
+      decoration: const InputDecoration(
+          labelText: "Greutatea copilului la naștere(kg)"),
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
-       validator: (value) {
+      validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Greutatea nu poate fi goală';
         }
@@ -21,8 +21,8 @@ List<Widget> measurementBirthDetailsFields({
     const SizedBox(height: 25),
     TextFormField(
       controller: heightController,
-      decoration:
-          const InputDecoration(labelText: "Înălțimea copilului la naștere (cm)"),
+      decoration: const InputDecoration(
+          labelText: "Înălțimea copilului la naștere (cm)"),
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -34,8 +34,8 @@ List<Widget> measurementBirthDetailsFields({
     const SizedBox(height: 25),
     TextFormField(
       controller: headCircumferenceController,
-      decoration:
-          const InputDecoration(labelText: "Circumferința capului la naștere (cm)"),
+      decoration: const InputDecoration(
+          labelText: "Circumferința capului la naștere (cm)"),
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
       validator: (value) {
         if (value == null || value.isEmpty) {
